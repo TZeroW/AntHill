@@ -39,7 +39,10 @@
     </div>
 
     <!-- Script para los posts -->
-    <script type="module" src="scripts.js"></script>
+    <script type="module">
+        import { cargarFeed } from './scripts.js';
+        cargarFeed();
+    </script>
 </body>
 
 </html>
