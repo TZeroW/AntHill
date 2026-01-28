@@ -8,6 +8,7 @@
     --matrix-green: #00ff41;
     --dark-bg: #030a04;
     --border-glow: 0 0 10px rgba(0, 255, 65, 0.5);
+    --background-select: rgba(0, 255, 65, 0.051);
 }
 
 body {
@@ -61,12 +62,13 @@ label {
 input {
     width: 100%;
     padding: 12px;
-    background: rgba(0, 255, 65, 0.05);
+    background: var(--background-select);
     border: 1px solid var(--matrix-green);
     border-radius: 5px;
     color: var(--matrix-green);
     outline: none;
     box-sizing: border-box;
+    box-shadow: var(--border-glow);
 }
 
 input::placeholder {

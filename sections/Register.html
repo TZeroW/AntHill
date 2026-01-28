@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../styles/register.css">
+</head>
+
+<body>
+    <div class="log_in_container">
+        <header>
+            <h1>AntHill</h1>
+            <p class="subtitulo_lol">REGISTRA_TUS_CREDENCIALES</p>
+        </header>
+
+        <form class="log_in_form">
+            <div class="user">
+                <label for="user_name">NOMBRE_USUARIO</label>
+                <input type="text" id="user_name" placeholder="AntyHilly12">
+            </div>
+            <div class="user">
+                <label for="email">EMAIL</label>
+                <input type="text" id="email" placeholder="Ant@gmail.com">
+            </div>
+            <div class="user">
+                <label for="user_password">CONTRASEÑA</label>
+                <div class="password">
+                    <input type="password" id="key" value="password">
+                    <span class="show_password">👁️</span>
+                </div>
+            </div>
+            <div class="gender">
+                <label for="geneder">GENERO</label>
+                <select name="gender" id="gender_select" class="gender_select">
+                    <option value="none" selected disabled>Selecciona tu genero</option>
+                    <option value="male">Masculino</option>
+                    <option value="female">Femenino</option>
+                    <option value="Preferir no decir">Preferir no decir</option>
+                </select>
+
+            </div>
+            <button class="log_in_button" type="submit">REGISTRAR</button>
+        </form>
+
+        <footer>
+            <p class="footer_p">Ovidaste tu contraseña?</p>
+            <p>Copyright © 2026 AntHill. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+</body>
+
+</html>
