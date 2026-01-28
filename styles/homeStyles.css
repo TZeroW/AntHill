@@ -8,6 +8,7 @@
     --color-post-fondo: #2a2a2a;
 }
 
+.sidebar,
 body {
     margin: 0;
     padding: 0;
@@ -103,4 +104,27 @@ body {
 
 .vote-count {
     font-weight: bold;
+}
+
+/* ============ Estilos del menu lateral ============*/
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100px;
+    background-color: var(--color-post-fondo);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.sidebar-item {
+    margin-bottom: 10px;
+    color: var(--color-textos);
+    font-size: 20px;
+    font-family: 'VT323', monospace;
+    text-decoration: none;
 }
