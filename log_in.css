@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+
+:root {
+    --color-titulos: #32CD32;
+    --color-textos: #74C365;
+    --color-fondo: #0d0d0d;
+    --matrix-green: #00ff41;
+    --dark-bg: #030a04;
+    --border-glow: 0 0 10px rgba(0, 255, 65, 0.5);
+}
+
+body {
+    background-color: var(--color-fondo);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    height: 100vh;
+    margin: 0;
+}
+
+.log_in_container {
+    background-color: var(--dark-bg);
+    border: 2px solid var(--matrix-green);
+    padding: 40px;
+    border-radius: 10px;
+    width: 400px;
+    text-align: left;
+}
+
+h1 {
+    font-family: 'VT323', monospace;
+    margin-block: 5px;
+    text-shadow: 0 0 8px var(--color-titulos);
+    color: var(--color-titulos);
+    font-size: 3.5rem;
+}
+
+.subtitulo_lol {
+    font-family: 'VT323', monospace;
+    margin-block: 10px 20px;
+    text-shadow: 0 0 8px var(--color-textos);
+    color: var(--color-textos);
+    font-size: 2rem;
+}
+
+.user {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-family: 'VT323', monospace;
+    color: var(--color-textos);
+    font-size: 1rem;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    background: rgba(0, 255, 65, 0.05);
+    border: 1px solid var(--matrix-green);
+    border-radius: 5px;
+    color: var(--matrix-green);
+    outline: none;
+    box-sizing: border-box;
+}
+
+input::placeholder {
+    color: rgba(0, 255, 65, 0.3);
+}
+
+.password {
+    position: relative;
+}
+
+.show_password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--matrix-green);
+}
+
+.log_in_button {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--matrix-green);
+    border: none;
+    border-radius: 5px;
+    color: var(--color-fondo);
+    font-family: 'VT323', monospace;
+    font-weight: bold;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.log_in_button:hover {
+    background-color: var(--color-titulos);
+    font-size: 1.4rem;
+    text-decoration: none;
+}
+
+footer {
+    margin-top: 30px;
+    font-family: 'VT323', monospace;
+    color: var(--color-textos);
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.footer_p {
+    margin-top: 15px;
+    font-family: 'VT323', monospace;
+    color: var(--color-textos);
+    font-size: 0.75rem;
+    text-align: center;
+}
