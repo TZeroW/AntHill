@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="../styles/profile.css">
+</head>
+
+<body>
+    <div class="perfilContainer" id="perfilContenido">
+        <div class="perfilHeader">
+            <img src="../assets/general/banner.jpg" alt="bannerPerfil" class="bannerPerfil">
+            <img src="../assets/general/pfp.webp" alt="iconoPerfil" class="iconoPerfil">
+            <h1 style="color: var(--color-titulos);" class="perfilNombre"></h1>
+            <p style="color: var(--color-textos);" class="perfilDescripcion">Descripcion de perfil</p>
+            <div>
+                <button>Editar perfil</button>
+            </div>
+        </div>
+        <div class="perfilPosts">
+            <div class="perfilPost">
+
+                <div id="feed"></div>
+                <div class="perfilPostFiltrado">
+                    <!-- Mostrar unicamente posts hechos por el usuario -->
+                </div>
+            </div>
+            <!-- Script para los posts y filtrado de posts -->
+            <script type="module">
+                import { filtrarPorAutor } from '../scripts.js';
+
+                const usuario = "Salmule";
+
+                // Actualizar nombre de perfil
+                const perfilNombre = document.querySelector('.perfilNombre');
+                if (perfilNombre) {
+                    perfilNombre.textContent = usuario;
+                }
+
+                // Filtrar posts
+                filtrarPorAutor(usuario);
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -4,8 +4,8 @@
 :root {
     --color-titulos: #32CD32;
     --color-textos: #74C365;
-    --color-fondo: #212121;
-    --color-post-fondo: #2a2a2a;
+    --color-fondo: #0d0d0d;
+    --color-post-fondo: #030a04;
 
     /* ============ Calalo si no te gusta como queda eliminalo lol ============*/
     --color-fondo2: #0d0d0d;
@@ -65,6 +65,7 @@ body {
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
 }
 
 .post-author {
@@ -120,7 +121,7 @@ body {
     left: 0;
     height: 100vh;
     width: 100px;
-    background-color: var(--color-post-fondo);
+    background-color: #091d0c;
     display: flex;
     flex-direction: column;
     align-items: center;
