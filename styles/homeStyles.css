@@ -4,15 +4,19 @@
 :root {
     --color-titulos: #32CD32;
     --color-textos: #74C365;
-    --color-fondo: #212121;
+    --color-fondo: #0d0d0dee;
     --color-post-fondo: #2a2a2a;
 
     /* ============ Calalo si no te gusta como queda eliminalo lol ============*/
-    --color-fondo2: #0d0d0d;
+    --color-fondo2: #0d0d0de9;
+    --matrix-green: #00ff41;
+    --dark-bg: #030a04;
+    --border-glow: 0 0 10px rgba(0, 255, 65, 0.5);
+    --hover-bg: rgba(0, 255, 65, 0.1);
 
 }
 
-.sidebar,
+
 body {
     margin: 0;
     padding: 0;
@@ -76,12 +80,12 @@ body {
 .post-title {
     font-size: 28px;
     margin: 10px 0;
-    color: var(--color-titulos);
+    color: white;
 }
 
 .post-body p {
     font-family: 'Segoe UI', sans-serif;
-    color: var(--color-textos);
+    color: rgba(255, 255, 255, 0.825);
     font-size: 16px;
     line-height: 1.5;
 }
@@ -115,53 +119,52 @@ body {
 /* ============ Estilos del menu lateral ============*/
 
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
+    width: 250px;
     height: 100vh;
-    width: 100px;
-    background-color: var(--color-post-fondo);
+    border-right: 2px solid var(--matrix-green);
     display: flex;
     flex-direction: column;
-    align-items: center;
+    position: fixed;
     padding: 20px;
-
+    box-shadow: var(--border-glow);
+    left: 0;
+    top: 0;
 }
 
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
 
 .sidebar-item {
-    margin-bottom: 10px;
-    color: var(--color-textos);
-    font-size: 20px;
-    font-family: 'VT323', monospace;
-    text-decoration: none;
-}
-
-/* ============ Estilos de los enlaces del menu lateral ============*/
-.sidebar a {
-    text-decoration: none;
-    color: var(--color-textos);
-    background-color: none;
     display: flex;
-    justify-content: center;
-    width: 140px;
-
-    padding-block: 20px;
-    padding-inline: 0;
-    margin: -5px;
-
-    border-color: var(--color-titulos);
-    border-width: 3px;
-    border-style: solid;
-    box-shadow: 0 0 5px var(--color-titulos);
-
-    transition: 0.1s;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    border-radius: 5px;
+    border: 1px solid rgb(184, 255, 108);
 }
 
-.sidebar a:hover {
-    color: var(--color-fondo);
-    text-decoration: underline;
-    box-shadow: 0 0 10px var(--color-titulos);
-    background-color: var(--color-titulos);
+.sidebar-item:hover {
+    background: var(--hover-bg);
+    color: var(--color-titulos);
+    transform: translateX(5px);
+    box-shadow: var(--border-glow);
+    border: 1px solid var(--color-titulos);
+}
 
+.sidebar img {
+    margin-right: 10px;
+    filter: drop-shadow(0 0 5px var(--color-titulos));
+}
+
+.sidebar-item a {
+    text-decoration: none;
+    color: white;
+    font-family: 'monospace', monospace;
+    font-size: 1.2rem;
 }

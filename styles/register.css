@@ -4,9 +4,9 @@
 :root {
     --color-titulos: #32CD32;
     --color-textos: #74C365;
-    --color-fondo: #0d0d0d;
+    --color-fondo: #0d0d0df5;
     --matrix-green: #00ff41;
-    --dark-bg: #030a04;
+    --dark-bg: #030a04f5;
     --border-glow: 0 0 10px rgba(0, 255, 65, 0.5);
     --background-select: rgba(0, 255, 65, 0.051);
 }
@@ -41,8 +41,8 @@ h1 {
 .subtitulo_lol {
     font-family: 'VT323', monospace;
     margin-block: 10px 20px;
-    text-shadow: 0 0 8px var(--color-textos);
-    color: var(--color-textos);
+    text-shadow: 0 0 8px white;
+    color: white;
     font-size: 2rem;
 }
 
@@ -53,7 +53,7 @@ h1 {
 label {
     display: block;
     font-family: 'VT323', monospace;
-    color: var(--color-textos);
+    color: rgba(255, 255, 255, 0.937);
     font-size: 1rem;
     margin-bottom: 8px;
     font-weight: bold;
