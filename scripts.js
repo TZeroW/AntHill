@@ -7,17 +7,20 @@ const feed = document.getElementById('feed');
 const postsData = [
     {
         titulo: "Bienvenidos a AntHill",
+        profilePicture: "assets/general/pfp.webp",
         autor: "Salmule",
+        fecha: "hace 5 minutos",
         contenido: "Este es el primer post de la plataforma, esta es una plataforma para que todos podamos estar conectados entre tecmilenios"
     },
     {
         titulo: "Bienvenidos a AntHill",
+        profilePicture: "assets/general/pfp.webp",
         autor: "David",
+        fecha: "hace 10 minutos",
         contenido: "Este es el segundo post de la plataforma, esta es una plataforma para que todos podamos estar conectados entre tecmilenios"
     },
 ];
 
-// Funcion para cargar los posts
 // Funcion para cargar los posts
 export function cargarFeed() {
     const feed = document.getElementById('feed');
@@ -28,7 +31,7 @@ export function cargarFeed() {
 
     postsData.forEach(post => {
         // Generamos el html usando el molde
-        const htmlDelPost = crearPost(post.titulo, post.contenido, post.autor);
+        const htmlDelPost = crearPost(post.titulo, post.contenido, post.autor, post.profilePicture, post.fecha);
 
         // Lo agregamos al feed sin borrar lo anterior
         feed.innerHTML += htmlDelPost;
@@ -59,7 +62,7 @@ export function filtrar() {
         feed.innerHTML = '';
         // Agregamos los posts filtrados
         postsFiltrados.forEach(post => {
-            const htmlDelPost = crearPost(post.titulo, post.contenido, post.autor);
+            const htmlDelPost = crearPost(post.titulo, post.contenido, post.autor, post.profilePicture, post.fecha);
             feed.innerHTML += htmlDelPost;
         });
     }
@@ -84,7 +87,7 @@ export function filtrarPorAutor(nombreAutor) {
         } else {
             // Agregamos los posts filtrados
             postsFiltrados.forEach(post => {
-                const htmlDelPost = crearPost(post.titulo, post.contenido, post.autor);
+                const htmlDelPost = crearPost(post.titulo, post.contenido, post.autor, post.profilePicture, post.fecha);
                 feed.innerHTML += htmlDelPost;
             });
         }
