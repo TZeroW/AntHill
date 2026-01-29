@@ -8,11 +8,12 @@
     --color-post-fondo: #2a2a2a;
 
     /* ============ Calalo si no te gusta como queda eliminalo lol ============*/
-    --color-fondo2: #0d0d0de9;
+    --color-fondo2: #0d0d0d8a;
     --matrix-green: #00ff41;
     --dark-bg: #030a04;
     --border-glow: 0 0 10px rgba(0, 255, 65, 0.5);
     --hover-bg: rgba(0, 255, 65, 0.1);
+    --sidebar-width: 250px;
 
 }
 
@@ -35,6 +36,13 @@ body {
     font-size: 20px;
     color: var(--color-titulos);
     font-family: 'VT323', monospace;
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.2s ease;
+    padding: 20px;
+}
+
+#contenidoPrincipal.expanded {
+    margin-left: 0;
 }
 
 .title {
@@ -123,13 +131,40 @@ body {
     width: 250px;
     height: 100vh;
     border-right: 2px solid var(--matrix-green);
+    background-color: var(--color-fondo2);
     display: flex;
     flex-direction: column;
     position: fixed;
     padding: 20px;
-    box-shadow: var(--border-glow);
+    transition: transform 0.2s ease-in-out;
     left: 0;
     top: 0;
+}
+
+.sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.sidebarButton {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: var(--color-fondo2);
+    padding: 10px;
+    border: 1px solid var(--color-titulos);
+}
+
+.sidebarButton:hover {
+    color: var(--color-fondo);
+    box-shadow: var(--border-glow);
+}
+
+.sidebarButton img {
+    width: 20px;
+    filter: drop-shadow(0 0 5px var(--color-titulos));
 }
 
 .sidebar-header {
@@ -137,6 +172,10 @@ body {
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
+}
+
+.sidebar-header img {
+    width: 100px;
 }
 
 .sidebar-item {
@@ -148,6 +187,10 @@ body {
     transition: all 0.5s ease;
     border-radius: 5px;
     border: 1px solid rgb(184, 255, 108);
+}
+
+.sidebar-item img {
+    width: 20px;
 }
 
 .sidebar-item:hover {

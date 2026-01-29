@@ -9,26 +9,44 @@
 </head>
 
 <body>
-    <left-menu class="sidebar">
+    <button class="sidebarButton" id="sidebarButton">
+        <img src="assets/general/menu.svg" alt="menu">
+    </button>
+    <left-menu class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <img style="width: 100px; margin-bottom: 20px;" src="assets/general/placeHolderLogo.png" alt="Logo">
+            <img src="assets/general/placeHolderLogo.png" alt="Logo">
         </div>
         <div class="sidebar-item">
-            <img style="width: 20px;" src="assets/general/home.svg" alt="home">
+            <img src="assets/general/home.svg" alt="home">
             <a href="#">Home</a>
         </div>
         <div class="sidebar-item">
-            <img style="width: 20px;" src="assets/general/compass.svg" alt="compass">
-            <a href="#">Profile</a>
+            <img src="assets/general/compass.svg" alt="compass">
+            <a href="#">Explore</a>
         </div>
         <div class="sidebar-item">
-            <img style="width: 20px;" src="assets/general/settings.svg" alt="settings">
+            <img src="assets/general/settings.svg" alt="settings">
             <a href="#">Settings</a>
         </div>
         <div class="sidebar-item">
-            <img style="width: 20px;" src="assets/general/log_out.svg" alt="log_out">
+            <img src="assets/general/log_out.svg" alt="log_out">
             <a href="sections/login.html">Log out</a>
         </div>
+        <div class="sidebar-item">
+            <img src="" alt="">
+            <a href="sections/profile.html">Profile</a>
+        </div>
+
+        <script>
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('contenidoPrincipal');
+            const sidebarButton = document.getElementById('sidebarButton');
+
+            sidebarButton.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                content.classList.toggle('expanded');
+            });
+        </script>
     </left-menu>
 
     <div class="container" id="contenidoPrincipal">
@@ -43,6 +61,7 @@
         import { cargarFeed } from './scripts.js';
         cargarFeed();
     </script>
+
 </body>
 
 </html>
