@@ -1,49 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
 
 
 :root {
-    --color-titulos: #32CD32;
-    --color-textos: #74C365;
-    --color-fondo: #0d0d0df5;
-    --matrix-green: #00ff41;
-    --dark-bg: #030a04f5;
-    --border-glow: 0 0 10px rgba(0, 255, 65, 0.5);
-    --background-select: rgba(0, 255, 65, 0.051);
+    --dark-bg: #050505;
+    --card-bg: #111111;
+    --accent-red: #ff0040;
+    --text-main: #ffffff;
+    --text-dim: #6e767d;
+    --border-color: #222;
+    --accent-red-button: #ff00401a;
+    --accent-red-hover: #ff00409c;
 }
 
 body {
-    background-color: var(--color-fondo);
+    background-color: var(--dark-bg);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     height: 100vh;
     margin: 0;
 }
 
 .log_in_container {
     background-color: var(--dark-bg);
-    border: 2px solid var(--matrix-green);
+    border: 2px solid var(--accent-red-hover);
     padding: 40px;
     border-radius: 10px;
     width: 400px;
     text-align: left;
+    box-shadow: 0 0 8px var(--accent-red-hover);
 }
 
 h1 {
-    font-family: 'VT323', monospace;
+    font-family: 'Funnel Sans', monospace;
     margin-block: 5px;
-    text-shadow: 0 0 8px var(--color-titulos);
-    color: var(--color-titulos);
-    font-size: 3.5rem;
+    text-shadow: 0 0 8px var(--accent-red-hover);
+    color: var(--accent-red);
+    font-size: 3em;
 }
 
 .subtitulo_lol {
-    font-family: 'VT323', monospace;
+    font-family: 'Funnel Sans', monospace;
     margin-block: 10px 20px;
-    text-shadow: 0 0 8px white;
+    text-shadow: 0 0 8px var(--text-dim);
     color: white;
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .user {
@@ -52,9 +54,9 @@ h1 {
 
 label {
     display: block;
-    font-family: 'VT323', monospace;
+    font-family: 'Funnel Sans', monospace;
     color: rgba(255, 255, 255, 0.937);
-    font-size: 1rem;
+    font-size: 0.8rem;
     margin-bottom: 8px;
     font-weight: bold;
 }
@@ -62,17 +64,17 @@ label {
 input {
     width: 100%;
     padding: 12px;
-    background: var(--background-select);
-    border: 1px solid var(--matrix-green);
+    background: var(--card-bg);
+    border: 1px solid var(--accent-red-hover);
     border-radius: 5px;
-    color: var(--matrix-green);
+    color: white;
     outline: none;
     box-sizing: border-box;
-    box-shadow: var(--border-glow);
+    box-shadow: var(--accent-red);
 }
 
 input::placeholder {
-    color: rgba(0, 255, 65, 0.3);
+    color: var(--text-dim);
 }
 
 .password {
@@ -85,34 +87,36 @@ input::placeholder {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    color: var(--matrix-green);
+    color: var(--accent-red);
+    filter: drop-shadow(0 0 5px var(--accent-red));
 }
 
 .log_in_button {
     width: 100%;
     padding: 15px;
-    background-color: var(--matrix-green);
+    background-color: var(--accent-red-button);
     border: none;
     border-radius: 5px;
-    color: var(--color-fondo);
-    font-family: 'VT323', monospace;
+    color: var(--accent-red);
+    font-family: 'Funnel Sans', monospace;
     font-weight: bold;
     font-size: 1.5rem;
     cursor: pointer;
     margin-top: 20px;
-    box-shadow: var(--border-glow);
+    transition: all 0.3s ease;
 }
 
 .log_in_button:hover {
-    background-color: var(--color-titulos);
+    background-color: var(--accent-red);
     font-size: 1.4rem;
+    color: white;
     text-decoration: none;
 }
 
 footer {
     margin-top: 30px;
-    font-family: 'VT323', monospace;
-    color: var(--color-textos);
+    font-family: 'Funnel Sans', monospace;
+    color: var(--text-dim);
     font-size: 0.75rem;
     text-align: center;
 }
@@ -120,11 +124,11 @@ footer {
 .gender_select {
     width: 100%;
     padding: 12px;
-    font-family: 'VT323', monospace;
-    background: var(--background-select);
-    border: 1px solid var(--matrix-green);
+    font-family: 'Funnel Sans', monospace;
+    background: var(--card-bg);
+    border: 1px solid var(--accent-red-hover);
     border-radius: 5px;
-    color: var(--matrix-green);
+    color: white;
     outline: none;
     appearance: none;
     cursor: pointer;
@@ -132,19 +136,20 @@ footer {
 }
 
 .gender_select option {
-    background-color: var(--dark-bg);
-    color: var(--color-textos);
+    background-color: var(--card-bg);
+    border: 1px solid var(--accent-red-hover);
+    color: white;
 }
 
 .gender_select:focus {
-    border-color: var(--matrix-green);
-    box-shadow: var(--border-glow);
+    border-color: var(--accent-red-hover);
+    box-shadow: var(--accent-red-hover);
 }
 
 .footer_p {
     margin-top: 15px;
-    font-family: 'VT323', monospace;
-    color: var(--color-textos);
+    font-family: 'Funnel Sans', monospace;
+    color: var(--text-dim);
     font-size: 0.75rem;
     text-align: center;
 }
