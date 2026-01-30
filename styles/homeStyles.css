@@ -46,7 +46,6 @@ body {
     background-color: #161616;
     border: 1px solid #333;
     padding: 10px 40px;
-    /* Space for icon if added */
     border-radius: 8px;
     color: white;
     width: 380px;
@@ -90,7 +89,6 @@ body {
 .container {
     display: grid;
     grid-template-columns: 240px 1fr 300px;
-    /* Matches layout proportions */
     gap: 30px;
     max-width: 1280px;
     margin: 30px auto;
@@ -193,7 +191,7 @@ body {
 
 
 .btn-post {
-    background-color: rgba(255, 0, 64, 0.1);
+    background-color: #ff00401a;
     color: var(--accent-red);
     border: none;
     padding: 8px 24px;
