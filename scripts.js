@@ -5,13 +5,22 @@ const feed = document.getElementById('feed');
 
 // estos son los datos falsos para probar simulando una base de datos, no son importantes
 export const listaDePosts = [
+
+    {
+        titulo: "AntHill",
+        fotoPerfil: "../assets/general/pfp-lol.jpg",
+        autor: "TZeroW",
+        fecha: "hace 10 minutos",
+        contenido: "Bienvenido a AntHill, la red social para hormigas como tu y yo, los siguientes posts son de prueba no les hagan caso",
+        imagen: "../assets/general/AntHill.png"
+    },
     {
         titulo: "Salamin con pan",
         fotoPerfil: "../assets/general/pfp.webp",
         autor: "Salmule",
         fecha: "2h ago",
         contenido: "Salamin con pan",
-        imagen: "placeholder" //pa probar si andan las imagenes ponemos algo q no existe, igual deberia andar
+        imagen: "../assets/general/Gato.jpg" //pa probar si andan las imagenes ponemos algo q no existe, igual deberia andar
     },
     {
         titulo: "sapo",
@@ -36,10 +45,10 @@ export const listaDePosts = [
     },
     {
         titulo: "Gersi",
-        fotoPerfil: "../assets/general/cont-pfp.jpg",
-        autor: "David",
+        fotoPerfil: "../assets/general/pfp-lol.jpg",
+        autor: "TZeroW",
         fecha: "hace 10 minutos",
-        contenido: "Y ahora vamos a decir que gerson esta bien guapo, pq no?"
+        contenido: "Y ahora vamos a decir que gerson esta bien guapo, apoco no?"
     },
 ];
 

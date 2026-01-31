@@ -45,6 +45,7 @@ body {
 .logo img {
     height: 32px;
     width: auto;
+    filter: drop-shadow(0 0 5px var(--accent-red));
 }
 
 .search-bar input {
@@ -90,26 +91,102 @@ body {
     border-radius: 50%;
 }
 
+/* barra lateral izquierda */
+.sidebar-left {
+    position: sticky;
+    top: 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.main-menu a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 8px;
+    transition: 0.2s;
+    font-weight: 500;
+}
+
+.main-menu a img,
+.main-menu a svg {
+    width: 22px;
+    height: 22px;
+    transition: 0.2s;
+}
+
+.main-menu a:hover,
+.main-menu a.active {
+    background-color: rgba(217, 30, 54, 0.1);
+    color: var(--accent-red);
+}
+
+.main-menu a:hover img,
+.main-menu a.active img,
+.main-menu a:hover svg,
+.main-menu a.active svg {
+    filter: drop-shadow(0 0 5px var(--accent-red));
+}
+
+.btn-create {
+    width: 100%;
+    background-color: var(--accent-red);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(217, 30, 54, 0.3);
+    transition: 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-create:hover {
+    background-color: var(--accent-red-hover);
+    transform: translateY(-2px);
+}
+
+
 /* estructura principal */
 .main-layout {
     min-height: calc(100vh - 60px);
-}
-
-.profile-banner {
-    height: 240px;
-    background-image: url('../assets/general/banner.jpg');
-    background-size: cover;
-    background-position: center;
-    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
 }
 
 .profile-container {
-    max-width: 1100px;
+    max-width: 1280px;
+    width: 100%;
     margin: 0 auto;
+    padding: 24px 20px;
+}
+
+/* ajustes de banner y layout */
+.profile-banner {
+    height: 200px;
+    background-image: url('../assets/general/AntHill.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 16px 16px 0 0;
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+}
+
+.profile-header-wrapper {
     padding: 0 20px;
     position: relative;
-    top: -60px;
-    /* sobreponer al banner */
+    top: -40px;
+    /* empujar contenido arriba sobre banner */
+    margin-bottom: -40px;
+    /* compensar espacio */
 }
 
 /* encabezado */
@@ -130,6 +207,7 @@ body {
     border-radius: 50%;
     border: 4px solid var(--bg-body);
     object-fit: cover;
+    background-color: var(--bg-body);
 }
 
 .botones-perfil {
@@ -184,12 +262,19 @@ body {
     margin-top: 2px;
 }
 
-/* cuadricula */
+/* cuadricula principal de 3 columnas */
 .content-grid {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 240px 1fr 300px;
     gap: 24px;
-    margin-top: 30px;
+    align-items: start;
+}
+
+.center-column {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* borramos background de columna entera para que se vea limpio */
 }
 
 /* barra lateral */

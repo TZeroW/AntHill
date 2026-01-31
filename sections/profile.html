@@ -24,8 +24,7 @@
             <input type="text" placeholder="Buscar en la colonia...">
         </div>
         <div class="user-actions">
-            <span><img src="../assets/general/bell.svg" alt="Notificaciones"
-                    style="width: 24px; filter: invert(1);"></span>
+            <span><img src="../assets/general/bell.svg" alt="Notificaciones"></span>
             <div class="user-profile">
                 <span>Pelota</span>
                 <img src="../assets/general/pfp-lol.jpg" alt="Perfil">
@@ -34,34 +33,81 @@
     </header>
 
     <div class="main-layout">
-        <!-- banner del perfil -->
-        <div class="profile-banner"></div>
 
         <div class="profile-container">
-            <!-- informacion de encabezado como foto, nombre y acciones -->
-            <div class="profile-header">
-                <div class="profile-header-top">
-                    <div>
-                        <img src="../assets/general/pfp.webp" alt="Perfil" class="big-avatar">
-                    </div>
-                    <div class="botones-perfil">
-                        <button class="btn btn-secondary">Mensaje</button>
-                        <button class="btn btn-primary">Seguir</button>
-                    </div>
-                </div>
-
-                <div class="user-details">
-                    <div class="name-badge-row">
-                        <h1 class="perfilNombre"></h1>
-                    </div>
-                    <p class="user-handle">@salmuleFish</p>
-                </div>
-            </div>
-
-            <!-- contenido -->
             <div class="content-grid">
-                <!-- barra lateral -->
-                <aside class="sidebar">
+                <!-- barra lateral izquierda (Navegacion) -->
+                <aside class="sidebar-left">
+                    <nav class="main-menu">
+                        <a href="../index.html">
+                            <img src="../assets/general/home.svg" alt="">
+                            <span>Home</span>
+                        </a>
+                        <a href="#">
+                            <img src="../assets/general/compass.svg" alt="">
+                            <span>Explore</span>
+                        </a>
+                        <a href="#" class="active">
+                            <img src="../assets/general/profile.svg" alt="">
+                            <span>Profile</span>
+                        </a>
+                        <a href="#">
+                            <img src="../assets/general/settings.svg" alt="">
+                            <span>Settings</span>
+                        </a>
+                        <a href="#">
+                            <img src="../assets/general/log_out.svg" alt="">
+                            <span>Log out</span>
+                        </a>
+                    </nav>
+
+                    <button class="btn-create">
+                        <span style="margin-right: 8px; font-size: 1.2rem;">+</span> Crear Post
+                    </button>
+                </aside>
+
+                <!-- Columna Central: Banner + Header + Feed -->
+                <div class="center-column">
+                    <!-- Banner ahora dentro de la columna central -->
+                    <div class="profile-banner"></div>
+
+                    <div class="profile-header-wrapper">
+                        <!-- informacion de encabezado -->
+                        <div class="profile-header">
+                            <div class="profile-header-top">
+                                <div>
+                                    <img src="../assets/general/pfp.webp" alt="Perfil" class="big-avatar">
+                                </div>
+                                <div class="botones-perfil">
+                                    <button class="btn btn-secondary">Mensaje</button>
+                                    <button class="btn btn-primary">Seguir</button>
+                                </div>
+                            </div>
+
+                            <div class="user-details">
+                                <div class="name-badge-row">
+                                    <h1 class="perfilNombre"></h1>
+                                </div>
+                                <p class="user-handle">@salmuleFish</p>
+                            </div>
+                        </div>
+
+                        <!-- columna principal del feed -->
+                        <main class="feed-column">
+                            <div class="feed-tabs">
+                                <button class="feed-tab active">Publicaciones</button>
+                                <button class="feed-tab">Me gusta</button>
+                            </div>
+
+                            <div id="feed" class="posts-container">
+                                <!-- El contenido se muestra con JS -->
+                            </div>
+                        </main>
+                    </div>
+                </div>
+
+                <!-- barra lateral derecha (Info) -->
+                <aside class="sidebar-right">
                     <!-- tarjeta sobre mi -->
                     <div class="card about-card">
                         <h3 class="card-header"><span class="red-icon"><i class="fa-solid fa-circle-info"></i></span>
@@ -79,7 +125,7 @@
                         </div>
                     </div>
 
-                    <!-- colonias top - un resumen de que es esto, es que en lugar de comunidades como tendria reddit, nosotros tenemos colonias, colonias que son como grupos de personas que comparten intereses en comun -->
+                    <!-- colonias top -->
                     <div class="card colonies-card">
                         <h3 class="card-header">Top Colonias</h3>
                         <ul class="colony-list">
@@ -100,18 +146,6 @@
                         </ul>
                     </div>
                 </aside>
-
-                <!-- columna principal del feed -->
-                <main class="feed-column">
-                    <div class="feed-tabs">
-                        <button class="feed-tab active">Publicaciones</button>
-                        <button class="feed-tab">Me gusta</button>
-                    </div>
-
-                    <div id="feed" class="posts-container">
-                        <!-- El contenido se muestra con JS -->
-                    </div>
-                </main>
             </div>
         </div>
     </div>
@@ -120,7 +154,7 @@
     <script type="module">
         import { filtrarPorUsuario, listaDePosts } from '../scripts.js';
 
-        const usuario = "david";
+        const usuario = "TZeroW";
 
         // actualizamos el nombre del perfil dinamicamente
         const elementoNombre = document.querySelector('.perfilNombre');
