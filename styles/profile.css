@@ -11,6 +11,8 @@
     --text-muted: #888888;
     --text-secondary: #a0a0a0;
     --font-main: 'Inter', sans-serif;
+    --text-dim: #6e767d;
+    --accent-red: #D91E36;
 }
 
 * {
@@ -27,100 +29,65 @@ body {
 }
 
 /* barra de navegacion */
-.navbar {
+.top-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 12px 30px;
     background-color: var(--bg-card);
-    padding: 0 20px;
-    height: 60px;
+    /* coincidir el color de la tarjeta de perfil con el encabezado */
     border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
 }
 
-.nav-left {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 700;
-    font-size: 1.2rem;
-}
-
-.logo-text {
-    letter-spacing: -0.5px;
-}
-
-.search-bar {
-    position: relative;
-    background: #1c1c1c;
-    border-radius: 6px;
-    padding: 8px 12px;
-    display: flex;
-    align-items: center;
-    width: 250px;
+.logo img {
+    height: 32px;
+    width: auto;
 }
 
 .search-bar input {
-    background: transparent;
-    border: none;
+    background-color: #161616;
+    border: 1px solid #333;
+    padding: 10px 40px;
+    border-radius: 8px;
     color: white;
-    margin-left: 10px;
-    width: 100%;
+    width: 380px;
     outline: none;
+    font-size: 0.95rem;
+    transition: 0.2s;
 }
 
-.search-icon {
-    color: #666;
+.search-bar input:focus {
+    border-color: var(--primary-red);
 }
 
-.nav-links {
+.user-actions {
     display: flex;
+    align-items: center;
     gap: 25px;
 }
 
-.nav-link {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
-}
-
-.nav-link:hover {
-    color: white;
-}
-
-.nav-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.icon-btn {
-    background: #1c1c1c;
-    border: none;
-    color: white;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.user-actions img {
     cursor: pointer;
 }
 
-.nav-avatar {
-    width: 32px;
-    height: 32px;
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-profile span {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.user-profile img {
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    border: 2px solid var(--primary-red);
 }
 
 /* estructura principal */
@@ -165,22 +132,6 @@ body {
     object-fit: cover;
 }
 
-.active-badge {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background: var(--primary-red);
-    color: white;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--bg-body);
-    font-size: 12px;
-}
-
 .botones-perfil {
     display: flex;
     gap: 10px;
@@ -221,27 +172,10 @@ body {
     margin-top: 5px;
 }
 
-.name-badge-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
 .perfilNombre {
     font-size: 1.8rem;
     font-weight: 800;
     color: white;
-}
-
-.pro-badge {
-    background: rgba(217, 30, 54, 0.2);
-    color: var(--primary-red);
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    border: 1px solid rgba(217, 30, 54, 0.5);
 }
 
 .user-handle {

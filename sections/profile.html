@@ -15,32 +15,23 @@
 
 <body>
     <!-- barra de navegacion -->
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3 21L12 3L21 21H3Z" fill="#D91E36" />
-                </svg>
-                <span class="logo-text">AntHill</span>
-            </div>
-            <div class="search-bar">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                <input type="text" placeholder="Buscar en la colonia">
-            </div>
+    <header class="top-nav">
+        <div class="logo">
+            <img src="../assets/general/Logo-ant.png" alt="AntHill Logo" style="height: 60px;">
         </div>
-        <div class="nav-links">
-            <a href="../index.html" class="nav-link">Inicio</a>
-            <a href="#" class="nav-link">Explorar</a>
-            <a href="#" class="nav-link">Notificaciones</a>
-            <a href="#" class="nav-link">Mensajes</a>
+        <div class="search-bar">
+            <!-- aqui podria ir un icono -->
+            <input type="text" placeholder="Buscar en la colonia...">
         </div>
-        <div class="nav-right">
-            <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
-            <div class="nav-avatar-container">
-                <img src="../assets/general/pfp.webp" alt="Usuario" class="nav-avatar">
+        <div class="user-actions">
+            <span><img src="../assets/general/bell.svg" alt="Notificaciones"
+                    style="width: 24px; filter: invert(1);"></span>
+            <div class="user-profile">
+                <span>Pelota</span>
+                <img src="../assets/general/pfp-lol.jpg" alt="Perfil">
             </div>
         </div>
-    </nav>
+    </header>
 
     <div class="main-layout">
         <!-- banner del perfil -->
@@ -62,7 +53,6 @@
                 <div class="user-details">
                     <div class="name-badge-row">
                         <h1 class="perfilNombre"></h1>
-                        <span class="pro-badge">PRO</span>
                     </div>
                     <p class="user-handle">@salmuleFish</p>
                 </div>
