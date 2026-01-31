@@ -4,74 +4,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <link rel="stylesheet" href="../styles/homeStyles.css">
+    <title>Perfil - AntHill</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/profile.css">
+    <!-- fontawesome para los iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-    <div class="perfilContainer" id="perfilContenido">
-        <aside class="perfilIzquierdo">
-            <div class="cardPerfil">
-                <div class="perfilFoto">
-                    <img src="../assets/general/pfp.webp" alt="iconoPerfil" class="iconoPerfil">
-                </div>
-
-                <h1 class="perfilNombre"></h1>
-                <p class="perfilDescripcion">Descripcion de perfil</p>
-
-                <button class="perfilBoton">
-                    <img src="../assets/general/edit.svg" alt="editar">
-                    Editar perfil
-                </button>
+    <!-- barra de navegacion -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 21L12 3L21 21H3Z" fill="#D91E36" />
+                </svg>
+                <span class="logo-text">AntHill</span>
             </div>
-
-            <div class="system-bio-log">
-                <div class="log-header">
-                    <span class="dots">● ● ●</span> SYSTEM_BIO.LOG
-                </div>
-                <div class="log-content">
-                    <p>> Descripcion de perfil</p>
-                    <p>> Status: Conectado a AntHill</p>
-                    <p>> Location: Tecmilenio Node_01</p>
-                    <p>> Interes: GameDev, Cybersec, Pizza</p>
-                    <p class="cursor">_</p>
-                </div>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" placeholder="Buscar en la colonia">
             </div>
-        </aside>
+        </div>
+        <div class="nav-links">
+            <a href="../index.html" class="nav-link">Inicio</a>
+            <a href="#" class="nav-link">Explorar</a>
+            <a href="#" class="nav-link">Notificaciones</a>
+            <a href="#" class="nav-link">Mensajes</a>
+        </div>
+        <div class="nav-right">
+            <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
+            <div class="nav-avatar-container">
+                <img src="../assets/general/pfp.webp" alt="Usuario" class="nav-avatar">
+            </div>
+        </div>
+    </nav>
 
-        <section>
-            <nav class="perfilNav">
-                <button class="nav-tab active">POSTS</button>
-                <button class="nav-tab">COMMENTS</button>
-                <button class="nav-tab">SAVED</button>
-            </nav>
-            <div class="perfilPosts">
-                <div class="perfilPost">
+    <div class="main-layout">
+        <!-- banner del perfil -->
+        <div class="profile-banner"></div>
 
-                    <div id="feed"></div>
-                    <div class="perfilPostFiltrado">
-                        <!-- Mostrar unicamente posts hechos por el usuario -->
+        <div class="profile-container">
+            <!-- informacion de encabezado como foto, nombre y acciones -->
+            <div class="profile-header">
+                <div class="profile-header-top">
+                    <div>
+                        <img src="../assets/general/pfp.webp" alt="Perfil" class="big-avatar">
+                    </div>
+                    <div class="botones-perfil">
+                        <button class="btn btn-secondary">Mensaje</button>
+                        <button class="btn btn-primary">Seguir</button>
                     </div>
                 </div>
-                <!-- Script para los posts y filtrado de posts -->
-                <script type="module">
-                    import { filtrarPorAutor } from '../scripts.js';
 
-                    const usuario = "Salmule";
-
-                    // Actualizar nombre de perfil
-                    const perfilNombre = document.querySelector('.perfilNombre');
-                    if (perfilNombre) {
-                        perfilNombre.textContent = usuario;
-                    }
-
-                    // Filtrar posts
-                    filtrarPorAutor(usuario);
-                </script>
+                <div class="user-details">
+                    <div class="name-badge-row">
+                        <h1 class="perfilNombre"></h1>
+                        <span class="pro-badge">PRO</span>
+                    </div>
+                    <p class="user-handle">@salmuleFish</p>
+                </div>
             </div>
-        </section>
+
+            <!-- contenido -->
+            <div class="content-grid">
+                <!-- barra lateral -->
+                <aside class="sidebar">
+                    <!-- tarjeta sobre mi -->
+                    <div class="card about-card">
+                        <h3 class="card-header"><span class="red-icon"><i class="fa-solid fa-circle-info"></i></span>
+                            Sobre mí</h3>
+                        <p class="bio-text">
+                            Me gusta el salamin con pan
+                        </p>
+                        <div class="bio-meta">
+                            <div class="meta-row"><i class="fa-solid fa-location-dot red-icon"></i> <span>Azcapotzalco,
+                                    CDMX</span></div>
+                            <div class="meta-row"><i class="fa-solid fa-link red-icon"></i> <a href="#"
+                                    class="link-highlight">achicopalar.com.ar</a></div>
+                            <div class="meta-row"><i class="fa-regular fa-calendar red-icon"></i> <span>algun dia</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- colonias top - un resumen de que es esto, es que en lugar de comunidades como tendria reddit, nosotros tenemos colonias, colonias que son como grupos de personas que comparten intereses en comun -->
+                    <div class="card colonies-card">
+                        <h3 class="card-header">Top Colonias</h3>
+                        <ul class="colony-list">
+                            <li class="colony-item">
+                                <div class="colony-icon-box orange-bg"><i class="fa-solid fa-code"></i></div>
+                                <div class="colony-details">
+                                    <span class="colony-name">r/Desarrollo</span>
+                                    <span class="colony-subs">2.4m miembros</span>
+                                </div>
+                            </li>
+                            <li class="colony-item">
+                                <div class="colony-icon-box red-bg"><i class="fa-solid fa-palette"></i></div>
+                                <div class="colony-details">
+                                    <span class="colony-name">r/DiseñoUIUX</span>
+                                    <span class="colony-subs">842k miembros</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+
+                <!-- columna principal del feed -->
+                <main class="feed-column">
+                    <div class="feed-tabs">
+                        <button class="feed-tab active">Publicaciones</button>
+                        <button class="feed-tab">Me gusta</button>
+                    </div>
+
+                    <div id="feed" class="posts-container">
+                        <!-- El contenido se muestra con JS -->
+                    </div>
+                </main>
+            </div>
+        </div>
     </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { filtrarPorUsuario, listaDePosts } from '../scripts.js';
+
+        const usuario = "david";
+
+        // actualizamos el nombre del perfil dinamicamente
+        const elementoNombre = document.querySelector('.perfilNombre');
+        if (elementoNombre) {
+            // buscamos si hay algun post del usuario
+            const postUsuario = listaDePosts.find(p => p.autor.toLowerCase() === usuario.toLowerCase());
+            // si encontramos posts usamos el nombre del autor del post, sino usamos la variable tal cual
+            elementoNombre.textContent = postUsuario ? postUsuario.autor : usuario;
+        }
+
+        // logica de carga inicial
+        filtrarPorUsuario(usuario);
+    </script>
 </body>
 
 </html>

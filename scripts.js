@@ -1,94 +1,118 @@
 import { crearPost } from './assets/principal/cajaPost.js';
 
-// Seleccionamos el lugar donde queremos meter los posts
+// aca seleccionamos la caja donde van a aparecer las publicaciones
 const feed = document.getElementById('feed');
 
-// Esto simula la base de datos
-const postsData = [
+// estos son los datos falsos para probar simulando una base de datos, no son importantes
+export const listaDePosts = [
     {
-        titulo: "Bienvenidos a AntHill",
-        profilePicture: "assets/general/pfp.webp",
+        titulo: "Salamin con pan",
+        fotoPerfil: "../assets/general/pfp.webp",
         autor: "Salmule",
-        fecha: "hace 5 minutos",
-        contenido: "Este es el primer post de la plataforma, esta es una plataforma para que todos podamos estar conectados entre tecmilenios"
+        fecha: "2h ago",
+        contenido: "Salamin con pan",
+        imagen: "placeholder" //pa probar si andan las imagenes ponemos algo q no existe, igual deberia andar
     },
     {
-        titulo: "Bienvenidos a AntHill",
-        profilePicture: "assets/general/pfp.webp",
+        titulo: "sapo",
+        fotoPerfil: "../assets/general/pfp.webp",
+        autor: "Salmule",
+        fecha: "5h ago",
+        contenido: "Este es un post de prueba para ver si funciona el agregar mas de un post sin necesidad de que en el html este el componente desde un inicion porque estos se van creando a medida que se necesita con el js"
+    },
+    {
+        titulo: "ReProbando la materia, claro que si",
+        fotoPerfil: "../assets/general/pfp.webp",
+        autor: "Salmule",
+        fecha: "hace 2 minutos",
+        contenido: "Esto es un post de prueba tambien"
+    },
+    {
+        titulo: "Probando",
+        fotoPerfil: "../assets/general/pfp.webp",
+        autor: "Salmule",
+        fecha: "hace 5 minutos",
+        contenido: "Me estoy quedando sin cosas para escribir en los posts de prueba"
+    },
+    {
+        titulo: "Gersi",
+        fotoPerfil: "../assets/general/cont-pfp.jpg",
         autor: "David",
         fecha: "hace 10 minutos",
-        contenido: "Este es el segundo post de la plataforma, esta es una plataforma para que todos podamos estar conectados entre tecmilenios"
+        contenido: "Y ahora vamos a decir que gerson esta bien guapo, pq no?"
     },
 ];
 
-// Funcion para cargar los posts
-export function cargarFeed() {
+// funcion para mostrar todos los posts en el inicio
+export function cargarPosts() {
     const feed = document.getElementById('feed');
-    if (!feed) return;
+    if (!feed) return; // si no encuentra el feed no hace nada
 
-    // Limpiamos primero por si acaso
+    // limpiamos lo que habia antes
     feed.innerHTML = '';
 
-    postsData.forEach(post => {
-        // Generamos el html usando el molde
-        const htmlDelPost = crearPost(post.titulo, post.contenido, post.autor, post.profilePicture, post.fecha);
+    // recorremos la lista de posts y los agregamos uno por uno
+    listaDePosts.forEach(post => {
+        // creamos el HTML del post usando la funcion importada
+        const htmlPost = crearPost(post.titulo, post.contenido, post.autor, post.fotoPerfil, post.fecha, post.imagen);
 
-        // Lo agregamos al feed sin borrar lo anterior
-        feed.innerHTML += htmlDelPost;
+        // lo metemos en la pagina
+        feed.innerHTML += htmlPost;
     });
 }
 
-// Funcion para filtrar los posts
+// funcion para filtrar general
 export function filtrar() {
     const feed = document.getElementById('feed');
-    // Obtenemos los valores de los inputs
+
+    // agarramos lo que escribio el usuario en los inputs
     const autorInput = document.getElementById('autor');
     const contenidoInput = document.getElementById('contenido');
     const tituloInput = document.getElementById('titulo');
 
+    // si los inputs existen tomamos su valor
     const autor = autorInput ? autorInput.value : '';
     const contenido = contenidoInput ? contenidoInput.value : '';
     const titulo = tituloInput ? tituloInput.value : '';
 
-    // Filtramos los posts
-    const postsFiltrados = postsData.filter(post => {
+    // filtramos la lista
+    const postsFiltrados = listaDePosts.filter(post => {
         return post.autor.toLowerCase().includes(autor.toLowerCase()) &&
             post.contenido.toLowerCase().includes(contenido.toLowerCase()) &&
             post.titulo.toLowerCase().includes(titulo.toLowerCase());
     });
 
-    // Limpiamos el feed
+    // mostramos los resultados
     if (feed) {
-        feed.innerHTML = '';
-        // Agregamos los posts filtrados
+        feed.innerHTML = ''; // limpiamos
         postsFiltrados.forEach(post => {
-            const htmlDelPost = crearPost(post.titulo, post.contenido, post.autor, post.profilePicture, post.fecha);
-            feed.innerHTML += htmlDelPost;
+            const htmlPost = crearPost(post.titulo, post.contenido, post.autor, post.fotoPerfil, post.fecha, post.imagen);
+            feed.innerHTML += htmlPost;
         });
     }
 }
 
 
-// Filtrar los posts por autor especifico (para perfil)
-export function filtrarPorAutor(nombreAutor) {
+// funcion para mostrar solo los posts de un usuario especifico (Perfil)
+export function filtrarPorUsuario(nombreUsuario) {
     const feed = document.getElementById('feed');
 
-    // Filtramos los posts
-    const postsFiltrados = postsData.filter(post => {
-        return post.autor.toLowerCase() === nombreAutor.toLowerCase();
+    // filtramos buscaando coincidencia exacta de nombre
+    const postsDelUsuario = listaDePosts.filter(post => {
+        return post.autor.toLowerCase() === nombreUsuario.toLowerCase();
     });
 
-    // Limpiamos el feed
     if (feed) {
-        feed.innerHTML = '';
+        feed.innerHTML = ''; // limpiamos
 
-        if (postsFiltrados.length === 0) {
+        if (postsDelUsuario.length === 0) {
+            // mensaje si no tiene posts
             feed.innerHTML = '<p style="color: var(--color-textos); text-align: center; font-size: 1.5rem; margin-top: 20px; font-family: \'VT323\', monospace;">Este usuario no ha publicado nada</p>';
         } else {
-            // Agregamos los posts filtrados
-            postsFiltrados.forEach(post => {
-                const htmlDelPost = crearPost(post.titulo, post.contenido, post.autor, post.profilePicture, post.fecha);
-                feed.innerHTML += htmlDelPost;
+            // mostrar sus posts
+            postsDelUsuario.forEach(post => {
+                const htmlPost = crearPost(post.titulo, post.contenido, post.autor, post.fotoPerfil, post.fecha, post.imagen);
+                feed.innerHTML += htmlPost;
             });
         }
     }
