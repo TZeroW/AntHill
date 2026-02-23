@@ -43,9 +43,21 @@ body {
 }
 
 .logo img {
-    height: 32px;
+    height: 60px;
     width: auto;
     filter: drop-shadow(0 0 5px var(--accent-red));
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: white;
+    margin-left: 10px;
 }
 
 .search-bar input {
@@ -230,6 +242,7 @@ body {
     background: transparent;
     border: 1px solid var(--border-color);
     color: white;
+    margin-right: 10px;
 }
 
 .btn-secondary:hover {
@@ -237,13 +250,13 @@ body {
 }
 
 .btn-primary {
-    background: var(--primary-red);
-    border: 1px solid var(--primary-red);
+    background-color: var(--primary-red);
     color: white;
+    border: none;
 }
 
 .btn-primary:hover {
-    background: var(--primary-red-hover);
+    background-color: var(--primary-red-hover);
 }
 
 .user-details {

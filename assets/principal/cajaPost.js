@@ -1,6 +1,6 @@
 // Este es el molde de tus posts. 
 // Usamos "export" para que otros archivos puedan usar esta funcion.
-export function crearPost(titulo, contenido, autor, fotoPerfil, fecha, imagen = null) {
+export function crearPost(contenido, autor, fotoPerfil, fecha, imagen = null) {
     let htmlImagen = '';
 
     // si mandan una imagen la ponemos
@@ -27,15 +27,14 @@ export function crearPost(titulo, contenido, autor, fotoPerfil, fecha, imagen = 
                 <button class="more-options"><i class="fa-solid fa-ellipsis"></i></button>
             </div>
             <div class="post-body">
-                <p style="font-weight: 700; margin-bottom: 5px; color: white;">${titulo}</p>
                 <p>${contenido}</p>
                 ${htmlImagen}
             </div>
             <div class="post-footer">
-                <button class="action-btn"><i class="fa-solid fa-arrow-up"></i> 0</button>
-                <button class="action-btn"><i class="fa-regular fa-comment"></i> 0</button>
-                <button class="action-btn"><i class="fa-solid fa-retweet"></i> 0</button>
-                <button class="action-btn"><i class="fa-solid fa-share-nodes"></i></button>
+                <button class="action-btn"><i class="bi bi-caret-up-fill"></i> 0</button>
+                <button class="action-btn"><i class="bi bi-chat-left"></i> 0</button>
+                <button class="action-btn"><i class="bi bi-arrow-left-right"></i> 0</button>
+                <button class="action-btn"><i class="bi bi-share"></i></button>
             </div>
         </div>
     </article>

@@ -1,39 +1,180 @@
-<!--- En desarrollo, no moverle, si le mueven les corto los dedos, ojito cuidao-->
-<!--- 
-      'cxxxxxxxxxxxxxxxxxkkkkkxxddddddxxxxxxdddooddxxxxxdddooooddddoddxxxxxxxxxdddooddc               
-       cxxxxxxxxxdxxxxxxkkkkkkkxddddxxkkkkkxxxdddxkkkkkkxxdooooodxxxdxxxxxxxxxxddoooddc               
-       cxxxxxxxxxxxxkxxkxxxxxxddxxxxxkxxddddoooooooxxxxxxxxdooooodxxkkkxxxxxxxxxddodddc               
-       cxxxxxxxxxxkkkxOOOkkkkxxxxxxxxxdddddool:;;,',codddddoooodooddxxxxkxxxxxxxddodddc               
-       cxxxxxxkkkOkkxxkOkOOOOOOkkxxxxkkkxdddo:'''''',,cdddddoooddddxkkkOOkkOOkxddoddddc               
-       cxxxxxxkkOOkxkOOOOOOOkkkxxxxxxxkkxxddl:::::cc:,,dkxxdooodxxkkkOOOOkxkkkxddoddddc               
-       cxkkkkkxxxxxkOOOOkkkxxxxkkxxkkxxxxxdo:ccccllll:;odooddooodddxkkOOOOkxddxxxddxxxc               
-       lkOOOOOkxxxkO0OOkxxxxxxOOkxxxxxkOOOkdlc;:clccl:cxddoddoodddddddxkOOkxdddxxxxkxxl               
-       lOOOOOOOkxxkOkkxxkOOkkxOOkxxkOOOOOOkooc::cllllcoxkkxdooodxxddddddxkkkxddxxkOOOkl               
-       lOOOOOOOOxxxxxxxxkOOkkxkkkxxkkO00OOkxoc::cllllodxkkxxdoodxxddxkxdddxxkxxkOO0000o               
-       lOOOOOOOkxxkxxkkxxxkxxOOkxxxkO000OOOkxl:::lllldxxxxxxooooddddxkxxdddddxxk000000o               
-       lOOOOOOOkxxOkxxxxkxxxOOOOxxxxxkOOOOkddoccclllloxxxxxdoooodxxxxxdddkxdxxxkO00000d               
-       lOOOOkxxxxkkOkxxkOOOxkOOkxxxkkxkkkxddddc::cllo;,cooodddoodxkxdxkxdddxkkxkO00000d               
-       ckkkxxxdddddddxdxkOOkkOOkxxxxxxxxddddxdc::ccld;...'',;::coxxxxkkkdddkOkkxxkO000d               
-       cdxxxkkxxkkkxxxxdxkkkxkOkdddxkkkkdollddccccodl'...........;ddxkkxoodddxxxxxxOO0o               
-       cddxkkkkkkkkxdkkxddkxddxddddkOkxdl;''ooc:codl'.............odxkxdddodxkxxxkkxkkl               
-       cddxkkkkkkkxddxxddddxkkxddddxko:,'...;:::cc:'..............;odddoxxdddxkkkOOOkxl               
-       cddkkkkkkkkxddddddddxkOOxddddo'.......,::::;................ldooodddodxkkkkOOkxl               
-       cdxkkkxxdddddxkxdddddkkkxddddl........'cl;;'................'ldoodxddddxxkkkOOkl               
-       cddddxxxdddxkkxxddxddxkkxdddxd'.......'ll;;...................;lodkkxxdddddxkOkl               
-       cdddxkkkxddxkkxddxxdddkkxdddxd,.......'::;,,:ccc:'.............':okkOOkddddddxxl               
-       cdxkkkkkxdodxkxddxdddxxkxdddxd;........;,,'.;:ccc:,...............okOOkxxkkkkxxl               
-       cddxkkkxdoddxxxdxdddxxxxxddxxd;........;,,..';::ccc...............ckkxxdxkxkOOkl               
-       cdddxxxddxxxdoooodxkxxdddddxddl'.......,,'......';;...............;xxxdxxxxkOOkl               
-       cxxddddxxkkxdooodxkkOkxddddddxd,.......,,'............''..........;ddxkkxdddkxxl               
-       cxxxdddxxxxxddodxxkkkkkxddddxkd;...,...,,'......................,coodxkkkxdodxko               
-       cxkxddxkkkkkxdooxxkkOkkxxdddxxl'.......,'...............coolodddxxooddxxxxdodxkl               
-       cxxxddxkkkkkxdooodkkkxxxddolc:'........,'...............ldddddxxddoodxxxxxxddkOo               
-       cxxdddxxxxxxxooddddxdxxxddllc:'........'................cdddddddddoodxxxxxxddxko               
-       cxxdodxxxxxxxoodxdddxkkxxdoclc,..''...','...............;ddddddddddodxxxxxxddxko               
-       cdddoodxxxxxdoodddddxkkxddolcccldo,...,;'................ldddddddddddxxxxxxdddkl               
-       :dxdodxxxxxxdoodoodddxkdddoodooooc....,;'................cddddddddddddddddddddxl               
-       :dddodxxxxxxxdooodxxddddooooodddo;...';;'................:dddddddddddxxxxxxxddxl               
-       :ddoodxxxxxxdooodxxxddooooooddddl,...,;;'................,dddddddddddxxxxxxxdddc               
-       :ddoodxxxxxxdoodddddddoooooddxxo,....;;;,.................oddddddddddxxxxxxxdddc               
-       :oooooddddddoooooddddooooooddddl.....;:;,.................ldddddddddddxxxxxxdddc'               
--->
+<!doctype html>
+<html lang="en">
+
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Perfil - AntHill</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="../styles/profile.css">
+      <!-- fontawesome para los iconos -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+      <!-- barra de navegacion -->
+      <header class="top-nav">
+            <div class="logo">
+                  <img src="../assets/general/Logo-ant.png" alt="AntHill Logo">
+                  <h1>AntHill</h1>
+            </div>
+            <div class="search-bar">
+                  <input type="text" placeholder="Buscar en la colonia...">
+            </div>
+            <div class="user-actions">
+                  <span><img src="../assets/general/bell.svg" alt="Notificaciones"></span>
+                  <div class="user-profile">
+                        <span>TZeroW</span>
+                        <img src="../assets/general/pfp-lol.jpg" alt="Perfil">
+                  </div>
+            </div>
+      </header>
+
+      <div class="main-layout">
+
+            <div class="profile-container">
+                  <div class="content-grid">
+                        <!-- barra lateral izquierda (Navegacion) -->
+                        <aside class="sidebar-left">
+                              <nav class="main-menu">
+                                    <a href="../index.html">
+                                          <img src="../assets/general/home.svg" alt="">
+                                          <span>Home</span>
+                                    </a>
+                                    <a href="#">
+                                          <img src="../assets/general/compass.svg" alt="">
+                                          <span>Explore</span>
+                                    </a>
+                                    <a href="#" class="active">
+                                          <img src="../assets/general/profile.svg" alt="">
+                                          <span>Profile</span>
+                                    </a>
+                                    <a href="#">
+                                          <img src="../assets/general/settings.svg" alt="">
+                                          <span>Settings</span>
+                                    </a>
+                                    <a href="#">
+                                          <img src="../assets/general/log_out.svg" alt="">
+                                          <span>Log out</span>
+                                    </a>
+                              </nav>
+
+                              <button class="btn-create">
+                                    <span style="margin-right: 8px; font-size: 1.2rem;">+</span> Crear Post
+                              </button>
+                        </aside>
+
+                        <!-- Columna Central: Banner + Header + Feed -->
+                        <div class="center-column">
+                              <!-- Banner ahora dentro de la columna central -->
+                              <div class="profile-banner"></div>
+
+                              <div class="profile-header-wrapper">
+                                    <!-- informacion de encabezado -->
+                                    <div class="profile-header">
+                                          <div class="profile-header-top">
+                                                <div>
+                                                      <img src="../assets/general/pfp-lol.jpg" alt="Perfil"
+                                                            class="big-avatar">
+                                                </div>
+                                                <div class="botones-perfil">
+                                                      <button class="btn btn-secondary">Editar perfil</button>
+                                                </div>
+                                          </div>
+
+                                          <div class="user-details">
+                                                <div class="name-badge-row">
+                                                      <h1 class="perfilNombre"></h1>
+                                                </div>
+                                                <p class="user-handle">@TZerp</p>
+                                          </div>
+                                    </div>
+
+                                    <!-- columna principal del feed -->
+                                    <main class="feed-column">
+                                          <div class="feed-tabs">
+                                                <button class="feed-tab active">Publicaciones</button>
+                                                <button class="feed-tab">Me gusta</button>
+                                                <button class="feed-tab">Guardados</button>
+                                          </div>
+
+                                          <div id="feed" class="posts-container">
+                                                <!-- El contenido se muestra con JS -->
+                                          </div>
+                                    </main>
+                              </div>
+                        </div>
+
+                        <!-- barra lateral derecha (Info) -->
+                        <aside class="sidebar-right">
+                              <!-- tarjeta sobre mi -->
+                              <div class="card about-card">
+                                    <h3 class="card-header"><span class="red-icon"><i
+                                                      class="bi bi-info-circle"></i></span>
+                                          Sobre mí</h3>
+                                    <p class="bio-text">
+                                          Me gusta el salamin con pan
+                                    </p>
+                                    <div class="bio-meta">
+                                          <div class="meta-row"><i class="bi bi-globe-americas red-icon"></i>
+                                                <span>Azcapotzalco,
+                                                      CDMX</span>
+                                          </div>
+                                          <div class="meta-row"><i class="bi bi-link-45deg red-icon"></i> <a href="#"
+                                                      class="link-highlight">achicopalar.com.ar</a></div>
+                                          <div class="meta-row"><i class="bi bi-calendar2-heart red-icon"></i>
+                                                <span>algun dia</span>
+                                          </div>
+                                    </div>
+                              </div>
+
+                              <!-- colonias top -->
+                              <div class="card colonies-card">
+                                    <h3 class="card-header">Top Colonias</h3>
+                                    <ul class="colony-list">
+                                          <li class="colony-item">
+                                                <div class="colony-icon-box orange-bg"><i class="bi bi-code-slash"></i>
+                                                </div>
+                                                <div class="colony-details">
+                                                      <span class="colony-name">r/Desarrollo</span>
+                                                      <span class="colony-subs">2.4m miembros</span>
+                                                </div>
+                                          </li>
+                                          <li class="colony-item">
+                                                <div class="colony-icon-box red-bg"><i class="bi bi-brush"></i>
+                                                </div>
+                                                <div class="colony-details">
+                                                      <span class="colony-name">r/DiseñoUIUX</span>
+                                                      <span class="colony-subs">842k miembros</span>
+                                                </div>
+                                          </li>
+                                    </ul>
+                              </div>
+                        </aside>
+                  </div>
+            </div>
+      </div>
+
+      <!-- Scripts -->
+      <script type="module">
+            import { filtrarPorUsuario, listaDePosts } from '../scripts.js';
+
+            const usuario = "TZeroW";
+
+            // actualizamos el nombre del perfil dinamicamente
+            const elementoNombre = document.querySelector('.perfilNombre');
+            if (elementoNombre) {
+                  // buscamos si hay algun post del usuario
+                  const postUsuario = listaDePosts.find(p => p.autor.toLowerCase() === usuario.toLowerCase());
+                  // si encontramos posts usamos el nombre del autor del post, sino usamos la variable tal cual
+                  elementoNombre.textContent = postUsuario ? postUsuario.autor : usuario;
+            }
+
+            // logica de carga inicial
+            filtrarPorUsuario(usuario);
+      </script>
+</body>
+
+</html>

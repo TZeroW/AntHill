@@ -5,19 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil - AntHill</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/profile.css">
     <!-- fontawesome para los iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
     <!-- barra de navegacion -->
     <header class="top-nav">
         <div class="logo">
-            <img src="../assets/general/Logo-ant.png" alt="AntHill Logo" style="height: 60px;">
+            <img src="../assets/general/Logo-ant.png" alt="AntHill Logo">
+            <h1>AntHill</h1>
         </div>
         <div class="search-bar">
             <!-- aqui podria ir un icono -->
@@ -26,7 +24,7 @@
         <div class="user-actions">
             <span><img src="../assets/general/bell.svg" alt="Notificaciones"></span>
             <div class="user-profile">
-                <span>Pelota</span>
+                <span>TZeroW</span>
                 <img src="../assets/general/pfp-lol.jpg" alt="Perfil">
             </div>
         </div>
@@ -80,13 +78,13 @@
                                 </div>
                                 <div class="botones-perfil">
                                     <button class="btn btn-secondary">Mensaje</button>
-                                    <button class="btn btn-primary">Seguir</button>
+                                    <button id="btn-seguir" class="btn btn-primary">Seguir</button>
                                 </div>
                             </div>
 
                             <div class="user-details">
                                 <div class="name-badge-row">
-                                    <h1 class="perfilNombre"></h1>
+                                    <h1 class="perfilNombre">ZD</h1>
                                 </div>
                                 <p class="user-handle">@salmuleFish</p>
                             </div>
@@ -110,17 +108,17 @@
                 <aside class="sidebar-right">
                     <!-- tarjeta sobre mi -->
                     <div class="card about-card">
-                        <h3 class="card-header"><span class="red-icon"><i class="fa-solid fa-circle-info"></i></span>
+                        <h3 class="card-header"><span class="red-icon"><i class="bi bi-info-circle"></i></span>
                             Sobre mí</h3>
                         <p class="bio-text">
                             Me gusta el salamin con pan
                         </p>
                         <div class="bio-meta">
-                            <div class="meta-row"><i class="fa-solid fa-location-dot red-icon"></i> <span>Azcapotzalco,
+                            <div class="meta-row"><i class="bi bi-globe-americas red-icon"></i> <span>Azcapotzalco,
                                     CDMX</span></div>
-                            <div class="meta-row"><i class="fa-solid fa-link red-icon"></i> <a href="#"
+                            <div class="meta-row"><i class="bi bi-link-45deg red-icon"></i> <a href="#"
                                     class="link-highlight">achicopalar.com.ar</a></div>
-                            <div class="meta-row"><i class="fa-regular fa-calendar red-icon"></i> <span>algun dia</span>
+                            <div class="meta-row"><i class="bi bi-calendar2-heart red-icon"></i> <span>algun dia</span>
                             </div>
                         </div>
                     </div>
@@ -130,14 +128,14 @@
                         <h3 class="card-header">Top Colonias</h3>
                         <ul class="colony-list">
                             <li class="colony-item">
-                                <div class="colony-icon-box orange-bg"><i class="fa-solid fa-code"></i></div>
+                                <div class="colony-icon-box orange-bg"><i class="bi bi-code-slash"></i></div>
                                 <div class="colony-details">
                                     <span class="colony-name">r/Desarrollo</span>
                                     <span class="colony-subs">2.4m miembros</span>
                                 </div>
                             </li>
                             <li class="colony-item">
-                                <div class="colony-icon-box red-bg"><i class="fa-solid fa-palette"></i></div>
+                                <div class="colony-icon-box red-bg"><i class="bi bi-brush"></i></i></div>
                                 <div class="colony-details">
                                     <span class="colony-name">r/DiseñoUIUX</span>
                                     <span class="colony-subs">842k miembros</span>
@@ -154,7 +152,7 @@
     <script type="module">
         import { filtrarPorUsuario, listaDePosts } from '../scripts.js';
 
-        const usuario = "TZeroW";
+        const usuario = "Salmule";
 
         // actualizamos el nombre del perfil dinamicamente
         const elementoNombre = document.querySelector('.perfilNombre');

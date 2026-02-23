@@ -6,8 +6,8 @@ const feed = document.getElementById('feed');
 // estos son los datos falsos para probar simulando una base de datos, no son importantes
 export const listaDePosts = [
 
+    //e we si ves esto y no ves el titulo es porque nadie pone un tituolo en ningina red social jsjsj nomas eso y perdon nomas
     {
-        titulo: "AntHill",
         fotoPerfil: "../assets/general/pfp-lol.jpg",
         autor: "TZeroW",
         fecha: "hace 10 minutos",
@@ -15,7 +15,6 @@ export const listaDePosts = [
         imagen: "../assets/general/AntHill.png"
     },
     {
-        titulo: "Salamin con pan",
         fotoPerfil: "../assets/general/pfp.webp",
         autor: "Salmule",
         fecha: "2h ago",
@@ -23,28 +22,24 @@ export const listaDePosts = [
         imagen: "../assets/general/Gato.jpg" //pa probar si andan las imagenes ponemos algo q no existe, igual deberia andar
     },
     {
-        titulo: "sapo",
         fotoPerfil: "../assets/general/pfp.webp",
         autor: "Salmule",
         fecha: "5h ago",
         contenido: "Este es un post de prueba para ver si funciona el agregar mas de un post sin necesidad de que en el html este el componente desde un inicion porque estos se van creando a medida que se necesita con el js"
     },
     {
-        titulo: "ReProbando la materia, claro que si",
         fotoPerfil: "../assets/general/pfp.webp",
         autor: "Salmule",
         fecha: "hace 2 minutos",
         contenido: "Esto es un post de prueba tambien"
     },
     {
-        titulo: "Probando",
         fotoPerfil: "../assets/general/pfp.webp",
         autor: "Salmule",
         fecha: "hace 5 minutos",
         contenido: "Me estoy quedando sin cosas para escribir en los posts de prueba"
     },
     {
-        titulo: "Gersi",
         fotoPerfil: "../assets/general/pfp-lol.jpg",
         autor: "TZeroW",
         fecha: "hace 10 minutos",
@@ -63,7 +58,7 @@ export function cargarPosts() {
     // recorremos la lista de posts y los agregamos uno por uno
     listaDePosts.forEach(post => {
         // creamos el HTML del post usando la funcion importada
-        const htmlPost = crearPost(post.titulo, post.contenido, post.autor, post.fotoPerfil, post.fecha, post.imagen);
+        const htmlPost = crearPost(post.contenido, post.autor, post.fotoPerfil, post.fecha, post.imagen);
 
         // lo metemos en la pagina
         feed.innerHTML += htmlPost;
@@ -77,25 +72,22 @@ export function filtrar() {
     // agarramos lo que escribio el usuario en los inputs
     const autorInput = document.getElementById('autor');
     const contenidoInput = document.getElementById('contenido');
-    const tituloInput = document.getElementById('titulo');
 
     // si los inputs existen tomamos su valor
     const autor = autorInput ? autorInput.value : '';
     const contenido = contenidoInput ? contenidoInput.value : '';
-    const titulo = tituloInput ? tituloInput.value : '';
 
     // filtramos la lista
     const postsFiltrados = listaDePosts.filter(post => {
         return post.autor.toLowerCase().includes(autor.toLowerCase()) &&
-            post.contenido.toLowerCase().includes(contenido.toLowerCase()) &&
-            post.titulo.toLowerCase().includes(titulo.toLowerCase());
+            post.contenido.toLowerCase().includes(contenido.toLowerCase());
     });
 
     // mostramos los resultados
     if (feed) {
         feed.innerHTML = ''; // limpiamos
         postsFiltrados.forEach(post => {
-            const htmlPost = crearPost(post.titulo, post.contenido, post.autor, post.fotoPerfil, post.fecha, post.imagen);
+            const htmlPost = crearPost(post.contenido, post.autor, post.fotoPerfil, post.fecha, post.imagen);
             feed.innerHTML += htmlPost;
         });
     }
@@ -120,7 +112,7 @@ export function filtrarPorUsuario(nombreUsuario) {
         } else {
             // mostrar sus posts
             postsDelUsuario.forEach(post => {
-                const htmlPost = crearPost(post.titulo, post.contenido, post.autor, post.fotoPerfil, post.fecha, post.imagen);
+                const htmlPost = crearPost(post.contenido, post.autor, post.fotoPerfil, post.fecha, post.imagen);
                 feed.innerHTML += htmlPost;
             });
         }
