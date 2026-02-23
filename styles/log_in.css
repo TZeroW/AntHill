@@ -23,7 +23,7 @@ body {
 }
 
 .log_in_container {
-    background-color: var(--card-bg);
+    background-color: var(--dark-bg);
     border: 1px solid var(--accent-red-hover);
     padding: 40px;
     border-radius: 10px;
