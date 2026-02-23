@@ -1,127 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>AntHill</title>
+        <link rel="stylesheet" href="styles/homeStyles.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AntHill</title>
-    <link rel="stylesheet" href="styles/homeStyles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-</head>
-
-<body>
-    <header class="top-nav">
-        <div class="logo">
-            <img src="assets/general/Logo-ant.png" alt="AntHill Logo">
-            <h1>AntHill</h1>
-        </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Buscar en la colonia...">
-        </div>
-        <div class="user-actions">
-            <span><img src="assets/general/bell.svg" alt="Notificaciones"></span>
-            <div class="user-profile">
-                <span>TZeroW</span>
-                <img src="assets/general/pfp-lol.jpg" alt="Perfil">
+    <body>
+        <header class="top-nav">
+            <div class="logo">
+                <img src="assets/general/Logo-ant.png" alt="AntHill Logo" />
+                <h1>AntHill</h1>
             </div>
-        </div>
-    </header>
-
-    <div class="container">
-        <aside class="sidebar-left">
-            <nav class="main-menu">
-                <a href="#" class="active">
-                    <img src="assets/general/home.svg" alt="">
-                    <span>Home</span>
-                </a>
-                <a href="#">
-                    <img src="assets/general/compass.svg" alt="">
-                    <span>Explore</span>
-                </a>
-                <a href="sections/profileView.html">
-                    <img src="assets/general/profile.svg" alt="">
-                    <span>Profile</span>
-                </a>
-                <a href="#">
-                    <img src="assets/general/settings.svg" alt="">
-                    <span>Settings</span>
-                </a>
-                <a href="sections/login.html">
-                    <img src="assets/general/log_out.svg" alt="">
-                    <span>Log out</span>
-                </a>
-            </nav>
-            <button class="btn-create">
-                <span style="margin-right: 8px; font-size: 1.2rem;">+</span> Crear Post
-            </button>
-        </aside>
-
-        <main class="feed-center">
-            <div class="create-post-box">
-                <div class="cp-header">
-                    <img src="assets/general/pfp-lol.jpg" alt="" class="mini-pfp">
-                    <input type="text" placeholder="¿Que esta pasando en la colonia?">
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar en la colonia..." />
+            </div>
+            <div class="user-actions">
+                <span
+                    ><img src="assets/general/bell.svg" alt="Notificaciones"
+                /></span>
+                <div class="user-profile">
+                    <span>TZeroW</span>
+                    <img src="assets/general/pfp-lol.jpg" alt="Perfil" />
                 </div>
-                <button class="btn-post">Publicar</button>
             </div>
+        </header>
 
-            <!-- contenedor dinamico del feed -->
-            <div id="feed">
-                <!-- los posts se cargan aqui con JS -->
-            </div>
-        </main>
+        <div class="container">
+            <aside class="sidebar-left">
+                <nav class="main-menu">
+                    <a href="#" class="active">
+                        <img src="assets/general/home.svg" alt="" />
+                        <span>Home</span>
+                    </a>
+                    <a href="#">
+                        <img src="assets/general/compass.svg" alt="" />
+                        <span>Explore</span>
+                    </a>
+                    <a href="sections/profileView.html">
+                        <img src="assets/general/profile.svg" alt="" />
+                        <span>Profile</span>
+                    </a>
+                    <a href="#">
+                        <img src="assets/general/settings.svg" alt="" />
+                        <span>Settings</span>
+                    </a>
+                    <a href="sections/login.html">
+                        <img src="assets/general/log_out.svg" alt="" />
+                        <span>Log out</span>
+                    </a>
+                </nav>
+                <button class="btn-create">
+                    <span style="margin-right: 8px; font-size: 1.2rem">+</span>
+                    Crear Post
+                </button>
+            </aside>
 
-        <aside class="sidebar-right">
-            <div class="widget recommended-widget">
-                <h3>Colonias Recomendadas</h3>
-                <div class="colony-item">
-                    <div class="colony-info">
-                        <div class="colony-icon" style="background: #e0245e;">🎨</div>
-                        <div>
-                            <strong>Arte y Concepto</strong>
-                            <span>12k miembros</span>
-                        </div>
+            <main class="feed-center">
+                <div class="create-post-box">
+                    <div class="cp-header">
+                        <img
+                            src="assets/general/pfp-lol.jpg"
+                            alt=""
+                            class="mini-pfp"
+                        />
+                        <input
+                            type="text"
+                            placeholder="¿Que esta pasando en la colonia?"
+                        />
                     </div>
-                    <button class="btn-join-text">Unirse</button>
+                    <button class="btn-post">Publicar</button>
                 </div>
-                <div class="colony-item">
-                    <div class="colony-info">
-                        <div class="colony-icon" style="background: #1d9bf0;">💻</div>
-                        <div>
-                            <strong>Ingenieria Web</strong>
-                            <span>45k miembros</span>
+
+                <!-- contenedor dinamico del feed -->
+                <div id="feed">
+                    <!-- los posts se cargan aqui con JS -->
+                </div>
+            </main>
+
+            <aside class="sidebar-right">
+                <div class="widget recommended-widget">
+                    <h3>Colonias Recomendadas</h3>
+                    <div class="colony-item">
+                        <div class="colony-info">
+                            <div
+                                class="colony-icon"
+                                style="background: #e0245e"
+                            >
+                                🎨
+                            </div>
+                            <div>
+                                <strong>Arte y Concepto</strong>
+                                <span>12k miembros</span>
+                            </div>
                         </div>
+                        <button class="btn-join-text">Unirse</button>
                     </div>
-                    <button class="btn-join-text">Unirse</button>
-                </div>
-                <div class="colony-item">
-                    <div class="colony-info">
-                        <div class="colony-icon" style="background: #f91880;">📸</div>
-                        <div>
-                            <strong>Fotografia</strong>
-                            <span>8k miembros</span>
+                    <div class="colony-item">
+                        <div class="colony-info">
+                            <div
+                                class="colony-icon"
+                                style="background: #1d9bf0"
+                            >
+                                💻
+                            </div>
+                            <div>
+                                <strong>Ingenieria Web</strong>
+                                <span>45k miembros</span>
+                            </div>
                         </div>
+                        <button class="btn-join-text">Unirse</button>
                     </div>
-                    <button class="btn-join-text">Unirse</button>
+                    <div class="colony-item">
+                        <div class="colony-info">
+                            <div
+                                class="colony-icon"
+                                style="background: #f91880"
+                            >
+                                📸
+                            </div>
+                            <div>
+                                <strong>Fotografia</strong>
+                                <span>8k miembros</span>
+                            </div>
+                        </div>
+                        <button class="btn-join-text">Unirse</button>
+                    </div>
+                    <div class="show-more">Ver todas</div>
                 </div>
-                <div class="show-more">Ver todas</div>
-            </div>
 
-            <div class="footer-links">
-                <a href="#">Privacidad</a> · <a href="#">Terminos</a> · <a href="#">Anuncios</a> · <span>© 2024
-                    AntHill</span>
-            </div>
-        </aside>
-    </div>
+                <div class="footer-links">
+                    <a href="#">Privacidad</a> · <a href="#">Terminos</a> ·
+                    <a href="#">Anuncios</a> · <span>© 2024 AntHill</span>
+                </div>
+            </aside>
+        </div>
 
-    <!-- script para cargar el feed -->
-    <script type="module">
-        import { cargarPosts } from './scripts.js';
+        <!-- script para cargar el feed -->
+        <script type="module">
+            import { cargarPosts } from "/scripts/posts.js";
 
-        // cargar posts al iniciar
-        cargarPosts();
-    </script>
-</body>
-
+            // cargar posts al iniciar
+            cargarPosts();
+        </script>
+    </body>
 </html>
