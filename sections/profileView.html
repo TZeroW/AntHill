@@ -26,8 +26,8 @@
             <div class="user-actions">
                   <span><img src="../assets/general/bell.svg" alt="Notificaciones"></span>
                   <div class="user-profile">
-                        <span>TZeroW</span>
-                        <img src="../assets/general/pfp-lol.jpg" alt="Perfil">
+                        <span id="header-user-name">Invitado</span>
+                        <img id="header-user-pfp" src="../assets/general/pfp.webp" alt="Perfil">
                   </div>
             </div>
       </header>
@@ -158,23 +158,7 @@
       </div>
 
       <!-- Scripts -->
-      <script type="module">
-            import { filtrarPorUsuario, listaDePosts } from '../scripts/posts.js';
-
-            const usuario = "TZeroW";
-
-            // actualizamos el nombre del perfil dinamicamente
-            const elementoNombre = document.querySelector('.perfilNombre');
-            if (elementoNombre) {
-                  // buscamos si hay algun post del usuario
-                  const postUsuario = listaDePosts.find(p => p.autor.toLowerCase() === usuario.toLowerCase());
-                  // si encontramos posts usamos el nombre del autor del post, sino usamos la variable tal cual
-                  elementoNombre.textContent = postUsuario ? postUsuario.autor : usuario;
-            }
-
-            // logica de carga inicial
-            filtrarPorUsuario(usuario);
-      </script>
+      <script type="module" src="../scripts/profileManager.js"></script>
 </body>
 
 </html>

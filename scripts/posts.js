@@ -1,91 +1,154 @@
 import { crearPost } from "./cajaPost.js";
+import { supabase } from "./supabaseClient.js";
 
 // aca seleccionamos la caja donde van a aparecer las publicaciones
 const feed = document.getElementById("feed");
 
-// estos son los datos falsos para probar simulando una base de datos, no son importantes
-export const listaDePosts = [
-  //e we si ves esto y no ves el titulo es porque nadie pone un tituolo en ningina red social jsjsj nomas eso y perdon nomas
-  {
-    fotoPerfil: "../assets/general/pfp-lol.jpg",
-    autor: "TZeroW",
-    fecha: "hace 10 minutos",
-    contenido:
-      "Bienvenido a AntHill, la red social para hormigas como tu y yo, los siguientes posts son de prueba no les hagan caso",
-    imagen: "../assets/general/AntHill.png",
-  },
-  {
-    fotoPerfil: "../assets/general/pfp.webp",
-    autor: "Salmule",
-    fecha: "2h ago",
-    contenido: "Salamin con pan",
-    imagen: "../assets/general/Gato.jpg", //pa probar si andan las imagenes ponemos algo q no existe, igual deberia andar
-  },
-  {
-    fotoPerfil: "../assets/general/pfp.webp",
-    autor: "Salmule",
-    fecha: "5h ago",
-    contenido:
-      "Este es un post de prueba para ver si funciona el agregar mas de un post sin necesidad de que en el html este el componente desde un inicion porque estos se van creando a medida que se necesita con el js",
-  },
-  {
-    fotoPerfil: "../assets/general/pfp.webp",
-    autor: "Salmule",
-    fecha: "hace 2 minutos",
-    contenido: "Esto es un post de prueba tambien",
-  },
-  {
-    fotoPerfil: "../assets/general/pfp.webp",
-    autor: "Salmule",
-    fecha: "hace 5 minutos",
-    contenido:
-      "Me estoy quedando sin cosas para escribir en los posts de prueba",
-  },
-  {
-    fotoPerfil: "../assets/general/pfp-lol.jpg",
-    autor: "TZeroW",
-    fecha: "hace 10 minutos",
-    contenido: "Y ahora vamos a decir que gerson esta bien guapo, apoco no?",
-  },
-];
+function getUsuarioActual() {
+  return JSON.parse(localStorage.getItem("anthill_user"));
+}
+
+export let listaDePosts = [];
 
 // funcion para mostrar todos los posts en el inicio
-export function cargarPosts() {
+export async function cargarPosts() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const coloniaActual = urlParams.get('colonia');
+  if (coloniaActual) {
+    return cargarPostsPorColonia(coloniaActual);
+  }
+
   const feed = document.getElementById("feed");
-  if (!feed) return; // si no encuentra el feed no hace nada
+  if (!feed) return;
 
-  // limpiamos lo que habia antes
-  feed.innerHTML = "";
+  feed.innerHTML = "<p style='text-align:center;'>Cargando colonia...</p>";
 
-  // recorremos la lista de posts y los agregamos uno por uno
-  listaDePosts.forEach((post) => {
-    // creamos el HTML del post usando la funcion importada
-    const htmlPost = crearPost(
-      post.contenido,
-      post.autor,
-      post.fotoPerfil,
-      post.fecha,
-      post.imagen,
-    );
+  try {
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .order("created_at", { ascending: false });
 
-    // lo metemos en la pagina
-    feed.innerHTML += htmlPost;
-  });
+    if (error) throw error;
+
+    listaDePosts = data;
+    feed.innerHTML = "";
+
+    if (listaDePosts.length === 0) {
+      feed.innerHTML = "<p style='text-align:center;'>La colonia está vacía. ¡Sé el primero en publicar!</p>";
+      return;
+    }
+
+    listaDePosts.forEach((post) => {
+      const htmlPost = crearPost(post);
+      feed.innerHTML += htmlPost;
+    });
+  } catch (error) {
+    console.error("Error al cargar posts:", error.message);
+    feed.innerHTML = `<p style='color: red; text-align: center;'>Error al cargar la colonia: ${error.message}</p>`;
+  }
+}
+
+// funcion para mostrar posts de una colonia especifica
+export async function cargarPostsPorColonia(coloniaName) {
+  const feed = document.getElementById("feed");
+  if (!feed) return;
+
+  feed.innerHTML = `<p style='text-align:center;'>Entrando a c/${coloniaName}...</p>`;
+
+  try {
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .eq("colonia", coloniaName)
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    listaDePosts = data;
+    feed.innerHTML = "";
+
+    if (listaDePosts.length === 0) {
+      feed.innerHTML = `<p style='text-align:center;'>La colonia c/${coloniaName} está vacía. ¡Sé el primero en publicar!</p>`;
+      return;
+    }
+
+    listaDePosts.forEach((post) => {
+      feed.innerHTML += crearPost(post);
+    });
+  } catch (error) {
+    console.error("Error al cargar colonia:", error.message);
+    feed.innerHTML = `<p style='color: red; text-align: center;'>Error al cargar c/${coloniaName}: ${error.message}</p>`;
+  }
+}
+
+// Agregar un nuevo post
+export async function agregarPost(contenido, imagen = null, colonia = "General") {
+  const user = getUsuarioActual();
+  if (!user) {
+    alert("Debes iniciar sesión para publicar.");
+    window.location.href = "sections/login.html";
+    return;
+  }
+
+  const nuevoPost = {
+    autor: user.name,
+    fotoperfil: user.pfp || "assets/general/pfp.webp",
+    contenido: contenido,
+    imagen: imagen,
+    colonia: colonia
+  };
+
+  try {
+    console.log("Intentando crear post:", nuevoPost);
+    const { data, error } = await supabase.from("posts").insert([nuevoPost]);
+    if (error) throw error;
+
+    console.log("Post creado exitosamente");
+    await cargarPosts();
+  } catch (error) {
+    console.error("Error al crear post:", error.message);
+    alert("No se pudo crear el post. Revisa si creaste la tabla 'posts' en Supabase.");
+  }
+}
+
+// Eliminar un post
+export async function eliminarPost(id) {
+  try {
+    const { error } = await supabase.from("posts").delete().eq("id", id);
+    if (error) throw error;
+
+    cargarPosts();
+  } catch (error) {
+    console.error("Error al eliminar post:", error.message);
+  }
+}
+
+// Editar un post
+export async function editarPost(id, nuevoContenido) {
+  try {
+    const { error } = await supabase
+      .from("posts")
+      .update({ contenido: nuevoContenido })
+      .eq("id", id);
+
+    if (error) throw error;
+
+    cargarPosts();
+  } catch (error) {
+    console.error("Error al editar post:", error.message);
+  }
 }
 
 // funcion para filtrar general
 export function filtrar() {
   const feed = document.getElementById("feed");
-
-  // agarramos lo que escribio el usuario en los inputs
   const autorInput = document.getElementById("autor");
   const contenidoInput = document.getElementById("contenido");
 
-  // si los inputs existen tomamos su valor
   const autor = autorInput ? autorInput.value : "";
   const contenido = contenidoInput ? contenidoInput.value : "";
 
-  // filtramos la lista
   const postsFiltrados = listaDePosts.filter((post) => {
     return (
       post.autor.toLowerCase().includes(autor.toLowerCase()) &&
@@ -93,17 +156,10 @@ export function filtrar() {
     );
   });
 
-  // mostramos los resultados
   if (feed) {
-    feed.innerHTML = ""; // limpiamos
+    feed.innerHTML = "";
     postsFiltrados.forEach((post) => {
-      const htmlPost = crearPost(
-        post.contenido,
-        post.autor,
-        post.fotoPerfil,
-        post.fecha,
-        post.imagen,
-      );
+      const htmlPost = crearPost(post);
       feed.innerHTML += htmlPost;
     });
   }
@@ -113,30 +169,22 @@ export function filtrar() {
 export function filtrarPorUsuario(nombreUsuario) {
   const feed = document.getElementById("feed");
 
-  // filtramos buscaando coincidencia exacta de nombre
   const postsDelUsuario = listaDePosts.filter((post) => {
     return post.autor.toLowerCase() === nombreUsuario.toLowerCase();
   });
 
   if (feed) {
-    feed.innerHTML = ""; // limpiamos
+    feed.innerHTML = "";
 
     if (postsDelUsuario.length === 0) {
-      // mensaje si no tiene posts
       feed.innerHTML =
         "<p style=\"color: var(--color-textos); text-align: center; font-size: 1.5rem; margin-top: 20px; font-family: 'VT323', monospace;\">Este usuario no ha publicado nada</p>";
     } else {
-      // mostrar sus posts
       postsDelUsuario.forEach((post) => {
-        const htmlPost = crearPost(
-          post.contenido,
-          post.autor,
-          post.fotoPerfil,
-          post.fecha,
-          post.imagen,
-        );
+        const htmlPost = crearPost(post);
         feed.innerHTML += htmlPost;
       });
     }
   }
 }
+

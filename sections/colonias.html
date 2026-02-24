@@ -58,30 +58,14 @@
         </aside>
 
         <main class="colonias-container">
-            <div class="colonias-header">
-                <div class="colonia-card">
-                    <div class="card-image">
-                        <img src="../assets/general/pfp-lol.jpg" alt="colonia" />
-                    </div>
-                    <div class="card-content">
-                        <h2>Anime</h2>
-                        <p class="description">Un lugar donde pasan cosas sobre animes</p>
-                        <button class="btn-join">Unirse</button>
-                    </div>
-                </div>
-                <div class="colonia-card">
-                    <div class="card-image">
-                        <img src="../assets/general/cont-pfp.jpg" alt="colonia" />
-                    </div>
-                    <div class="card-content">
-                        <h2>Memes</h2>
-                        <p class="description">Un lugar donde pasan cosas sobre memes</p>
-                        <button class="btn-join">Unirse</button>
-                    </div>
-                </div>
+            <!-- El contenido se cargara dinamicamente con coloniaManager -->
+            <div class="colonias-header" id="colonias-list">
+                <p>Cargando colonias...</p>
             </div>
         </main>
     </div>
+
+    <script type="module" src="../scripts/coloniaManager.js"></script>
 </body>
 
 </html>

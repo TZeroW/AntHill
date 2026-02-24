@@ -21,8 +21,8 @@
         <div class="user-actions">
             <span><img src="assets/general/bell.svg" alt="Notificaciones" /></span>
             <div class="user-profile">
-                <span>TZeroW</span>
-                <img src="assets/general/pfp-lol.jpg" alt="Perfil" />
+                <span id="header-user-name">Invitado</span>
+                <img id="header-user-pfp" src="assets/general/pfp.webp" alt="Perfil" />
             </div>
         </div>
     </header>
@@ -60,7 +60,7 @@
         <main class="feed-center">
             <div class="create-post-box">
                 <div class="cp-header">
-                    <img src="assets/general/pfp-lol.jpg" alt="" class="mini-pfp" />
+                    <img id="post-box-pfp" src="assets/general/pfp.webp" alt="" class="mini-pfp" />
                     <input type="text" placeholder="¿Que esta pasando en la colonia?" />
                 </div>
                 <button class="btn-post">Publicar</button>
@@ -123,10 +123,33 @@
 
     <!-- script para cargar el feed -->
     <script type="module">
-        import { cargarPosts } from "/scripts/posts.js";
+        import { cargarPosts, cargarPostsPorColonia } from "/scripts/posts.js";
+        import "/scripts/postManager.js";
 
-        // cargar posts al iniciar
-        cargarPosts();
+        // Actualizar UI del usuario
+        const user = JSON.parse(localStorage.getItem("anthill_user"));
+        if (user) {
+            document.getElementById("header-user-name").textContent = user.name;
+            if (user.pfp) {
+                document.getElementById("header-user-pfp").src = user.pfp;
+                document.getElementById("post-box-pfp").src = user.pfp;
+            }
+        }
+
+        // Detectar si venimos de una colonia especifica
+        const urlParams = new URLSearchParams(window.location.search);
+        const coloniaActual = urlParams.get('colonia');
+
+        if (coloniaActual) {
+            cargarPostsPorColonia(coloniaActual);
+            // Cambiar placeholder para indicar en qué colonia estamos
+            const input = document.querySelector(".create-post-box input");
+            if (input) input.placeholder = `Publicar en c/${coloniaActual}...`;
+            // Guardar en window para que postManager lo sepa
+            window.coloniaActual = coloniaActual;
+        } else {
+            cargarPosts();
+        }
     </script>
 </body>
 
