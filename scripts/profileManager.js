@@ -9,11 +9,18 @@ async function initProfile() {
         return;
     }
 
+    // función para manejar rutas locales vs externas
+    const fixPath = (path) => {
+        if (!path) return "../assets/general/pfp.webp";
+        if (path.startsWith("http") || path.startsWith("data:")) return path;
+        return "../" + path;
+    };
+
     // actualizar header
     const headerName = document.getElementById("header-user-name");
     const headerPfp = document.getElementById("header-user-pfp");
     if (headerName) headerName.textContent = user.name;
-    if (headerPfp) headerPfp.src = user.pfp || "../assets/general/pfp.webp";
+    if (headerPfp) headerPfp.src = fixPath(user.pfp);
 
     // actualizar informacion del perfil
     const profileName = document.querySelector(".perfilNombre");
@@ -22,7 +29,7 @@ async function initProfile() {
 
     if (profileName) profileName.textContent = user.name;
     if (profileHandle) profileHandle.textContent = `@${user.name.toLowerCase().replace(/\s/g, '')}`;
-    if (profilePfp) profilePfp.src = user.pfp || "../assets/general/pfp.webp";
+    if (profilePfp) profilePfp.src = fixPath(user.pfp);
 
     // cargar posts del usuario
     await cargarPostsUsuario(user.name);

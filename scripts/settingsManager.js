@@ -7,11 +7,17 @@ async function initSettings() {
         return;
     }
 
+    const fixPath = (path) => {
+        if (!path) return "../assets/general/pfp.webp";
+        if (path.startsWith("http") || path.startsWith("data:")) return path;
+        return "../" + path;
+    };
+
     // actualizar ui header
     const headerName = document.getElementById("header-user-name");
     const headerPfp = document.getElementById("header-user-pfp");
     if (headerName) headerName.textContent = user.name;
-    if (headerPfp) headerPfp.src = "../" + (user.pfp || "assets/general/pfp.webp");
+    if (headerPfp) headerPfp.src = fixPath(user.pfp);
 
     // elementos del formulario
     const usernameInput = document.getElementById("username-input");
@@ -29,7 +35,7 @@ async function initSettings() {
 
     // vista previa en tiempo real
     pfpInput.addEventListener("input", () => {
-        pfpPreview.src = pfpInput.value || "../assets/general/pfp.webp";
+        pfpPreview.src = fixPath(pfpInput.value);
     });
 
     btnSave.addEventListener("click", async () => {
@@ -46,6 +52,7 @@ async function initSettings() {
             btnSave.textContent = "Guardando...";
 
             const oldName = user.name;
+            console.log("Intentando actualizar en Supabase:", { oldName, newName, newPfp });
 
             // actualizar tabla de usuarios
             const { error: userError } = await supabase
@@ -57,6 +64,7 @@ async function initSettings() {
                 .eq("id", user.id);
 
             if (userError) throw userError;
+            console.log("Tabla 'users' actualizada.");
 
             const { error: postsError } = await supabase
                 .from("posts")
@@ -68,6 +76,8 @@ async function initSettings() {
 
             if (postsError) {
                 console.warn("No se pudieron actualizar los posts antiguos:", postsError.message);
+            } else {
+                console.log("Tabla 'posts' actualizada.");
             }
 
             // actualizar sesion local
@@ -75,11 +85,12 @@ async function initSettings() {
             user.pfp = newPfp;
             localStorage.setItem("anthill_user", JSON.stringify(user));
 
-            // actualizar ui header
+            // actualizar ui header y preview
             if (headerName) headerName.textContent = newName;
-            if (headerPfp) headerPfp.src = newPfp || "../assets/general/pfp.webp";
+            if (headerPfp) headerPfp.src = fixPath(newPfp);
+            pfpPreview.src = fixPath(newPfp);
 
-            showMessage("¡Perfil y publicaciones actualizados!", "success");
+            showMessage("¡Perfil y publicaciones actualizados en la base de datos!", "success");
         } catch (error) {
             console.error("Error al actualizar perfil:", error.message);
             showMessage("Error al guardar: " + error.message, "error");
