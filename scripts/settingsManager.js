@@ -7,27 +7,27 @@ async function initSettings() {
         return;
     }
 
-    // Actualizar UI Header
+    // actualizar ui header
     const headerName = document.getElementById("header-user-name");
     const headerPfp = document.getElementById("header-user-pfp");
     if (headerName) headerName.textContent = user.name;
     if (headerPfp) headerPfp.src = "../" + (user.pfp || "assets/general/pfp.webp");
 
-    // Elementos del formulario
+    // elementos del formulario
     const usernameInput = document.getElementById("username-input");
     const pfpInput = document.getElementById("pfp-url-input");
     const pfpPreview = document.getElementById("pfp-preview");
     const btnSave = document.getElementById("btn-save-settings");
     const message = document.getElementById("settings-message");
 
-    // Cargar datos actuales
+    // cargar datos actuales
     if (user.name) usernameInput.value = user.name;
     if (user.pfp) {
         pfpInput.value = user.pfp;
         pfpPreview.src = user.pfp;
     }
 
-    // Vista previa en tiempo real
+    // vista previa en tiempo real
     pfpInput.addEventListener("input", () => {
         pfpPreview.src = pfpInput.value || "../assets/general/pfp.webp";
     });
@@ -45,7 +45,10 @@ async function initSettings() {
             btnSave.disabled = true;
             btnSave.textContent = "Guardando...";
 
-            const { error } = await supabase
+            const oldName = user.name;
+
+            // actualizar tabla de usuarios
+            const { error: userError } = await supabase
                 .from("users")
                 .update({
                     name: newName,
@@ -53,18 +56,30 @@ async function initSettings() {
                 })
                 .eq("id", user.id);
 
-            if (error) throw error;
+            if (userError) throw userError;
 
-            // Actualizar sesión local
+            const { error: postsError } = await supabase
+                .from("posts")
+                .update({
+                    autor: newName,
+                    fotoperfil: newPfp
+                })
+                .eq("autor", oldName);
+
+            if (postsError) {
+                console.warn("No se pudieron actualizar los posts antiguos:", postsError.message);
+            }
+
+            // actualizar sesion local
             user.name = newName;
             user.pfp = newPfp;
             localStorage.setItem("anthill_user", JSON.stringify(user));
 
-            // Actualizar UI Header
+            // actualizar ui header
             if (headerName) headerName.textContent = newName;
             if (headerPfp) headerPfp.src = newPfp || "../assets/general/pfp.webp";
 
-            showMessage("¡Perfil actualizado con éxito!", "success");
+            showMessage("¡Perfil y publicaciones actualizados!", "success");
         } catch (error) {
             console.error("Error al actualizar perfil:", error.message);
             showMessage("Error al guardar: " + error.message, "error");

@@ -9,13 +9,13 @@ async function initProfile() {
         return;
     }
 
-    // 1. Actualizar Header (Igual que en Home)
+    // actualizar header
     const headerName = document.getElementById("header-user-name");
     const headerPfp = document.getElementById("header-user-pfp");
     if (headerName) headerName.textContent = user.name;
     if (headerPfp) headerPfp.src = user.pfp || "../assets/general/pfp.webp";
 
-    // 2. Actualizar Información del Perfil
+    // actualizar informacion del perfil
     const profileName = document.querySelector(".perfilNombre");
     const profileHandle = document.querySelector(".user-handle");
     const profilePfp = document.querySelector(".big-avatar");
@@ -24,7 +24,7 @@ async function initProfile() {
     if (profileHandle) profileHandle.textContent = `@${user.name.toLowerCase().replace(/\s/g, '')}`;
     if (profilePfp) profilePfp.src = user.pfp || "../assets/general/pfp.webp";
 
-    // 3. Cargar Posts del Usuario
+    // cargar posts del usuario
     await cargarPostsUsuario(user.name);
 }
 

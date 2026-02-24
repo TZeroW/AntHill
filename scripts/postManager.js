@@ -27,7 +27,6 @@ class PostManager {
             this.btnSidebarCreate.addEventListener("click", () => {
                 if (this.inputPost) {
                     this.inputPost.focus();
-                    // Opcional: scroll hasta el input si no es visible
                     this.inputPost.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             });
@@ -81,5 +80,5 @@ class PostManager {
     }
 }
 
-// Lo exponemos globalmente para que los onclick del HTML funcionen
+// lo exponemos globalmente para que los onclick del HTML funcionen
 window.postManager = new PostManager();

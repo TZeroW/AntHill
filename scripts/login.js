@@ -27,7 +27,7 @@ if (loginForm) {
                 return;
             }
 
-            // Guardamos la sesión del usuario
+            // guardamos la sesion del usuario
             localStorage.setItem("anthill_user", JSON.stringify(data));
 
             alert("¡Bienvenido de nuevo, " + data.name + "!");

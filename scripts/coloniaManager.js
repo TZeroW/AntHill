@@ -4,7 +4,7 @@ async function initColonias() {
     const container = document.querySelector(".colonias-container");
     if (!container) return;
 
-    // Actualizar Header (Igual que en Home/Perfil)
+    // actualizar header
     const user = JSON.parse(localStorage.getItem("anthill_user"));
     if (user) {
         const headerName = document.getElementById("header-user-name");
@@ -27,7 +27,6 @@ async function initColonias() {
 
         if (colonias.length === 0) {
             list.innerHTML = "<p>No hay colonias fundadas todavía. ¡Crea una!</p>";
-            // Aquí se podría añadir un botón para crear colonia si el usuario quiere
             return;
         }
 

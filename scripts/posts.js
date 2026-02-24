@@ -82,7 +82,7 @@ export async function cargarPostsPorColonia(coloniaName) {
   }
 }
 
-// Agregar un nuevo post
+// agregar un nuevo post
 export async function agregarPost(contenido, imagen = null, colonia = "General") {
   const user = getUsuarioActual();
   if (!user) {
@@ -165,7 +165,7 @@ export function filtrar() {
   }
 }
 
-// funcion para mostrar solo los posts de un usuario especifico (Perfil)
+// funcion para mostrar solo los posts de un usuario especifico
 export function filtrarPorUsuario(nombreUsuario) {
   const feed = document.getElementById("feed");
 
