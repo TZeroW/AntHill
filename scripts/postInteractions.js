@@ -1,4 +1,4 @@
-import { repostPost } from "./posts.js";
+import { likePost, repostPost } from "./posts.js";
 
 const PostInteractions = {
     async interact(id, type, buttonElement) {
@@ -17,7 +17,29 @@ const PostInteractions = {
             buttonElement.disabled = true;
             let newCount;
 
-            if (type === 'repost') {
+            if (type === 'vote') {
+                const result = await likePost(id);
+                if (result) {
+                    newCount = result.count;
+                    if (result.action === 'added') {
+                        buttonElement.style.color = "var(--color-primary, #ffa500)";
+                        const icon = buttonElement.querySelector("i");
+                        if (icon.classList.contains("bi-heart")) {
+                            icon.classList.replace("bi-heart", "bi-heart-fill");
+                        } else if (icon.classList.contains("bi-caret-up")) {
+                            icon.classList.replace("bi-caret-up", "bi-caret-up-fill");
+                        }
+                    } else {
+                        buttonElement.style.color = "";
+                        const icon = buttonElement.querySelector("i");
+                        if (icon.classList.contains("bi-heart-fill")) {
+                            icon.classList.replace("bi-heart-fill", "bi-heart");
+                        } else if (icon.classList.contains("bi-caret-up-fill")) {
+                            icon.classList.replace("bi-caret-up-fill", "bi-caret-up");
+                        }
+                    }
+                }
+            } else if (type === 'repost') {
                 const result = await repostPost(id);
                 if (result) {
                     newCount = result.count;

@@ -161,6 +161,10 @@ function renderizarPost(post) {
         </div>
 
         <footer class="post-actions-full" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; display: flex; gap: 20px;">
+            <div class="action-item like" style="display: flex; align-items: center; gap: 8px; color: #666;">
+                <button onclick="window.postInteractions.interact(${post.id}, 'vote', this)" style="background: none; border: none; color: inherit; cursor: pointer; font-size: 1.2rem;"><i class="bi bi-heart"></i></button>
+                <span>${post.likes_count || 0}</span>
+            </div>
             <div class="action-item repost" style="display: flex; align-items: center; gap: 8px; color: #666;">
                 <button onclick="window.postInteractions.interact(${post.id}, 'repost', this)" style="background: none; border: none; color: inherit; cursor: pointer; font-size: 1.2rem;"><i class="bi bi-repeat"></i></button>
                 <span>${post.reposts_count || 0}</span>

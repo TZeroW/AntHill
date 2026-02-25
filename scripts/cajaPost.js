@@ -57,6 +57,9 @@ export function crearPost(post) {
                 ${htmlImagen}
             </div>
             <div class="post-footer">
+                <button class="action-btn vote-btn" onclick="event.stopPropagation(); window.postInteractions.interact(${id}, 'vote', this)">
+                    <i class="bi bi-caret-up-fill"></i> <span>${post.likes_count || 0}</span>
+                </button>
                 <button class="action-btn comment-btn" onclick="event.stopPropagation(); window.location.href='${getPath('sections/postView.html?id=' + id)}'">
                     <i class="bi bi-chat-left"></i> <span>${post.comments_count || 0}</span>
                 </button>
