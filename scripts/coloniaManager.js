@@ -1,6 +1,6 @@
 import { supabase } from "./supabaseClient.js";
 
-async function initColonias() {
+export async function initColonias() {
     const container = document.querySelector(".colonias-container");
     if (!container) return;
 
@@ -116,4 +116,49 @@ async function initColonias() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", initColonias);
+export async function cargarRecomendados() {
+    const list = document.getElementById("recommended-list");
+    if (!list) return;
+
+    try {
+        const { data: colonias, error } = await supabase
+            .from("colonias")
+            .select("*")
+            .limit(3);
+
+        if (error) throw error;
+
+        if (colonias.length === 0) {
+            list.innerHTML = "<p style='text-align: center; color: #666; font-size: 0.8rem; padding: 10px;'>No hay colonias todavía.</p>";
+            return;
+        }
+
+        const fixPath = (path) => {
+            if (!path) return "assets/general/Logo-ant.png";
+            if (path.startsWith("http") || path.startsWith("data:")) return path;
+            return path;
+        };
+
+        list.innerHTML = colonias.map(col => `
+            <div class="colony-item" style="cursor: pointer;" onclick="window.location.href='index.html?colonia=${col.name}'">
+                <div class="colony-info">
+                    <img src="${fixPath(col.image)}" class="colony-icon" style="width: 32px; height: 32px; border-radius: 8px; object-fit: cover;">
+                    <div>
+                        <strong>c/${col.name}</strong>
+                        <span>Miembro de la colonia</span>
+                    </div>
+                </div>
+                <button class="btn-join-text">Visitar</button>
+            </div>
+        `).join('');
+
+    } catch (err) {
+        console.error("Error al cargar recomendados:", err);
+        list.innerHTML = "<p style='text-align: center; color: #666; font-size: 0.8rem;'>Error al cargar.</p>";
+    }
+}
+
+// Inicializar si estamos en la página de colonias
+if (document.querySelector(".colonias-container")) {
+    document.addEventListener("DOMContentLoaded", initColonias);
+}

@@ -71,43 +71,12 @@
         <aside class="sidebar-right">
             <div class="widget recommended-widget">
                 <h3>Colonias Recomendadas</h3>
-                <div class="colony-item">
-                    <div class="colony-info">
-                        <div class="colony-icon" style="background: #e0245e">
-                            🎨
-                        </div>
-                        <div>
-                            <strong>Arte y Concepto</strong>
-                            <span>12k miembros</span>
-                        </div>
-                    </div>
-                    <button class="btn-join-text">Unirse</button>
+                <div id="recommended-list">
+                    <p style="text-align: center; color: #666; font-size: 0.8rem; padding: 10px;">Cargando colonias...
+                    </p>
                 </div>
-                <div class="colony-item">
-                    <div class="colony-info">
-                        <div class="colony-icon" style="background: #1d9bf0">
-                            💻
-                        </div>
-                        <div>
-                            <strong>Ingenieria Web</strong>
-                            <span>45k miembros</span>
-                        </div>
-                    </div>
-                    <button class="btn-join-text">Unirse</button>
-                </div>
-                <div class="colony-item">
-                    <div class="colony-info">
-                        <div class="colony-icon" style="background: #f91880">
-                            📸
-                        </div>
-                        <div>
-                            <strong>Fotografia</strong>
-                            <span>8k miembros</span>
-                        </div>
-                    </div>
-                    <button class="btn-join-text">Unirse</button>
-                </div>
-                <div class="show-more">Ver todas</div>
+                <div class="show-more" style="cursor: pointer;" onclick="window.location.href='sections/colonias.html'">
+                    Ver todas</div>
             </div>
 
             <div class="footer-links">
@@ -120,8 +89,12 @@
     <!-- script para cargar el feed -->
     <script type="module">
         import { cargarPosts, cargarPostsPorColonia } from "/scripts/posts.js";
+        import { cargarRecomendados } from "/scripts/coloniaManager.js";
         import "/scripts/postManager.js";
         import "/scripts/postInteractions.js";
+
+        // Cargar colonias recomendadas
+        cargarRecomendados();
 
         // Actualizar UI del usuario
         const user = JSON.parse(localStorage.getItem("anthill_user"));

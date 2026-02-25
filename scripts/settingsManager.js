@@ -23,6 +23,9 @@ async function initSettings() {
     const usernameInput = document.getElementById("username-input");
     const pfpInput = document.getElementById("pfp-url-input");
     const pfpPreview = document.getElementById("pfp-preview");
+    const bioInput = document.getElementById("bio-input");
+    const locationInput = document.getElementById("location-input");
+    const birthdateInput = document.getElementById("birthdate-input");
     const btnSave = document.getElementById("btn-save-settings");
     const message = document.getElementById("settings-message");
 
@@ -32,6 +35,9 @@ async function initSettings() {
         pfpInput.value = user.pfp;
         pfpPreview.src = user.pfp;
     }
+    if (user.bio) bioInput.value = user.bio;
+    if (user.location) locationInput.value = user.location;
+    if (user.birthdate) birthdateInput.value = user.birthdate;
 
     // vista previa en tiempo real
     pfpInput.addEventListener("input", () => {
@@ -41,6 +47,9 @@ async function initSettings() {
     btnSave.addEventListener("click", async () => {
         const newName = usernameInput.value.trim();
         const newPfp = pfpInput.value.trim();
+        const newBio = bioInput.value.trim();
+        const newLocation = locationInput.value.trim();
+        const newBirthdate = birthdateInput.value;
 
         if (!newName) {
             showMessage("El nombre no puede estar vacío.", "error");
@@ -59,7 +68,10 @@ async function initSettings() {
                 .from("users")
                 .update({
                     name: newName,
-                    pfp: newPfp
+                    pfp: newPfp,
+                    bio: newBio,
+                    location: newLocation,
+                    birthdate: newBirthdate
                 })
                 .eq("id", user.id);
 
@@ -83,6 +95,9 @@ async function initSettings() {
             // actualizar sesion local
             user.name = newName;
             user.pfp = newPfp;
+            user.bio = newBio;
+            user.location = newLocation;
+            user.birthdate = newBirthdate;
             localStorage.setItem("anthill_user", JSON.stringify(user));
 
             // actualizar ui header y preview
