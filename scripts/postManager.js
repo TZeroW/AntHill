@@ -31,6 +31,15 @@ class PostManager {
                 }
             });
         }
+
+        // Cerrar menús kebab al hacer click fuera
+        document.addEventListener("mousedown", (e) => {
+            if (!e.target.closest('.post-options')) {
+                document.querySelectorAll('.kebab-menu.show').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
     }
 
     async handlePublicar() {

@@ -107,9 +107,9 @@ body {
 /* estructura principal */
 .container {
     display: grid;
-    grid-template-columns: 240px 1fr 300px;
+    grid-template-columns: 240px 1fr;
     gap: 30px;
-    max-width: 1280px;
+    max-width: 1400px;
     margin: 30px auto;
     padding: 0 20px;
     align-items: start;
@@ -182,16 +182,14 @@ body {
 
 
 .colonias-header {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 20px;
     padding: 20px;
-    justify-content: center;
 }
 
 .colonia-card {
-    width: 250px;
+    width: 100%;
     background: var(--card-bg);
     border-radius: 15px;
     display: flex;

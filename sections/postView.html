@@ -75,7 +75,19 @@
                         </div>
                         <span class="colony-origin">en <a href="#">Memes</a></span>
                     </div>
-                    <button class="options-btn"><i class="bi bi-three-dots"></i></button>
+                    <div class="post-options">
+                        <button class="options-btn" onclick="this.nextElementSibling.classList.toggle('show')">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                        <div class="kebab-menu">
+                            <button class="menu-item">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </button>
+                            <button class="menu-item delete">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
                 </header>
 
                 <div class="post-body">

@@ -156,28 +156,6 @@ body {
     filter: drop-shadow(0 0 5px var(--accent-red));
 }
 
-.btn-create {
-    width: 100%;
-    background-color: var(--accent-red);
-    color: white;
-    border: none;
-    padding: 14px;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(217, 30, 54, 0.3);
-    transition: 0.2s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.btn-create:hover {
-    background-color: var(--accent-red-hover);
-    transform: translateY(-2px);
-}
-
 /* feed center */
 .create-post-box {
     background-color: var(--card-bg);
@@ -263,12 +241,90 @@ body {
     font-size: 0.9rem;
 }
 
-.more-options {
+/* opciones del post */
+.post-options {
     margin-left: auto;
+    position: relative;
+}
+
+.kebab-btn {
     background: none;
     border: none;
     color: var(--text-dim);
     cursor: pointer;
+    font-size: 1.2rem;
+    padding: 4px 8px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.kebab-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.kebab-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #1a1a1a;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: none;
+    min-width: 140px;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.kebab-menu.show {
+    display: block;
+    animation: fadeIn 0.1s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: var(--bg-hover);
+    color: white;
+}
+
+.menu-item i {
+    font-size: 1rem;
+}
+
+.menu-item.delete:hover {
+    background-color: rgba(217, 30, 54, 0.1);
+    color: #ff4d4d;
 }
 
 .post-body p {

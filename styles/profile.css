@@ -466,14 +466,6 @@ body {
     font-size: 0.9rem;
 }
 
-.more-options {
-    margin-left: auto;
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-}
-
 .post-body p {
     font-size: 0.95rem;
     line-height: 1.5;
@@ -514,6 +506,94 @@ body {
 
 .text-red {
     color: var(--primary-red);
+}
+
+/* opciones del post */
+.post-options {
+    margin-left: auto;
+    position: relative;
+}
+
+.kebab-btn {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 5px 7px;
+    border-radius: 50%;
+    transition: background 0.2s, color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.kebab-btn:hover {
+    background-color: rgba(255, 255, 255, 0.053);
+    filter: drop-shadow(0 0 5px var(--text-main));
+}
+
+.kebab-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 5px;
+    background-color: #1a1a1a;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    min-width: 140px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.kebab-menu.show {
+    display: flex;
+    animation: fadeIn 0.1s ease-out;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    transition: background 0.2s, color 0.2s;
+}
+
+.menu-item:hover {
+    background-color: var(--bg-hover);
+    color: white;
+}
+
+.menu-item i {
+    font-size: 1rem;
+}
+
+.menu-item.delete:hover {
+    background-color: rgba(217, 30, 54, 0.1);
+    color: #ff4d4d;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Responsivo */

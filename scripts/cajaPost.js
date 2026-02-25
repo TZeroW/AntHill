@@ -24,9 +24,18 @@ export function crearPost(post) {
             const user = JSON.parse(localStorage.getItem("anthill_user"));
             if (user && user.name === autor) {
                 return `
-                        <div class="post-actions-menu">
-                            <button class="btn-edit" onclick="window.postManager.prepararEdicion(${id})"><i class="bi bi-pencil"></i></button>
-                            <button class="btn-delete" onclick="window.postManager.eliminar(${id})"><i class="bi bi-trash"></i></button>
+                        <div class="post-options">
+                            <button class="kebab-btn" onclick="this.nextElementSibling.classList.toggle('show')">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <div class="kebab-menu">
+                                <button class="menu-item" onclick="window.postManager.prepararEdicion(${id}); this.parentElement.classList.remove('show')">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </button>
+                                <button class="menu-item delete" onclick="window.postManager.eliminar(${id}); this.parentElement.classList.remove('show')">
+                                    <i class="bi bi-trash3"></i> Eliminar
+                                </button>
+                            </div>
                         </div>`;
             }
             return '';
