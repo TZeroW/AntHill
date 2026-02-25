@@ -46,7 +46,7 @@
                     <img src="../assets/general/settings.svg" alt="" />
                     <span>Settings</span>
                 </a>
-                <a href="sections/login.html">
+                <a href="login.html">
                     <img src="../assets/general/log_out.svg" alt="" />
                     <span>Log out</span>
                 </a>
@@ -64,98 +64,32 @@
             </div>
 
             <!-- El Post Principal -->
-            <article class="post-card">
-                <header class="post-header-full">
-                    <img src="../assets/general/pfp-lol.jpg" alt="User PFP" class="author-pfp" />
-                    <div class="author-info">
-                        <div class="name-row">
-                            <span class="author-name">TZeroW</span>
-                            <span class="user-handle">@tzerow_dev</span>
-                            <span class="post-time">• 2h</span>
-                        </div>
-                        <span class="colony-origin">en <a href="#">Memes</a></span>
-                    </div>
-                    <div class="post-options">
-                        <button class="options-btn" onclick="this.nextElementSibling.classList.toggle('show')">
-                            <i class="bi bi-three-dots"></i>
-                        </button>
-                        <div class="kebab-menu">
-                            <button class="menu-item">
-                                <i class="bi bi-pencil-square"></i> Editar
-                            </button>
-                            <button class="menu-item delete">
-                                <i class="bi bi-trash"></i> Eliminar
-                            </button>
-                        </div>
-                    </div>
-                </header>
-
-                <div class="post-body">
-                    <p class="post-text">
-                        No se este es un post de prueba y no se que poner aqui pero espero y esto funcione solo
-                        arreglare esto rapido ya despues acomodo el diseño solo es pa mañana
-                    </p>
-                    <div class="post-media">
-                        <img src="https://i.pinimg.com/736x/d5/f5/d5/d5f5d54d46715aa579b01fa071db89ac.jpg"
-                            alt="Post Content" />
-                    </div>
-                </div>
-
-                <footer class="post-actions-full">
-                    <div class="action-item like">
-                        <button><i class="bi bi-heart"></i></button>
-                        <span>124</span>
-                    </div>
-                    <div class="action-item repost">
-                        <button><i class="bi bi-repeat"></i></button>
-                        <span>42</span>
-                    </div>
-                    <div class="action-item comment">
-                        <button><i class="bi bi-chat"></i></button>
-                        <span>12</span>
-                    </div>
-                    <div class="action-item share">
-                        <button><i class="bi bi-share"></i></button>
-                    </div>
-                </footer>
+            <article class="post-card" id="main-post-container">
+                <p style="text-align: center; padding: 20px;">Cargando post...</p>
+                <!-- Se llenará dinámicamente -->
             </article>
 
             <!-- Sección de Comentarios -->
-            <section class="comments-section">
+            <section class="comments-section" style="display: none;">
                 <div class="comment-input-box">
-                    <img src="../assets/general/pfp-lol.jpg" alt="Your PFP" class="mini-pfp" />
+                    <img id="comment-pfp" src="../assets/general/pfp.webp" alt="Your PFP" class="mini-pfp" />
                     <div class="input-wrapper">
-                        <textarea placeholder="Escribe tu comentario..."></textarea>
+                        <textarea id="comment-textarea" placeholder="Escribe tu comentario..."></textarea>
                         <div class="input-actions">
-                            <div class="format-tools">
-                                <button title="Imagen"><i class="bi bi-image"></i></button>
-                                <button title="Emoji"><i class="bi bi-emoji-smile"></i></button>
-                            </div>
-                            <button class="btn-comment-submit">Responder</button>
+                            <button class="btn-comment-submit" id="btn-submit-comment">Responder</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="comments-list">
-                    <!-- Comentario de ejemplo -->
-                    <div class="comment-item">
-                        <img src="../assets/general/pfp.webp" alt="Commenter" class="mini-pfp" />
-                        <div class="comment-content">
-                            <div class="comment-header">
-                                <span class="comment-name">Salmule</span>
-                                <span class="comment-time">1h</span>
-                            </div>
-                            <p class="comment-text">Dejate de cosas y termina ya</p>
-                            <div class="comment-actions">
-                                <span><i class="bi bi-heart"></i> 5</span>
-                                <span>Responder</span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="comments-list" id="comments-list">
+                    <!-- Los comentarios aparecerán aquí -->
                 </div>
             </section>
         </main>
     </div>
+
+    <script type="module" src="../scripts/postInteractions.js"></script>
+    <script type="module" src="../scripts/postViewManager.js"></script>
 </body>
 
 </html>

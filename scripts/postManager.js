@@ -87,6 +87,17 @@ class PostManager {
             this.inputPost.focus();
         }
     }
+
+    async eliminarFromView(id) {
+        if (confirm("¿Estás seguro de que quieres eliminar este post?")) {
+            await eliminarPost(id);
+            window.location.href = "../index.html";
+        }
+    }
+
+    prepararEdicionFromView(id) {
+        alert("Por ahora, edita tus publicaciones desde el feed principal.");
+    }
 }
 
 // lo exponemos globalmente para que los onclick del HTML funcionen

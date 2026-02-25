@@ -65,6 +65,27 @@
         </main>
     </div>
 
+    <!-- Esqueleto del Menú para Crear Colonia (Solo estructura, el usuario pondrá el estilo) -->
+    <div id="modal-crear-colonia"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: #1a1a1a; padding: 20px; border-radius: 12px; max-width: 400px; width: 90%;">
+            <h2>Fundar Nueva Colonia</h2>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+                <input type="text" id="new-colonia-name" placeholder="Nombre de la colonia (ej. Gaming)"
+                    style="padding: 10px;">
+                <textarea id="new-colonia-desc" placeholder="Descripción breve..." style="padding: 10px;"></textarea>
+                <input type="text" id="new-colonia-img" placeholder="URL de la imagen (opcional)"
+                    style="padding: 10px;">
+
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button id="btn-confirm-colonia" style="flex: 1; padding: 10px; cursor: pointer;">Fundar</button>
+                    <button id="btn-cancel-colonia" style="flex: 1; padding: 10px; cursor: pointer;">Cancelar</button>
+                </div>
+            </div>
+            <p id="colonia-error-msg" style="color: red; font-size: 0.8rem; margin-top: 10px; display: none;"></p>
+        </div>
+    </div>
+
     <script type="module" src="../scripts/coloniaManager.js"></script>
 </body>
 

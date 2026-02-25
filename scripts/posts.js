@@ -140,6 +140,117 @@ export async function editarPost(id, nuevoContenido) {
   }
 }
 
+// Dar like (Upvote) - Toggle
+export async function likePost(id) {
+  const user = getUsuarioActual();
+  if (!user) return null;
+
+  try {
+    const { data: existingLike } = await supabase
+      .from("post_likes")
+      .select("*")
+      .eq("post_id", id)
+      .eq("user_name", user.name)
+      .maybeSingle();
+
+    const { data: post } = await supabase
+      .from("posts")
+      .select("likes_count")
+      .eq("id", id)
+      .single();
+
+    let newCount = post.likes_count || 0;
+    let action = "";
+
+    if (existingLike) {
+      // Quitar like
+      await supabase.from("post_likes").delete().eq("id", existingLike.id);
+      newCount = Math.max(0, newCount - 1);
+      action = "removed";
+    } else {
+      // Dar like
+      await supabase.from("post_likes").insert([{ post_id: id, user_name: user.name }]);
+      newCount += 1;
+      action = "added";
+    }
+
+    await supabase.from("posts").update({ likes_count: newCount }).eq("id", id);
+
+    return { count: newCount, action };
+  } catch (error) {
+    console.error("Error al procesar like:", error.message);
+    return null;
+  }
+}
+
+// Repostear - Toggle
+export async function repostPost(id) {
+  const user = getUsuarioActual();
+  if (!user) return null;
+
+  try {
+    const { data: existingRepost } = await supabase
+      .from("post_reposts")
+      .select("*")
+      .eq("post_id", id)
+      .eq("user_name", user.name)
+      .maybeSingle();
+
+    const { data: post } = await supabase
+      .from("posts")
+      .select("reposts_count")
+      .eq("id", id)
+      .single();
+
+    let newCount = post.reposts_count || 0;
+    let action = "";
+
+    if (existingRepost) {
+      // Quitar repost
+      await supabase.from("post_reposts").delete().eq("id", existingRepost.id);
+      newCount = Math.max(0, newCount - 1);
+      action = "removed";
+    } else {
+      // Dar repost
+      await supabase.from("post_reposts").insert([{ post_id: id, user_name: user.name }]);
+      newCount += 1;
+      action = "added";
+    }
+
+    await supabase.from("posts").update({ reposts_count: newCount }).eq("id", id);
+
+    return { count: newCount, action };
+  } catch (error) {
+    console.error("Error al procesar repost:", error.message);
+    return null;
+  }
+}
+
+// Incrementar contador de comentarios
+export async function incrementCommentCount(postId) {
+  try {
+    const { data: post, error: fetchError } = await supabase
+      .from("posts")
+      .select("comments_count")
+      .eq("id", postId)
+      .single();
+
+    if (fetchError) throw fetchError;
+
+    const newCount = (post.comments_count || 0) + 1;
+
+    await supabase
+      .from("posts")
+      .update({ comments_count: newCount })
+      .eq("id", postId);
+
+    return newCount;
+  } catch (error) {
+    console.error("Error al actualizar contador de comentarios:", error.message);
+    return null;
+  }
+}
+
 // funcion para filtrar general
 export function filtrar() {
   const feed = document.getElementById("feed");

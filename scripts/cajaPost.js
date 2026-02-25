@@ -1,19 +1,30 @@
 export function crearPost(post) {
     const { id, contenido, autor, fotoperfil, fecha, imagen } = post;
+
+    // helper para corregir rutas dinámicamente según dónde estemos
+    const getPath = (path) => {
+        if (!path) return "assets/general/pfp.webp";
+        if (path.startsWith("http") || path.startsWith("data:")) return path;
+
+        // detectamos si estamos en una subcarpeta (sections/)
+        const isSubfolder = window.location.pathname.includes("/sections/");
+        return isSubfolder ? `../${path}` : path;
+    };
+
     let htmlImagen = '';
 
     if (imagen) {
         if (imagen === 'placeholder') {
             htmlImagen = `<div class="mock-media" style="width: 100%; height: 200px; background: linear-gradient(135deg, #161616 0%, #0d0d0d 100%); border-radius: 8px; margin-top: 10px; border: 1px solid #222;"></div>`;
         } else {
-            htmlImagen = `<div class="media-container" style="margin-top: 10px;"><img src="${imagen}" alt="Imagen del Post" style="width: 100%; border-radius: 8px; border: 1px solid #222;"></div>`;
+            htmlImagen = `<div class="media-container" style="margin-top: 10px;"><img src="${getPath(imagen)}" alt="Imagen del Post" style="width: 100%; border-radius: 8px; border: 1px solid #222;"></div>`;
         }
     }
 
     return `
-    <article class="post-item" data-id="${id}">
+    <article class="post-item" data-id="${id}" onclick="if(!event.target.closest('button') && !event.target.closest('a')) { window.location.href = '${getPath('sections/postView.html?id=' + id)}' }">
         <div class="post-pfp-col">
-            <img src="${fotoperfil || 'assets/general/pfp.webp'}" alt="${autor}" class="post-pfp-img">
+            <img src="${getPath(fotoperfil)}" alt="${autor}" class="post-pfp-img">
         </div>
         <div class="post-main-col">
             <div class="post-hdr">
@@ -46,10 +57,12 @@ export function crearPost(post) {
                 ${htmlImagen}
             </div>
             <div class="post-footer">
-                <button class="action-btn"><i class="bi bi-caret-up-fill"></i> 0</button>
-                <button class="action-btn"><i class="bi bi-chat-left"></i> 0</button>
-                <button class="action-btn"><i class="bi bi-arrow-left-right"></i> 0</button>
-                <button class="action-btn"><i class="bi bi-share"></i></button>
+                <button class="action-btn comment-btn" onclick="event.stopPropagation(); window.location.href='${getPath('sections/postView.html?id=' + id)}'">
+                    <i class="bi bi-chat-left"></i> <span>${post.comments_count || 0}</span>
+                </button>
+                <button class="action-btn repost-btn" onclick="event.stopPropagation(); window.postInteractions.interact(${id}, 'repost', this)">
+                    <i class="bi bi-arrow-left-right"></i> <span>${post.reposts_count || 0}</span>
+                </button>
             </div>
         </div>
     </article>
