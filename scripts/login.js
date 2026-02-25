@@ -38,3 +38,14 @@ if (loginForm) {
         }
     });
 }
+const showPasswordBtn = document.querySelector(".show_password");
+if (showPasswordBtn) {
+    showPasswordBtn.addEventListener("click", () => {
+        const passwordInput = document.getElementById("key");
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    });
+}

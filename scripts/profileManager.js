@@ -1,5 +1,8 @@
 import { supabase } from "./supabaseClient.js";
 import { crearPost } from "./cajaPost.js";
+import { filtrarPosts } from "./posts.js";
+
+let currentProfilePosts = []; // Para búsqueda en el perfil
 
 async function initProfile() {
     const user = JSON.parse(localStorage.getItem("anthill_user"));
@@ -58,6 +61,19 @@ async function initProfile() {
             }
         });
     });
+
+    // Buscador Global
+    const searchBar = document.getElementById("global-search");
+    if (searchBar) {
+        searchBar.addEventListener("input", (e) => {
+            const q = e.target.value.toLowerCase();
+            const filtered = currentProfilePosts.filter(post =>
+                post.autor.toLowerCase().includes(q) ||
+                post.contenido.toLowerCase().includes(q)
+            );
+            renderFeed(filtered);
+        });
+    }
 }
 
 async function cargarPostsUsuario(username) {
@@ -74,6 +90,7 @@ async function cargarPostsUsuario(username) {
             .order("created_at", { ascending: false });
 
         if (error) throw error;
+        currentProfilePosts = data;
         renderFeed(data, "Aún no has publicado nada. ¡Ve al Home y comparte algo!");
     } catch (error) {
         console.error("Error al cargar perfil:", error.message);
@@ -109,6 +126,7 @@ async function cargarPostsLikes(username) {
             .order("created_at", { ascending: false });
 
         if (postsError) throw postsError;
+        currentProfilePosts = posts;
         renderFeed(posts);
     } catch (error) {
         console.error("Error likes:", error);
@@ -142,6 +160,7 @@ async function cargarPostsReposts(username) {
             .order("created_at", { ascending: false });
 
         if (postsError) throw postsError;
+        currentProfilePosts = posts;
         renderFeed(posts);
     } catch (error) {
         console.error("Error reposts:", error);

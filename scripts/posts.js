@@ -251,29 +251,34 @@ export async function incrementCommentCount(postId) {
   }
 }
 
-// funcion para filtrar general
-export function filtrar() {
+// funcion para filtrar por texto (autor o contenido)
+export function filtrarPosts(query) {
   const feed = document.getElementById("feed");
-  const autorInput = document.getElementById("autor");
-  const contenidoInput = document.getElementById("contenido");
+  if (!feed) return;
 
-  const autor = autorInput ? autorInput.value : "";
-  const contenido = contenidoInput ? contenidoInput.value : "";
+  const q = query.toLowerCase();
+  const filtered = listaDePosts.filter(post =>
+    post.autor.toLowerCase().includes(q) ||
+    post.contenido.toLowerCase().includes(q)
+  );
 
-  const postsFiltrados = listaDePosts.filter((post) => {
-    return (
-      post.autor.toLowerCase().includes(autor.toLowerCase()) &&
-      post.contenido.toLowerCase().includes(contenido.toLowerCase())
-    );
-  });
+  renderizarPosts(filtered);
+}
 
-  if (feed) {
-    feed.innerHTML = "";
-    postsFiltrados.forEach((post) => {
-      const htmlPost = crearPost(post);
-      feed.innerHTML += htmlPost;
-    });
+// Helper para renderizar una lista de posts en el feed
+export function renderizarPosts(lista) {
+  const feed = document.getElementById("feed");
+  if (!feed) return;
+
+  feed.innerHTML = "";
+  if (lista.length === 0) {
+    feed.innerHTML = "<p style='text-align:center; padding: 20px;'>No se encontraron resultados.</p>";
+    return;
   }
+
+  lista.forEach(post => {
+    feed.innerHTML += crearPost(post);
+  });
 }
 
 // funcion para mostrar solo los posts de un usuario especifico

@@ -16,7 +16,7 @@
             <h1>AntHill</h1>
         </div>
         <div class="search-bar">
-            <input type="text" placeholder="Buscar en la colonia..." />
+            <input type="text" id="global-search" placeholder="Buscar en la colonia..." />
         </div>
         <div class="user-actions">
             <span><img src="assets/general/bell.svg" alt="Notificaciones" /></span>
@@ -88,13 +88,21 @@
 
     <!-- script para cargar el feed -->
     <script type="module">
-        import { cargarPosts, cargarPostsPorColonia } from "/scripts/posts.js";
+        import { cargarPosts, cargarPostsPorColonia, filtrarPosts } from "/scripts/posts.js";
         import { cargarRecomendados } from "/scripts/coloniaManager.js";
         import "/scripts/postManager.js";
         import "/scripts/postInteractions.js";
 
         // Cargar colonias recomendadas
         cargarRecomendados();
+
+        // Buscador Global
+        const searchBar = document.getElementById("global-search");
+        if (searchBar) {
+            searchBar.addEventListener("input", (e) => {
+                filtrarPosts(e.target.value);
+            });
+        }
 
         // Actualizar UI del usuario
         const user = JSON.parse(localStorage.getItem("anthill_user"));
