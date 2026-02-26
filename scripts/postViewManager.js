@@ -127,16 +127,19 @@ function renderizarPost(post) {
         <header class="post-header-full">
             <img src="${getPath(post.fotoperfil)}" alt="${post.autor}" class="author-pfp" />
             <div class="author-info">
-                <div class="name-row" style="display: flex; align-items: center; gap: 8px;">
-                    <span class="author-name" style="font-weight: bold; color: white;">${post.autor}</span>
-                    <span class="user-handle" style="color: #666;">${handle}</span>
-                    <span class="post-time" style="color: #666;">• ${fecha}</span>
+                <div class="name-row">
+                    <span class="author-name">${post.autor}</span>
+                    <span class="user-handle">${handle}</span>
+                    <span class="post-time">• ${fecha}</span>
                 </div>
-                <span class="colony-origin" style="color: #666; font-size: 0.9rem;">en <a href="../index.html?colonia=${post.colonia || 'General'}" style="color: var(--color-primary); text-decoration: none;">c/${post.colonia || 'General'}</a></span>
+                <span class="colony-origin">
+                    en <a href="../index.html?colonia=${post.colonia || 'General'}">c/${post.colonia || 'General'}</a>
+                </span>
             </div>
+            
             ${isOwner ? `
                 <div class="post-options">
-                    <button class="options-btn" onclick="this.nextElementSibling.classList.toggle('show')" style="background: none; border: none; color: #666; cursor: pointer;">
+                    <button class="options-btn" onclick="this.nextElementSibling.classList.toggle('show')">
                         <i class="bi bi-three-dots"></i>
                     </button>
                     <div class="kebab-menu">
@@ -151,26 +154,32 @@ function renderizarPost(post) {
             ` : ''}
         </header>
 
-        <div class="post-body" style="margin-top: 15px;">
-            <p class="post-text" style="font-size: 1.1rem; line-height: 1.5; color: #e1e1e1;">${post.contenido}</p>
+        <div class="post-body">
+            <p class="post-text">${post.contenido}</p>
             ${post.imagen ? `
-                <div class="post-media" style="margin-top: 15px; border-radius: 12px; overflow: hidden; border: 1px solid #333;">
-                    <img src="${getPath(post.imagen)}" alt="Post Content" style="width: 100%; display: block;" />
+                <div class="post-media">
+                    <img src="${getPath(post.imagen)}" alt="Post Content" />
                 </div>
             ` : ''}
         </div>
 
-        <footer class="post-actions-full" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #333; display: flex; gap: 20px;">
-            <div class="action-item like" style="display: flex; align-items: center; gap: 8px; color: #666;">
-                <button onclick="window.postInteractions.interact(${post.id}, 'vote', this)" style="background: none; border: none; color: inherit; cursor: pointer; font-size: 1.2rem;"><i class="bi bi-heart"></i></button>
+        <footer class="post-actions-full">
+            <div class="action-item like">
+                <button onclick="window.postInteractions.interact(${post.id}, 'vote', this)">
+                    <i class="bi bi-heart"></i>
+                </button>
                 <span>${post.likes_count || 0}</span>
             </div>
-            <div class="action-item repost" style="display: flex; align-items: center; gap: 8px; color: #666;">
-                <button onclick="window.postInteractions.interact(${post.id}, 'repost', this)" style="background: none; border: none; color: inherit; cursor: pointer; font-size: 1.2rem;"><i class="bi bi-repeat"></i></button>
+            <div class="action-item repost">
+                <button onclick="window.postInteractions.interact(${post.id}, 'repost', this)">
+                    <i class="bi bi-repeat"></i>
+                </button>
                 <span>${post.reposts_count || 0}</span>
             </div>
-            <div class="action-item comment" style="display: flex; align-items: center; gap: 8px; color: #666;">
-                <button style="background: none; border: none; color: inherit; cursor: pointer; font-size: 1.2rem;"><i class="bi bi-chat"></i></button>
+            <div class="action-item comment">
+                <button>
+                    <i class="bi bi-chat"></i>
+                </button>
                 <span id="post-comment-count">${post.comments_count || 0}</span>
             </div>
         </footer>

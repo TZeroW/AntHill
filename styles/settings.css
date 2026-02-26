@@ -221,6 +221,7 @@ body {
     align-items: center;
     gap: 16px;
     margin-bottom: 8px;
+    object-fit: cover;
 }
 
 #pfp-preview {

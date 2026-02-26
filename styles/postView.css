@@ -175,7 +175,7 @@ body {
 
 /* Estructura del Post */
 .post-container {
-    max-width: 680px;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -255,6 +255,10 @@ body {
     color: var(--accent-red);
     text-decoration: none;
     font-weight: 600;
+}
+
+.colony-origin a:hover {
+    text-decoration: underline;
 }
 
 .options-btn {
@@ -341,12 +345,12 @@ body {
 
 /* Cuerpo del Post */
 .post-body {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .post-text {
+    margin-top: 25px;
     font-size: 1.1rem;
-    margin-bottom: 15px;
     white-space: pre-wrap;
 }
 
@@ -368,7 +372,7 @@ body {
     display: flex;
     justify-content: space-between;
     border-top: 1px solid var(--border-color);
-    padding-top: 15px;
+    padding-top: 5px;
 }
 
 .action-item {
@@ -458,10 +462,12 @@ body {
     border-bottom: 1px solid var(--border-color);
     color: var(--text-main);
     font-size: 1.05rem;
-    padding: 10px 0;
+    padding: 10px;
+    padding-bottom: 0;
     resize: none;
     outline: none;
     margin-bottom: 10px;
+    font-family: var(--font-main);
 }
 
 .input-wrapper textarea:focus {
@@ -486,7 +492,7 @@ body {
     font-size: 1.1rem;
     cursor: pointer;
     padding: 5px;
-    border-radius: 4px;
+    border-radius: 20px;
     transition: 0.2s;
 }
 
@@ -499,7 +505,7 @@ body {
     color: white;
     border: none;
     padding: 8px 20px;
-    border-radius: 20px;
+    border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
