@@ -243,6 +243,7 @@ body {
     border: 1px solid var(--border-color);
     color: white;
     margin-right: 10px;
+    text-decoration: none;
 }
 
 .btn-secondary:hover {
@@ -436,6 +437,7 @@ body {
     padding: 16px;
     display: flex;
     gap: 16px;
+    cursor: pointer;
 }
 
 .post-pfp-img {
