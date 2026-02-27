@@ -35,7 +35,6 @@ body {
     align-items: center;
     padding: 12px 30px;
     background-color: var(--bg-card);
-    /* coincidir el color de la tarjeta de perfil con el encabezado */
     border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
@@ -196,9 +195,7 @@ body {
     padding: 0 20px;
     position: relative;
     top: -40px;
-    /* empujar contenido arriba sobre banner */
     margin-bottom: -40px;
-    /* compensar espacio */
 }
 
 /* encabezado */
@@ -288,7 +285,6 @@ body {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    /* borramos background de columna entera para que se vea limpio */
 }
 
 /* barra lateral */

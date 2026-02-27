@@ -35,7 +35,6 @@ body {
     align-items: center;
     padding: 12px 30px;
     background-color: var(--card-bg);
-    /* coincidir el color de la tarjeta de perfil con el encabezado */
     border-bottom: 1px solid var(--border-color);
     position: sticky;
     top: 0;
