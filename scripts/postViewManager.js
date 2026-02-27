@@ -130,7 +130,6 @@ function renderizarPost(post) {
                 <div class="name-row">
                     <span class="author-name">${post.autor}</span>
                     <span class="user-handle">${handle}</span>
-                    <span class="post-time">• ${fecha}</span>
                 </div>
                 <span class="colony-origin">
                     en <a href="../index.html?colonia=${post.colonia || 'General'}">c/${post.colonia || 'General'}</a>
@@ -163,7 +162,12 @@ function renderizarPost(post) {
             ` : ''}
         </div>
 
+        <div class="post-footer">
+            <span class="post-time"> ${fecha}</span>
+        </div>
+
         <footer class="post-actions-full">
+            
             <div class="action-item like">
                 <button onclick="window.postInteractions.interact(${post.id}, 'vote', this)">
                     <i class="bi bi-heart"></i>
@@ -182,6 +186,7 @@ function renderizarPost(post) {
                 </button>
                 <span id="post-comment-count">${post.comments_count || 0}</span>
             </div>
+            
         </footer>
     `;
 }

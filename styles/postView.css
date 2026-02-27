@@ -367,6 +367,11 @@ body {
     max-height: 500px;
 }
 
+.post-footer {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
 /* Acciones del Post */
 .post-actions-full {
     display: flex;
