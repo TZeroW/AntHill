@@ -32,7 +32,7 @@ class PostManager {
             });
         }
 
-        // Cerrar menús kebab al hacer click fuera
+        // cerrar menus al hacer click fuera
         document.addEventListener("mousedown", (e) => {
             if (!e.target.closest('.post-options')) {
                 document.querySelectorAll('.kebab-menu.show').forEach(menu => {
@@ -66,7 +66,7 @@ class PostManager {
             return;
         }
 
-        if (confirm("¿Estás seguro de que quieres eliminar este post?")) {
+        if (confirm("Estás seguro de que quieres eliminar este post?")) {
             await eliminarPost(id);
         }
     }
@@ -100,5 +100,4 @@ class PostManager {
     }
 }
 
-// lo exponemos globalmente para que los onclick del HTML funcionen
 window.postManager = new PostManager();

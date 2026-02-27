@@ -1,6 +1,5 @@
 import { supabase } from "./supabaseClient.js";
 import { crearPost } from "./cajaPost.js";
-import { filtrarPosts } from "./posts.js";
 
 let currentProfilePosts = []; // Para búsqueda en el perfil
 
@@ -12,7 +11,7 @@ async function initProfile() {
         return;
     }
 
-    // función para manejar rutas locales vs externas
+    // funcion para manejar rutas locales vs externas
     const fixPath = (path) => {
         if (!path) return "../assets/general/pfp.webp";
         if (path.startsWith("http") || path.startsWith("data:")) return path;
@@ -43,11 +42,11 @@ async function initProfile() {
     // cargar posts del usuario
     await cargarPostsUsuario(user.name);
 
-    // Configurar Tabs
+    // configurar tabs
     const tabs = document.querySelectorAll(".feed-tab");
     tabs.forEach(tab => {
         tab.addEventListener("click", async () => {
-            // Cambiar clase activa
+            // cambiar clase activa
             tabs.forEach(t => t.classList.remove("active"));
             tab.classList.add("active");
 
@@ -62,7 +61,7 @@ async function initProfile() {
         });
     });
 
-    // Buscador Global
+    // buscador
     const searchBar = document.getElementById("global-search");
     if (searchBar) {
         searchBar.addEventListener("input", (e) => {
@@ -118,7 +117,7 @@ async function cargarPostsLikes(username) {
 
         const ids = likes.map(l => l.post_id);
 
-        // obtener los posts reales
+        // obtener los posts
         const { data: posts, error: postsError } = await supabase
             .from("posts")
             .select("*")
@@ -182,5 +181,5 @@ function renderFeed(posts, emptyMessage = "No hay nada aquí.") {
     });
 }
 
-// Inicializar
+// iniciar
 document.addEventListener("DOMContentLoaded", initProfile);

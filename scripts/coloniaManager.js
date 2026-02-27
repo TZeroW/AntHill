@@ -48,7 +48,7 @@ if (searchBar) {
     });
 }
 
-// --- logica de creacion de colonias ---
+// logica de creacion de colonias
 const btnCrearColonia = document.querySelector(".btn-create");
 const modal = document.getElementById("modal-crear-colonia");
 const btnConfirm = document.getElementById("btn-confirm-colonia");
@@ -90,12 +90,12 @@ if (btnConfirm) {
 
             if (error) throw error;
 
-            // Éxito: recargar y cerrar
+            // recargar y cerrar
             modal.style.display = "none";
             document.getElementById("new-colonia-name").value = "";
             document.getElementById("new-colonia-desc").value = "";
             document.getElementById("new-colonia-img").value = "";
-            initColonias(); // Recargar lista
+            initColonias(); // recargar lista
         } catch (err) {
             console.error("Error al fundar colonia:", err.message);
             errorMsg.textContent = "Error: " + err.message;
@@ -188,7 +188,7 @@ function renderizarListaColonias(lista) {
     });
 }
 
-// Inicializar si estamos en la página de colonias
+// iniciar si estamos en la pagina de colonias
 if (document.querySelector(".colonias-container")) {
     document.addEventListener("DOMContentLoaded", initColonias);
 }

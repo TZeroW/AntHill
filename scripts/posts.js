@@ -112,7 +112,7 @@ export async function agregarPost(contenido, imagen = null, colonia = "General")
   }
 }
 
-// Eliminar un post
+// eliminar un post
 export async function eliminarPost(id) {
   try {
     const { error } = await supabase.from("posts").delete().eq("id", id);
@@ -124,7 +124,7 @@ export async function eliminarPost(id) {
   }
 }
 
-// Editar un post
+// editar un post
 export async function editarPost(id, nuevoContenido) {
   try {
     const { error } = await supabase
@@ -140,7 +140,7 @@ export async function editarPost(id, nuevoContenido) {
   }
 }
 
-// Dar like (Upvote) - Toggle
+// likes
 export async function likePost(id) {
   const user = getUsuarioActual();
   if (!user) return null;
@@ -163,12 +163,12 @@ export async function likePost(id) {
     let action = "";
 
     if (existingLike) {
-      // Quitar like
+      // quitar like
       await supabase.from("post_likes").delete().eq("id", existingLike.id);
       newCount = Math.max(0, newCount - 1);
       action = "removed";
     } else {
-      // Dar like
+      // dar like
       await supabase.from("post_likes").insert([{ post_id: id, user_name: user.name }]);
       newCount += 1;
       action = "added";
@@ -183,7 +183,7 @@ export async function likePost(id) {
   }
 }
 
-// Repostear - Toggle
+// repostear
 export async function repostPost(id) {
   const user = getUsuarioActual();
   if (!user) return null;
@@ -206,12 +206,12 @@ export async function repostPost(id) {
     let action = "";
 
     if (existingRepost) {
-      // Quitar repost
+      // quitar repost
       await supabase.from("post_reposts").delete().eq("id", existingRepost.id);
       newCount = Math.max(0, newCount - 1);
       action = "removed";
     } else {
-      // Dar repost
+      // dar repost
       await supabase.from("post_reposts").insert([{ post_id: id, user_name: user.name }]);
       newCount += 1;
       action = "added";
@@ -226,7 +226,7 @@ export async function repostPost(id) {
   }
 }
 
-// Incrementar contador de comentarios
+// incrementar contador de comentarios
 export async function incrementCommentCount(postId) {
   try {
     const { data: post, error: fetchError } = await supabase
@@ -251,7 +251,7 @@ export async function incrementCommentCount(postId) {
   }
 }
 
-// funcion para filtrar por texto (autor o contenido)
+// funcion para filtrar por texto
 export function filtrarPosts(query) {
   const feed = document.getElementById("feed");
   if (!feed) return;
@@ -265,7 +265,7 @@ export function filtrarPosts(query) {
   renderizarPosts(filtered);
 }
 
-// Helper para renderizar una lista de posts en el feed
+// helper para renderizar una lista de posts en el feed
 export function renderizarPosts(lista) {
   const feed = document.getElementById("feed");
   if (!feed) return;
