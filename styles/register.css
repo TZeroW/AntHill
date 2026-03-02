@@ -153,3 +153,19 @@ footer {
     font-size: 0.75rem;
     text-align: center;
 }
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .log_in_container {
+        width: 90%;
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+
+    .subtitulo_lol {
+        font-size: 1.2rem;
+    }
+}
