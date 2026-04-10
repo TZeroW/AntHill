@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  auth-service:
+    build: ./microservices/auth
+    ports:
+      - "5001:5001"
+    environment:
+      - APP_ENV=development
+
+  posts-service:
+    build: ./microservices/posts
+    ports:
+      - "5002:5002"
+    environment:
+      - AUTH_SERVICE_URL=http://auth-service:5001 # ¡Acá está la magia!
+    depends_on:
+      - auth-service
