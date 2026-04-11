@@ -17,7 +17,7 @@ Resources:
     Type: AWS::EC2::InternetGateway
 
   VPCGatewayAttachment:
-    Type: AWS::AWS::EC2::VPCGatewayAttachment
+    Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref AntHillVPC
       InternetGatewayId: !Ref AntHillIGW
