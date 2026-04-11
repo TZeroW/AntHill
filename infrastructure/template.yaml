@@ -66,6 +66,9 @@ Resources:
       SubnetId: !Ref PublicSubnet
       SecurityGroupIds: [!Ref AntHillSecurityGroup]
       IamInstanceProfile: LabInstanceProfile
+      Tags:
+        - Key: Name
+          Value: AntHill-Main-Server
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -74,13 +77,16 @@ Resources:
           systemctl start docker
           systemctl enable docker
           usermod -aG docker ec2-user
-          mkdir -p /usr/local/lib/docker/cli-plugins/
-          curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
-          chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
           cd /home/ec2-user
           git clone https://github.com/TZeroW/AntHill.git
           cd AntHill
-          docker compose up -d --build
+
+          docker build -t anthill-auth ./microservices/auth
+          docker build -t anthill-posts ./microservices/posts
+
+          docker run -d -p 5001:5001 --name auth-app anthill-auth
+          docker run -d -p 5002:5002 --name posts-app anthill-posts
 
   AntHillPostsTable:
     Type: AWS::DynamoDB::Table
