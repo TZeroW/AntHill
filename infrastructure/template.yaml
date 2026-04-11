@@ -1,17 +1,13 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: Infraestructura completa para AntHill (VPC, EC2, S3 y DynamoDB)
+Description: Infraestructura AntHill
 
 Resources:
-  # --- RED ---
   AntHillVPC:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: 10.0.0.0/16
       EnableDnsSupport: true
       EnableDnsHostnames: true
-      Tags:
-        - Key: Name
-          Value: AntHill-VPC
 
   AntHillIGW:
     Type: AWS::EC2::InternetGateway
@@ -28,10 +24,6 @@ Resources:
       VpcId: !Ref AntHillVPC
       CidrBlock: 10.0.1.0/24
       MapPublicIpOnLaunch: true
-      AvailabilityZone: !Select [0, !GetAZs ""]
-      Tags:
-        - Key: Name
-          Value: AntHill-Public-Subnet
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
@@ -51,44 +43,28 @@ Resources:
       SubnetId: !Ref PublicSubnet
       RouteTableId: !Ref PublicRouteTable
 
-  # --- SEGURIDAD ---
   AntHillSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Permite SSH, HTTP y Microservicios (5001-5002)
+      GroupDescription: SSH y App
       VpcId: !Ref AntHillVPC
       SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 5001
-          ToPort: 5002
-          CidrIp: 0.0.0.0/0
+        - { IpProtocol: tcp, FromPort: 22, ToPort: 22, CidrIp: 0.0.0.0/0 }
+        - { IpProtocol: tcp, FromPort: 5001, ToPort: 5002, CidrIp: 0.0.0.0/0 }
 
-  # --- ALMACENAMIENTO ---
   AntHillReportsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "reportes-anthill-devops-${AWS::AccountId}"
-      VersioningConfiguration:
-        Status: Enabled
+      BucketName: reportes-anthill-devops-smltp
 
-  # --- COMPUTO ---
   AntHillServer:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.micro
       ImageId: ami-0c101f26f147fa7fd
-      KeyName: labsuser
+      KeyName: vockey
       SubnetId: !Ref PublicSubnet
-      SecurityGroupIds:
-        - !Ref AntHillSecurityGroup
+      SecurityGroupIds: [!Ref AntHillSecurityGroup]
       IamInstanceProfile: LabInstanceProfile
       UserData:
         Fn::Base64: !Sub |
@@ -98,24 +74,14 @@ Resources:
           systemctl start docker
           systemctl enable docker
           usermod -aG docker ec2-user
-
-          # Instalar Docker Compose (V2 Plugin)
           mkdir -p /usr/local/lib/docker/cli-plugins/
           curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
           chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
-
-          # Clonar y levantar servicios
           cd /home/ec2-user
           git clone https://github.com/TZeroW/AntHill.git
           cd AntHill
-          # Esperar un toque a que Docker este bien despierto
-          sleep 10
           docker compose up -d --build
-      Tags:
-        - Key: Name
-          Value: AntHill-Web-Server
 
-  # --- BASE DE DATOS ---
   AntHillPostsTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -127,14 +93,7 @@ Resources:
         - AttributeName: "PostId"
           KeyType: "HASH"
       BillingMode: PAY_PER_REQUEST
-      Tags:
-        - Key: Name
-          Value: AntHill-Posts-Table
 
 Outputs:
   InstancePublicIP:
-    Description: IP Publica de la instancia para entrar por navegador o SSH
     Value: !GetAtt AntHillServer.PublicIp
-  BucketName:
-    Description: Nombre del bucket de reportes generado
-    Value: !Ref AntHillReportsBucket

@@ -10,7 +10,6 @@ pipeline {
     }
 
     stages {
-
         stage('Docker Build Microservicios') {
             steps {
                 sh 'echo "Construyendo imágenes para Auth y Posts..."'
@@ -32,11 +31,6 @@ pipeline {
 
         stage('Reporte de Auditoría (Boto3)') {
             steps {
-                script {
-                    // Calculamos el ID de cuenta para pasárselo al script de Python
-                    def accountId = sh(script: "${AWS_PATH} sts get-caller-identity --query Account --output text", returnStdout: true).trim()
-                    env.BUCKET_NAME = "reportes-anthill-devops-${accountId}"
-                }
                 sh 'echo "Corriendo script de automatización..."'
                 sh """
                     python3 -m venv venv || true
