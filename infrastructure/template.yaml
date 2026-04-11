@@ -1,5 +1,5 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: Infraestructura completa para AntHill (VPC, EC2 y S3)
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Infraestructura completa para AntHill (VPC, EC2, S3 y DynamoDB)
 
 Resources:
   # --- RED ---
@@ -17,7 +17,7 @@ Resources:
     Type: AWS::EC2::InternetGateway
 
   VPCGatewayAttachment:
-    Type: AWS::EC2::VPCGatewayAttachment
+    Type: AWS::AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref AntHillVPC
       InternetGatewayId: !Ref AntHillIGW
@@ -28,7 +28,7 @@ Resources:
       VpcId: !Ref AntHillVPC
       CidrBlock: 10.0.1.0/24
       MapPublicIpOnLaunch: true
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      AvailabilityZone: !Select [0, !GetAZs ""]
       Tags:
         - Key: Name
           Value: AntHill-Public-Subnet
@@ -55,9 +55,13 @@ Resources:
   AntHillSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Permite trafico HTTP y SSH (restringido)
+      GroupDescription: Permite SSH, HTTP y Microservicios (5001-5002)
       VpcId: !Ref AntHillVPC
       SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
@@ -65,14 +69,13 @@ Resources:
         - IpProtocol: tcp
           FromPort: 5001
           ToPort: 5002
-          CidrIp: 0.0.0.0/0 # Puertos de tus microservicios
+          CidrIp: 0.0.0.0/0
 
   # --- ALMACENAMIENTO ---
   AntHillReportsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      # El nombre tiene que ser unico en el mundo
-      BucketName: !Sub "anthill-reportes-${AWS::AccountId}" 
+      BucketName: !Sub "reportes-anthill-devops-${AWS::AccountId}"
       VersioningConfiguration:
         Status: Enabled
 
@@ -81,13 +84,33 @@ Resources:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.micro
-      # AMI de Amazon Linux 2 us-east-1
-      ImageId: ami-0c101f26f147fa7fd 
+      ImageId: ami-0c101f26f147fa7fd
+      KeyName: labsuser
       SubnetId: !Ref PublicSubnet
       SecurityGroupIds:
         - !Ref AntHillSecurityGroup
-      # Usamos el perfil que ya viene en el lab
-      IamInstanceProfile: LabInstanceProfile 
+      IamInstanceProfile: LabInstanceProfile
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          dnf update -y
+          dnf install -y docker git
+          systemctl start docker
+          systemctl enable docker
+          usermod -aG docker ec2-user
+
+          # Instalar Docker Compose (V2 Plugin)
+          mkdir -p /usr/local/lib/docker/cli-plugins/
+          curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
+          chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+          # Clonar y levantar servicios
+          cd /home/ec2-user
+          git clone https://github.com/TZeroW/AntHill.git
+          cd AntHill
+          # Esperar un toque a que Docker este bien despierto
+          sleep 10
+          docker compose up -d --build
       Tags:
         - Key: Name
           Value: AntHill-Web-Server
@@ -103,7 +126,6 @@ Resources:
       KeySchema:
         - AttributeName: "PostId"
           KeyType: "HASH"
-      # PAY_PER_REQUEST para no quemar presupuesto
       BillingMode: PAY_PER_REQUEST
       Tags:
         - Key: Name
@@ -111,6 +133,8 @@ Resources:
 
 Outputs:
   InstancePublicIP:
+    Description: IP Publica de la instancia para entrar por navegador o SSH
     Value: !GetAtt AntHillServer.PublicIp
   BucketName:
+    Description: Nombre del bucket de reportes generado
     Value: !Ref AntHillReportsBucket
