@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   auth-service:
     build: ./microservices/auth
@@ -12,6 +12,6 @@ services:
     ports:
       - "5002:5002"
     environment:
-      - AUTH_SERVICE_URL=http://auth-service:5001 # ¡Acá está la magia!
+      - AUTH_SERVICE_URL=http://auth-service:5001
     depends_on:
       - auth-service
