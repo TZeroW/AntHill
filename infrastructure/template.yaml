@@ -1,17 +1,13 @@
-AWSTemplateFormatVersion: '2010-09-09'
-Description: Infraestructura completa para AntHill (VPC, EC2 y S3)
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Infraestructura AntHill
 
 Resources:
-  # --- RED ---
   AntHillVPC:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: 10.0.0.0/16
       EnableDnsSupport: true
       EnableDnsHostnames: true
-      Tags:
-        - Key: Name
-          Value: AntHill-VPC
 
   AntHillIGW:
     Type: AWS::EC2::InternetGateway
@@ -28,10 +24,6 @@ Resources:
       VpcId: !Ref AntHillVPC
       CidrBlock: 10.0.1.0/24
       MapPublicIpOnLaunch: true
-      AvailabilityZone: !Select [ 0, !GetAZs '' ]
-      Tags:
-        - Key: Name
-          Value: AntHill-Public-Subnet
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
@@ -51,48 +43,51 @@ Resources:
       SubnetId: !Ref PublicSubnet
       RouteTableId: !Ref PublicRouteTable
 
-  # --- SEGURIDAD ---
   AntHillSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Permite trafico HTTP y SSH (restringido)
+      GroupDescription: SSH y App
       VpcId: !Ref AntHillVPC
       SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-        - IpProtocol: tcp
-          FromPort: 5001
-          ToPort: 5002
-          CidrIp: 0.0.0.0/0 # Puertos de tus microservicios
+        - { IpProtocol: tcp, FromPort: 22, ToPort: 22, CidrIp: 0.0.0.0/0 }
+        - { IpProtocol: tcp, FromPort: 5001, ToPort: 5002, CidrIp: 0.0.0.0/0 }
 
-  # --- ALMACENAMIENTO ---
   AntHillReportsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      # El nombre tiene que ser unico en el mundo
-      BucketName: !Sub "anthill-reportes-${AWS::AccountId}" 
-      VersioningConfiguration:
-        Status: Enabled
+      BucketName: reportes-anthill-devops-smltp
 
-  # --- COMPUTO ---
   AntHillServer:
     Type: AWS::EC2::Instance
     Properties:
       InstanceType: t2.micro
-      # AMI de Amazon Linux 2 us-east-1
-      ImageId: ami-0c101f26f147fa7fd 
+      ImageId: ami-0c101f26f147fa7fd
+      KeyName: vockey
       SubnetId: !Ref PublicSubnet
-      SecurityGroupIds:
-        - !Ref AntHillSecurityGroup
-      # Usamos el perfil que ya viene en el lab
-      IamInstanceProfile: LabInstanceProfile 
+      SecurityGroupIds: [!Ref AntHillSecurityGroup]
+      IamInstanceProfile: LabInstanceProfile
       Tags:
         - Key: Name
-          Value: AntHill-Web-Server
+          Value: AntHill-Main-Server
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          dnf update -y
+          dnf install -y docker git
+          systemctl start docker
+          systemctl enable docker
+          usermod -aG docker ec2-user
 
-  # --- BASE DE DATOS ---
+          cd /home/ec2-user
+          git clone https://github.com/TZeroW/AntHill.git
+          cd AntHill
+
+          docker build -t anthill-auth ./microservices/auth
+          docker build -t anthill-posts ./microservices/posts
+
+          docker run -d -p 5001:5001 --name auth-app anthill-auth
+          docker run -d -p 5002:5002 --name posts-app anthill-posts
+
   AntHillPostsTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -103,14 +98,8 @@ Resources:
       KeySchema:
         - AttributeName: "PostId"
           KeyType: "HASH"
-      # PAY_PER_REQUEST para no quemar presupuesto
       BillingMode: PAY_PER_REQUEST
-      Tags:
-        - Key: Name
-          Value: AntHill-Posts-Table
 
 Outputs:
   InstancePublicIP:
     Value: !GetAtt AntHillServer.PublicIp
-  BucketName:
-    Value: !Ref AntHillReportsBucket

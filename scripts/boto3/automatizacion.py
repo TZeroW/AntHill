@@ -1,42 +1,71 @@
-import boto3
+import datetime
 import os
-from datetime import datetime
+import urllib.request  # Para no instalar más librerías
 
-def generar_reporte():
-    # Conectamos con los servicios (Boto3 usa las variables de entorno de tu Jenkins)
-    ec2 = boto3.client('ec2', region_name='us-east-1')
-    s3_client = boto3.client('s3', region_name='us-east-1')
-    
-    nombre_archivo = f"reporte_anthill_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
-    
+import boto3
+from botocore.exceptions import ClientError, NoCredentialsError
+
+
+def health_check(ip, port, service_name):
+    url = f"http://{ip}:{port}"
     try:
-        with open(nombre_archivo, "w") as f:
-            f.write(f"=== REPORTE DE INFRAESTRUCTURA ANTHILL - {datetime.now()} ===\n\n")
-            
-            # Listar Instancias EC2
-            f.write("--- Instancias EC2 ---\n")
-            instances = ec2.describe_instances()
-            for reservation in instances['Reservations']:
-                for inst in reservation['Instances']:
-                    f.write(f"ID: {inst['InstanceId']} | Estado: {inst['State']['Name']} | Tipo: {inst['InstanceType']}\n")
-            
-            # Listar Buckets S3
-            f.write("\n--- Buckets S3 ---\n")
-            buckets = s3_client.list_buckets()
-            for bucket in buckets['Buckets']:
-                f.write(f"Nombre: {bucket['Name']}\n")
+        response = urllib.request.urlopen(url, timeout=5)
+        if response.getcode() == 200:
+            print(f"✅ {service_name} en puerto {port}: FUNCIONANDO")
+            return f"✅ {service_name}: Operacional (Puerto {port})\n"
+    except Exception as e:
+        print(f"❌ {service_name} en puerto {port}: FALLÓ ({e})")
+        return f"❌ {service_name}: No disponible en puerto {port}\n"
 
-        print(f"Reporte generado localmente: {nombre_archivo}")
 
-        # Subir el reporte al S3
-        bucket_destino = "reportes-anthill-devops" 
-        
-        print(f"Subiendo a S3 bucket: {bucket_destino}...")
-        s3_client.upload_file(nombre_archivo, bucket_destino, nombre_archivo)
-        print("Reporte subido con éxito!")
+def generar_y_subir_reporte():
+    nombre_bucket = "reportes-anthill-devops-smltp"
+    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    nombre_archivo = f"reporte_anthill_{timestamp}.txt"
+
+    try:
+        s3 = boto3.client("s3", region_name="us-east-1")
+        ec2 = boto3.client("ec2", region_name="us-east-1")
+
+        contenido = f"=== REPORTE DE AUDITORÍA Y TESTS ANTHILL ===\n"
+        contenido += (
+            f"Fecha: {timestamp}\n------------------------------------------\n\n"
+        )
+
+        contenido += "--- ESTADO DE INFRAESTRUCTURA ---\n"
+        instances = ec2.describe_instances(
+            Filters=[{"Name": "instance-state-name", "Values": ["running"]}]
+        )
+
+        target_ip = None
+        for reservation in instances.get("Reservations", []):
+            for inst in reservation.get("Instances", []):
+                ip = inst.get("PublicIpAddress")
+                target_ip = ip  # Usaremos la última encontrada para el test
+                contenido += (
+                    f"[*] Instancia: {inst['InstanceId']} | IP: {ip} | Estado: OK\n"
+                )
+
+        if target_ip:
+            contenido += "\n--- TEST DE INTEGRACIÓN (SMOKE TEST) ---\n"
+            print(f"Iniciando pruebas de conectividad sobre {target_ip}...")
+
+            contenido += health_check(target_ip, 5001, "Servicio de Auth")
+            contenido += health_check(target_ip, 5002, "Servicio de Posts")
+        else:
+            contenido += (
+                "\n⚠️ No se encontró IP pública para realizar pruebas de comunicación.\n"
+            )
+
+        with open(nombre_archivo, "w", encoding="utf-8") as f:
+            f.write(contenido)
+
+        s3.upload_file(nombre_archivo, nombre_bucket, f"reportes/{nombre_archivo}")
+        print(f"✅ Reporte con tests subido a S3.")
 
     except Exception as e:
-        print(f"❌ Error durante la automatización: {e}")
+        print(f"❌ Error: {e}")
+
 
 if __name__ == "__main__":
-    generar_reporte()
+    generar_y_subir_reporte()
