@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Red base para el proyecto AntHill - Estilo Reddit
+Description: Infraestructura completa para AntHill (VPC, EC2 y S3)
 
 Resources:
-  # La VPC
+  # --- RED ---
   AntHillVPC:
     Type: AWS::EC2::VPC
     Properties:
@@ -13,7 +13,6 @@ Resources:
         - Key: Name
           Value: AntHill-VPC
 
-  # Internet Gateway
   AntHillIGW:
     Type: AWS::EC2::InternetGateway
 
@@ -23,7 +22,6 @@ Resources:
       VpcId: !Ref AntHillVPC
       InternetGatewayId: !Ref AntHillIGW
 
-  # Subred Publica
   PublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
@@ -35,7 +33,6 @@ Resources:
         - Key: Name
           Value: AntHill-Public-Subnet
 
-  # Tabla de ruteo
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -54,8 +51,66 @@ Resources:
       SubnetId: !Ref PublicSubnet
       RouteTableId: !Ref PublicRouteTable
 
+  # --- SEGURIDAD ---
+  AntHillSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Permite trafico HTTP y SSH (restringido)
+      VpcId: !Ref AntHillVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 5001
+          ToPort: 5002
+          CidrIp: 0.0.0.0/0 # Puertos de tus microservicios
+
+  # --- ALMACENAMIENTO ---
+  AntHillReportsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      # El nombre tiene que ser unico en el mundo
+      BucketName: !Sub "anthill-reportes-${AWS::AccountId}" 
+      VersioningConfiguration:
+        Status: Enabled
+
+  # --- COMPUTO ---
+  AntHillServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      # AMI de Amazon Linux 2 us-east-1
+      ImageId: ami-0c101f26f147fa7fd 
+      SubnetId: !Ref PublicSubnet
+      SecurityGroupIds:
+        - !Ref AntHillSecurityGroup
+      # Usamos el perfil que ya viene en el lab
+      IamInstanceProfile: LabInstanceProfile 
+      Tags:
+        - Key: Name
+          Value: AntHill-Web-Server
+
+  # --- BASE DE DATOS ---
+  AntHillPostsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: "AntHill-Posts"
+      AttributeDefinitions:
+        - AttributeName: "PostId"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "PostId"
+          KeyType: "HASH"
+      # PAY_PER_REQUEST para no quemar presupuesto
+      BillingMode: PAY_PER_REQUEST
+      Tags:
+        - Key: Name
+          Value: AntHill-Posts-Table
+
 Outputs:
-  VPCId:
-    Value: !Ref AntHillVPC
-  SubnetId:
-    Value: !Ref PublicSubnet
+  InstancePublicIP:
+    Value: !GetAtt AntHillServer.PublicIp
+  BucketName:
+    Value: !Ref AntHillReportsBucket
