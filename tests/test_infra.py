@@ -5,7 +5,8 @@ from datetime import datetime
 
 def test_communication():
     results = []
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    log_name = f"test_results-{timestamp}.log"
     results.append(f"--- Test de Comunicación AntHill - {timestamp} ---")
 
     # Usamos el nombre del servicio del compose

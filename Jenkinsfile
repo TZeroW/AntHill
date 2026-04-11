@@ -6,21 +6,14 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
         AWS_SESSION_TOKEN     = credentials('aws-session-token')
         AWS_DEFAULT_REGION    = 'us-east-1'
-
         AWS_PATH = '/home/salmule/.local/bin/aws'
     }
 
     stages {
-        stage('Clonar Repo') {
-            steps {
-                git branch: 'deployment-dev', url: 'https://github.com/TZeroW/AntHill.git'
-            }
-        }
 
         stage('Docker Build Microservicios') {
             steps {
                 sh 'echo "Construyendo imágenes para Auth y Posts..."'
-                // Usamos el docker-compose que creamos para buildear todo junto
                 sh 'docker-compose build'
             }
         }
@@ -28,7 +21,6 @@ pipeline {
         stage('Deploy Infra (CloudFormation)') {
             steps {
                 sh 'echo "Lanzando la red y los servicios en AWS..."'
-                // Apuntamos a la carpeta de infraestructura
                 sh """
                     ${AWS_PATH} cloudformation deploy \
                     --template-file infrastructure/template.yaml \
@@ -40,9 +32,14 @@ pipeline {
 
         stage('Reporte de Auditoría (Boto3)') {
             steps {
+                script {
+                    // Calculamos el ID de cuenta para pasárselo al script de Python
+                    def accountId = sh(script: "${AWS_PATH} sts get-caller-identity --query Account --output text", returnStdout: true).trim()
+                    env.BUCKET_NAME = "reportes-anthill-devops-${accountId}"
+                }
                 sh 'echo "Corriendo script de automatización..."'
                 sh """
-                    python3 -m venv venv
+                    python3 -m venv venv || true
                     ./venv/bin/pip install boto3
                     ./venv/bin/python3 scripts/boto3/automatizacion.py
                 """
@@ -52,10 +49,10 @@ pipeline {
 
     post {
         success {
-            echo 'Microservicios de AntHill funcionando'
+            echo 'Microservicios de AntHill desplegados y reporte generado.'
         }
         failure {
-            echo 'Fallo en el pipeline.'
+            echo 'Fallo en el pipeline. Revisar el error de Git o S3.'
         }
     }
 }
