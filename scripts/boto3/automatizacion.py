@@ -1,65 +1,70 @@
 import datetime
 import os
+import urllib.request  # Para no instalar más librerías
 
 import boto3
 from botocore.exceptions import ClientError, NoCredentialsError
 
 
-def generar_y_subir_reporte():
-    # Nombre estático sincronizado con el template.yaml
-    nombre_bucket = "reportes-anthill-devops-smltp"
+def health_check(ip, port, service_name):
+    url = f"http://{ip}:{port}"
+    try:
+        response = urllib.request.urlopen(url, timeout=5)
+        if response.getcode() == 200:
+            print(f"✅ {service_name} en puerto {port}: FUNCIONANDO")
+            return f"✅ {service_name}: Operacional (Puerto {port})\n"
+    except Exception as e:
+        print(f"❌ {service_name} en puerto {port}: FALLÓ ({e})")
+        return f"❌ {service_name}: No disponible en puerto {port}\n"
 
+
+def generar_y_subir_reporte():
+    nombre_bucket = "reportes-anthill-devops-smltp"
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     nombre_archivo = f"reporte_anthill_{timestamp}.txt"
-
-    print(f"Iniciando auditoría de recursos en us-east-1...")
 
     try:
         s3 = boto3.client("s3", region_name="us-east-1")
         ec2 = boto3.client("ec2", region_name="us-east-1")
 
-        # 1. Crear el cuerpo del reporte
-        contenido = f"=== REPORTE DE AUDITORÍA ANTHILL ===\n"
-        contenido += f"Fecha y Hora: {timestamp}\n"
-        contenido += "------------------------------------------\n\n"
+        contenido = f"=== REPORTE DE AUDITORÍA Y TESTS ANTHILL ===\n"
+        contenido += (
+            f"Fecha: {timestamp}\n------------------------------------------\n\n"
+        )
 
-        # 2. Auditar Instancias EC2
-        contenido += "--- DETALLE DE INSTANCIAS EC2 ---\n"
-        instances = ec2.describe_instances()
+        contenido += "--- ESTADO DE INFRAESTRUCTURA ---\n"
+        instances = ec2.describe_instances(
+            Filters=[{"Name": "instance-state-name", "Values": ["running"]}]
+        )
 
-        instancias_encontradas = 0
+        target_ip = None
         for reservation in instances.get("Reservations", []):
             for inst in reservation.get("Instances", []):
-                tags = {tag["Key"]: tag["Value"] for tag in inst.get("Tags", [])}
-                nombre = tags.get("Name", "Sin Nombre")
-                estado = inst["State"]["Name"]
-                inst_id = inst["InstanceId"]
-                ip_publica = inst.get("PublicIpAddress", "Sin IP Pública")
+                ip = inst.get("PublicIpAddress")
+                target_ip = ip  # Usaremos la última encontrada para el test
+                contenido += (
+                    f"[*] Instancia: {inst['InstanceId']} | IP: {ip} | Estado: OK\n"
+                )
 
-                linea = f"[*] {nombre} | ID: {inst_id} | Estado: {estado} | IP: {ip_publica}\n"
-                contenido += linea
-                instancias_encontradas += 1
+        if target_ip:
+            contenido += "\n--- TEST DE INTEGRACIÓN (SMOKE TEST) ---\n"
+            print(f"Iniciando pruebas de conectividad sobre {target_ip}...")
 
-        if instancias_encontradas == 0:
-            contenido += "No se encontraron instancias activas.\n"
+            contenido += health_check(target_ip, 5001, "Servicio de Auth")
+            contenido += health_check(target_ip, 5002, "Servicio de Posts")
+        else:
+            contenido += (
+                "\n⚠️ No se encontró IP pública para realizar pruebas de comunicación.\n"
+            )
 
-        # 3. Guardar archivo localmente
         with open(nombre_archivo, "w", encoding="utf-8") as f:
             f.write(contenido)
 
-        print(f"Reporte generado localmente: {nombre_archivo}")
-
-        # 4. Subir a S3
-        print(f"Subiendo al bucket: {nombre_bucket}...")
         s3.upload_file(nombre_archivo, nombre_bucket, f"reportes/{nombre_archivo}")
-        print("✅ ¡Éxito! Reporte subido correctamente a S3.")
+        print(f"✅ Reporte con tests subido a S3.")
 
-    except NoCredentialsError:
-        print("❌ Error: No se encontraron credenciales de AWS.")
-    except ClientError as e:
-        print(f"❌ Error de AWS: {e.response['Error']['Message']}")
     except Exception as e:
-        print(f"❌ Error inesperado: {e}")
+        print(f"❌ Error: {e}")
 
 
 if __name__ == "__main__":
