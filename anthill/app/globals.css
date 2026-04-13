@@ -1,0 +1,6 @@
+/* Eliminado Tailwind y variables oscuras por defecto para evitar conflictos con el CSS antiguo puro */
+body {
+  margin: 0;
+  padding: 0;
+}
+

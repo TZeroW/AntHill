@@ -183,7 +183,7 @@ body {
 /* ajustes de banner y layout */
 .profile-banner {
     height: 200px;
-    background-image: url('../assets/general/AntHill.png');
+    background-image: url('/assets/general/AntHill.png');
     background-size: cover;
     background-position: center;
     border-radius: 16px 16px 0 0;
