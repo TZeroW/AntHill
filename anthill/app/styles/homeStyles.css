@@ -106,21 +106,74 @@ body {
 /* estructura principal */
 .container {
     display: grid;
-    grid-template-columns: 240px 1fr 300px;
+    grid-template-columns: 1fr 300px;
     gap: 30px;
-    max-width: 1280px;
-    margin: 30px auto;
+    max-width: 1000px; /* Or maybe no max width? Let's leave transition */
+    margin: 30px auto 30px 0;
     padding: 0 20px;
     align-items: start;
+    transition: max-width 0.3s ease, padding-left 0.3s ease;
+}
+
+.feed-center {
+    min-width: 0;
+    width: 100%;
 }
 
 /* barra lateral izquierda */
 .sidebar-left {
-    position: sticky;
-    top: 90px;
+    position: fixed;
+    top: 85px;
+    left: 0;
+    height: calc(100vh - 85px);
+    width: 80px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    background-color: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+    padding: 20px 10px;
+    transition: width 0.3s ease;
+    z-index: 1000;
+    overflow: visible;
+}
+
+body.sidebar-open .sidebar-left {
+    width: 240px;
+    padding: 20px;
+}
+
+.btn-sidebar-edge {
+    position: absolute;
+    top: 30px;
+    right: -18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #222;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    z-index: 1010;
+    transition: transform 0.3s;
+}
+
+.btn-sidebar-edge:hover {
+    background-color: #333;
+}
+
+/* Adjust the container padding and max-width based on open state 
+   to natively push content without squishing it. */
+body.sidebar-closed .container {
+    max-width: 1400px;
+    padding-left: 100px;
+}
+body.sidebar-open .container {
+    max-width: 1560px; /* 1400 + 160 */
+    padding-left: 260px;
 }
 
 .main-menu a {
@@ -129,16 +182,29 @@ body {
     gap: 15px;
     color: var(--text-dim);
     text-decoration: none;
-    padding: 12px 15px;
+    padding: 12px;
     border-radius: 8px;
     transition: 0.2s;
     font-weight: 500;
+    white-space: nowrap;
+}
+
+.main-menu a span {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+body.sidebar-open .main-menu a span {
+    opacity: 1;
+    visibility: visible;
 }
 
 .main-menu a img,
 .main-menu a svg {
     width: 22px;
     height: 22px;
+    min-width: 22px;
     transition: 0.2s;
 }
 
@@ -491,21 +557,8 @@ body {
 /* Responsive Design */
 @media (max-width: 1024px) {
     .container {
-        grid-template-columns: 80px 1fr 250px;
+        grid-template-columns: 1fr 250px;
         gap: 20px;
-    }
-
-    .sidebar-left {
-        width: 80px;
-    }
-
-    .main-menu a span {
-        display: none;
-    }
-
-    .main-menu a {
-        justify-content: center;
-        padding: 12px;
     }
 
     .search-bar input {
@@ -515,7 +568,7 @@ body {
 
 @media (max-width: 850px) {
     .container {
-        grid-template-columns: 80px 1fr;
+        grid-template-columns: 1fr;
     }
 
     .sidebar-right {
@@ -524,11 +577,14 @@ body {
 }
 
 @media (max-width: 600px) {
+    body.sidebar-open .container,
+    body.sidebar-closed .container,
     .container {
         display: flex;
         flex-direction: column;
         margin-top: 15px;
         margin-bottom: 70px;
+        padding-left: 20px !important;
     }
 
     .top-nav {
@@ -546,6 +602,8 @@ body {
         width: 100%;
     }
 
+    body.sidebar-open .sidebar-left,
+    body.sidebar-closed .sidebar-left,
     .sidebar-left {
         position: fixed;
         bottom: 0;
@@ -556,10 +614,14 @@ body {
         border-bottom: none;
         flex-direction: row;
         justify-content: space-around;
-        padding: 5px 0;
+        padding: 5px 0 !important;
         z-index: 1000;
         height: 60px;
         top: auto;
+    }
+
+    .btn-sidebar-edge {
+        display: none !important;
     }
 
     .main-menu {

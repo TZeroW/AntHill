@@ -1,7 +1,5 @@
-import TopNav from '../../components/layout/TopNav';
-import SidebarLeft from '../../components/layout/SidebarLeft';
+import NavigationManager from '../../components/layout/NavigationManager';
 import SidebarRight from '../../components/layout/SidebarRight';
-
 export default function MainLayout({
   children,
 }: {
@@ -9,9 +7,8 @@ export default function MainLayout({
 }) {
   return (
     <>
-      <TopNav />
-      <div className="container">
-        <SidebarLeft />
+      <NavigationManager />
+      <div className="container" id="main-container">
         <main className="feed-center">
           {children}
         </main>

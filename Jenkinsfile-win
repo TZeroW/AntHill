@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    environment {
+        // Asegúrate de que estos IDs ('aws-...') coincidan exactamente con tus credenciales en Jenkins
+        AWS_ACCESS_KEY_ID     = credentials('aws-access-key')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
+        AWS_SESSION_TOKEN     = credentials('aws-session-token')
+        AWS_DEFAULT_REGION    = 'us-east-1'
+    }
+
+    stages {
+        stage('Docker Build Microservicios') {
+            steps {
+                echo "Construyendo imágenes para Auth y Posts..."
+                // Usamos bat para que Windows reconozca el comando
+                bat 'docker-compose build'
+            }
+        }
+
+        stage('Deploy Infra (CloudFormation)') {
+            steps {
+                echo "Lanzando la red y los servicios en AWS..."
+                // El símbolo ^ permite saltos de línea en el CMD de Windows
+                bat """
+                    aws cloudformation deploy ^
+                    --template-file infrastructure/template.yaml ^
+                    --stack-name anthill-stack ^
+                    --region %AWS_DEFAULT_REGION%
+                """
+            }
+        }
+
+        stage('Reporte de Auditoría (Boto3)') {
+            steps {
+                echo "Corriendo script de automatización..."
+                bat """
+                    if not exist venv (python -m venv venv)
+                    call venv\\Scripts\\activate && pip install boto3 && python scripts/boto3/automatizacion.py
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Microservicios de AntHill desplegados y reporte generado.'
+        }
+        failure {
+            echo 'Fallo en el pipeline. Revisar configuración de Docker o AWS.'
+        }
+    }
+}

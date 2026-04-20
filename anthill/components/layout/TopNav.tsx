@@ -3,8 +3,8 @@ import Link from 'next/link';
 export default function TopNav() {
   return (
     <header className="top-nav">
-      <div className="logo">
-        <Link href="/" className="flex items-center gap-2">
+      <div className="logo d-flex align-items-center" style={{ display: 'flex', alignItems: 'center' }}>
+        <Link href="/" className="logo-link" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
           <img src="/assets/general/Logo-ant.png" alt="AntHill Logo" />
           <h1>AntHill</h1>
         </Link>
