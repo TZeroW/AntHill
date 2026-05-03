@@ -24,7 +24,9 @@ pipeline {
                     ${AWS_PATH} cloudformation deploy \
                     --template-file infrastructure/template.yaml \
                     --stack-name anthill-stack \
-                    --region ${AWS_DEFAULT_REGION} || true
+                    --region ${AWS_DEFAULT_REGION} \
+                    --capabilities CAPABILITY_NAMED_IAM \
+                    --no-fail-on-empty-changeset
                 """
             }
         }
