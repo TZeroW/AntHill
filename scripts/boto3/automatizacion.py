@@ -37,7 +37,7 @@ def generar_y_subir_reporte():
         instances = ec2.describe_instances(
             Filters=[
                 {"Name": "instance-state-name", "Values": ["running"]},
-                {"Name": "tag:Name", "Values": ["AntHill-Main-Server"]}
+                {"Name": "tag:Name", "Values": ["AntHill-Production-Server"]}
             ]
         )
 
