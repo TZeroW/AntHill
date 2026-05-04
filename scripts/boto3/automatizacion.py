@@ -33,9 +33,12 @@ def generar_y_subir_reporte():
 
         contenido += "--- ESTADO DE INFRAESTRUCTURA ---\n"
         
-        # Obtenemos las instancias
+        # Obtenemos solo las instancias de AntHill que estén corriendo
         instances = ec2.describe_instances(
-            Filters=[{"Name": "instance-state-name", "Values": ["running"]}]
+            Filters=[
+                {"Name": "instance-state-name", "Values": ["running"]},
+                {"Name": "tag:Name", "Values": ["AntHill-Main-Server"]}
+            ]
         )
 
         target_ip = None
