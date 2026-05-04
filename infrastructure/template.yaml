@@ -67,7 +67,6 @@ Resources:
       SecurityGroupIds: [!Ref AntHillSecurityGroup]
       IamInstanceProfile: LabInstanceProfile
       Tags:
-      Tags:
         - Key: Name
           Value: AntHill-Production-Server
       UserData:
