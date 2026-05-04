@@ -24,7 +24,7 @@ pipeline {
                 bat """
                     aws cloudformation deploy ^
                     --template-file infrastructure/template.yaml ^
-                    --stack-name anthill-stack ^
+                    --stack-name anthill-stack-v2 ^
                     --region %AWS_DEFAULT_REGION% ^
                     --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM ^
                     --no-fail-on-empty-changeset || echo "El despliegue tiene advertencias, verificando..."
