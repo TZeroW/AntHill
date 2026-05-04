@@ -55,7 +55,7 @@ Resources:
   AntHillReportsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: reportes-anthill-devops-smltp-v3
+      BucketName: reportes-anthill-devops-smltp-v4
 
   AntHillServer:
     Type: AWS::EC2::Instance

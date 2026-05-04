@@ -20,7 +20,7 @@ def health_check(ip, port, service_name):
     return f"FALLO - {service_name}: Error desconocido\n"
 
 def generar_y_subir_reporte():
-    nombre_bucket = "reportes-anthill-devops-smltp-v3"
+    nombre_bucket = "reportes-anthill-devops-smltp-v4"
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     nombre_archivo = f"reporte_anthill_{timestamp}.txt"
 
