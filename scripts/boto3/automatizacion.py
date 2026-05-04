@@ -37,10 +37,14 @@ def generar_y_subir_reporte():
         instances = ec2.describe_instances(
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             Filters=[
                 {"Name": "instance-state-name", "Values": ["running"]},
                 {"Name": "tag:Name", "Values": ["AntHill-Production-Server"]}
             ]
+=======
+            Filters=[{"Name": "instance-state-name", "Values": ["running"]}]
+>>>>>>> parent of 37bf390 (Cambios menores)
 =======
             Filters=[{"Name": "instance-state-name", "Values": ["running"]}]
 >>>>>>> parent of 37bf390 (Cambios menores)
