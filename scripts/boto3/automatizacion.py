@@ -20,7 +20,7 @@ def health_check(ip, port, service_name):
     return f"FALLO - {service_name}: Error desconocido\n"
 
 def generar_y_subir_reporte():
-    nombre_bucket = "reportes-anthill-devops-smltp-v2"
+    nombre_bucket = "reportes-anthill-devops-smltp"
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     nombre_archivo = f"reporte_anthill_{timestamp}.txt"
 
@@ -33,12 +33,16 @@ def generar_y_subir_reporte():
 
         contenido += "--- ESTADO DE INFRAESTRUCTURA ---\n"
         
-        # Obtenemos solo las instancias de AntHill que estén corriendo
+        # Obtenemos las instancias
         instances = ec2.describe_instances(
+<<<<<<< HEAD
             Filters=[
                 {"Name": "instance-state-name", "Values": ["running"]},
                 {"Name": "tag:Name", "Values": ["AntHill-Production-Server"]}
             ]
+=======
+            Filters=[{"Name": "instance-state-name", "Values": ["running"]}]
+>>>>>>> parent of 37bf390 (Cambios menores)
         )
 
         target_ip = None
@@ -58,31 +62,8 @@ def generar_y_subir_reporte():
         if target_ip:
             contenido += "\n--- TEST DE INTEGRACION (SMOKE TEST) ---\n"
             print(f"Iniciando pruebas de conectividad sobre {target_ip}...")
-            
-            # Lógica de reintentos para dar tiempo al arranque de Docker (UserData)
-            import time
-            intentos = 5
-            servicios_ok = False
-            res_auth = ""
-            res_posts = ""
-            
-            for i in range(intentos):
-                print(f"Intento {i+1}/{intentos}...")
-                res_auth = health_check(target_ip, 5001, "Servicio de Auth")
-                res_posts = health_check(target_ip, 5002, "Servicio de Posts")
-                
-                if "OK" in res_auth and "OK" in res_posts:
-                    contenido += res_auth + res_posts
-                    servicios_ok = True
-                    break
-                else:
-                    if i < intentos - 1:
-                        print("Los servicios aun no responden. Esperando 30 segundos...")
-                        time.sleep(30)
-            
-            if not servicios_ok:
-                contenido += "\nERROR: Los servicios no arrancaron a tiempo tras 5 intentos.\n"
-                contenido += res_auth + res_posts
+            contenido += health_check(target_ip, 5001, "Servicio de Auth")
+            contenido += health_check(target_ip, 5002, "Servicio de Posts")
         else:
             contenido += "\nAVISO: No se encontro IP publica para realizar pruebas.\n"
 
