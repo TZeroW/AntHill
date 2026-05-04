@@ -5,8 +5,11 @@ services:
       - "5001:5001"
     environment:
       - APP_ENV=development
+      - AUTH_DB_PATH=/app/data/auth.db
+    volumes:
+      - auth-data:/app/data
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5001" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:5001/" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -16,11 +19,19 @@ services:
     ports:
       - "5002:5002"
     environment:
+      - APP_ENV=development
       - AUTH_SERVICE_URL=http://auth-service:5001
+      - POSTS_DB_PATH=/app/data/posts.db
     depends_on:
       - auth-service
+    volumes:
+      - posts-data:/app/data
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:5002" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:5002/" ]
       interval: 30s
       timeout: 10s
       retries: 3
+
+volumes:
+  auth-data:
+  posts-data:

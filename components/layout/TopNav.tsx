@@ -1,6 +1,20 @@
-import Link from 'next/link';
+'use client';
 
+import Link from 'next/link';
+import { useAuth } from '../../lib/hooks/useAuth';
+
+/**
+ * TopNav — header con búsqueda y perfil de usuario dinámico.
+ */
 export default function TopNav() {
+  const { user } = useAuth();
+
+  const getPath = (path?: string) => {
+    if (!path) return '/assets/general/none.jpg';
+    if (path.startsWith('http') || path.startsWith('data:')) return path;
+    return `/${path}`;
+  };
+
   return (
     <header className="top-nav">
       <div className="logo d-flex align-items-center" style={{ display: 'flex', alignItems: 'center' }}>
@@ -14,8 +28,8 @@ export default function TopNav() {
       </div>
       <div className="user-actions">
         <div className="user-profile">
-          <span id="header-user-name">Invitado</span>
-          <img id="header-user-pfp" src="/assets/general/none.jpg" alt="Perfil" />
+          <span id="header-user-name">{user?.name || 'Invitado'}</span>
+          <img id="header-user-pfp" src={getPath(user?.pfp)} alt="Perfil" />
         </div>
       </div>
     </header>
