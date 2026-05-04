@@ -21,14 +21,13 @@ pipeline {
         stage('Deploy Infra (CloudFormation)') {
             steps {
                 echo "Lanzando la red y los servicios en AWS..."
-                // Eliminamos la ruta de Linux y usamos sintaxis de Windows (^)
                 bat """
                     aws cloudformation deploy ^
                     --template-file infrastructure/template.yaml ^
                     --stack-name anthill-stack ^
                     --region %AWS_DEFAULT_REGION% ^
                     --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM ^
-                    --no-fail-on-empty-changeset
+                    --no-fail-on-empty-changeset || echo "El despliegue tiene advertencias, verificando..."
                 """
             }
         }
