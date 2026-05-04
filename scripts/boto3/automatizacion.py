@@ -61,7 +61,7 @@ def generar_y_subir_reporte():
             
             # Lógica de reintentos para dar tiempo al arranque de Docker (UserData)
             import time
-            intentos = 5
+            intentos = 10
             servicios_ok = False
             res_auth = ""
             res_posts = ""
