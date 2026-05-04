@@ -55,7 +55,7 @@ Resources:
   AntHillReportsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: reportes-anthill-devops-smltp
+      BucketName: reportes-anthill-devops-smltp-v2
 
   AntHillServer:
     Type: AWS::EC2::Instance
@@ -68,7 +68,7 @@ Resources:
       IamInstanceProfile: LabInstanceProfile
       Tags:
         - Key: Name
-          Value: AntHill-Production-Server
+          Value: AntHill-Main-Server
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
@@ -84,13 +84,14 @@ Resources:
           curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
           chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
-          # Clonar repositorio (rama app-dev)
+          # Clonar repositorio
           cd /home/ec2-user
-          rm -rf AntHill
-          git clone -b app-dev https://github.com/TZeroW/AntHill.git
+          rm -rf AntHill # Limpiar despliegues anteriores
+          git clone https://github.com/TZeroW/AntHill.git
           cd AntHill
 
           # Levantar microservicios usando Docker Compose
+          # El flag --build asegura que se construyan las imágenes con el código más reciente
           docker compose up -d --build
 
   AntHillPostsTable:
