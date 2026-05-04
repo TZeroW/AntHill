@@ -1,12 +1,15 @@
 /**
  * API Client - Centraliza las llamadas HTTP a los microservicios.
  * 
- * Auth Service:  puerto 5001
- * Posts Service:  puerto 5002
+ * Usa URLs relativas — Next.js las proxea a los microservicios via rewrites
+ * en next.config.ts, eliminando problemas de CORS.
+ *
+ * Auth Service:  /api/auth/*  → puerto 5001
+ * Posts Service:  /api/posts/* → puerto 5002
  */
 
-const AUTH_BASE = process.env.NEXT_PUBLIC_AUTH_API || 'http://localhost:5001';
-const POSTS_BASE = process.env.NEXT_PUBLIC_POSTS_API || 'http://localhost:5002';
+const AUTH_BASE = '';
+const POSTS_BASE = '';
 
 interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';

@@ -72,21 +72,27 @@ Resources:
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
+          # Actualizar sistema e instalar dependencias básicas
           dnf update -y
           dnf install -y docker git
           systemctl start docker
           systemctl enable docker
           usermod -aG docker ec2-user
 
+          # Instalar Docker Compose (Plugin V2)
+          mkdir -p /usr/local/lib/docker/cli-plugins/
+          curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /usr/local/lib/docker/cli-plugins/docker-compose
+          chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+          # Clonar repositorio
           cd /home/ec2-user
+          rm -rf AntHill # Limpiar despliegues anteriores
           git clone https://github.com/TZeroW/AntHill.git
           cd AntHill
 
-          docker build -t anthill-auth ./microservices/auth
-          docker build -t anthill-posts ./microservices/posts
-
-          docker run -d -p 5001:5001 --name auth-app anthill-auth
-          docker run -d -p 5002:5002 --name posts-app anthill-posts
+          # Levantar microservicios usando Docker Compose
+          # El flag --build asegura que se construyan las imágenes con el código más reciente
+          docker compose up -d --build
 
   AntHillPostsTable:
     Type: AWS::DynamoDB::Table
