@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import type { Post } from '../../lib/types';
-import PostActions from './PostActions';
+import PostActions from '../posts/PostActions';
 
 /**
  * Componente PostCard — reemplaza la función crearPost() de cajaPost.js.
