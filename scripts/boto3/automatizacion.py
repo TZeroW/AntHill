@@ -20,7 +20,7 @@ def health_check(ip, port, service_name):
     return f"FALLO - {service_name}: Error desconocido\n"
 
 def generar_y_subir_reporte():
-    nombre_bucket = "reportes-anthill-devops-smltp-v5"
+    nombre_bucket = "reportes-anthill-devops-smltp-v6"
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     nombre_archivo = f"reporte_anthill_{timestamp}.txt"
 
@@ -61,7 +61,7 @@ def generar_y_subir_reporte():
             
             # Lógica de reintentos para dar tiempo al arranque de Docker (UserData)
             import time
-            intentos = 10
+            intentos = 20
             servicios_ok = False
             res_auth = ""
             res_posts = ""

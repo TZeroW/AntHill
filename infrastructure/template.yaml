@@ -55,7 +55,7 @@ Resources:
   AntHillReportsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: reportes-anthill-devops-smltp-v5
+      BucketName: reportes-anthill-devops-smltp-v6
 
   AntHillServer:
     Type: AWS::EC2::Instance
@@ -72,8 +72,7 @@ Resources:
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
-          # Actualizar sistema e instalar dependencias básicas
-          dnf update -y
+          # Instalar solo lo necesario para ganar velocidad
           dnf install -y docker git
           systemctl start docker
           systemctl enable docker
