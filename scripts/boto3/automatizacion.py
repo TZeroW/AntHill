@@ -20,7 +20,7 @@ def health_check(ip, port, service_name):
     return f"FALLO - {service_name}: Error desconocido\n"
 
 def generar_y_subir_reporte():
-    nombre_bucket = "reportes-anthill-devops-smltp"
+    nombre_bucket = "reportes-anthill-devops-smltp-v2"
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     nombre_archivo = f"reporte_anthill_{timestamp}.txt"
 
@@ -58,8 +58,31 @@ def generar_y_subir_reporte():
         if target_ip:
             contenido += "\n--- TEST DE INTEGRACION (SMOKE TEST) ---\n"
             print(f"Iniciando pruebas de conectividad sobre {target_ip}...")
-            contenido += health_check(target_ip, 5001, "Servicio de Auth")
-            contenido += health_check(target_ip, 5002, "Servicio de Posts")
+            
+            # Lógica de reintentos para dar tiempo al arranque de Docker (UserData)
+            import time
+            intentos = 5
+            servicios_ok = False
+            res_auth = ""
+            res_posts = ""
+            
+            for i in range(intentos):
+                print(f"Intento {i+1}/{intentos}...")
+                res_auth = health_check(target_ip, 5001, "Servicio de Auth")
+                res_posts = health_check(target_ip, 5002, "Servicio de Posts")
+                
+                if "OK" in res_auth and "OK" in res_posts:
+                    contenido += res_auth + res_posts
+                    servicios_ok = True
+                    break
+                else:
+                    if i < intentos - 1:
+                        print("Los servicios aun no responden. Esperando 30 segundos...")
+                        time.sleep(30)
+            
+            if not servicios_ok:
+                contenido += "\nERROR: Los servicios no arrancaron a tiempo tras 5 intentos.\n"
+                contenido += res_auth + res_posts
         else:
             contenido += "\nAVISO: No se encontro IP publica para realizar pruebas.\n"
 
