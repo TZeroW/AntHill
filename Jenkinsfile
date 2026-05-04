@@ -21,21 +21,23 @@ pipeline {
         stage('Deploy Infra (CloudFormation)') {
             steps {
                 echo "Lanzando la red y los servicios en AWS..."
-                bat """
-                    aws cloudformation deploy ^
-                    --template-file infrastructure/template.yaml ^
-                    --stack-name anthill-stack-v2 ^
-                    --region %AWS_DEFAULT_REGION% ^
-                    --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM ^
-                    --no-fail-on-empty-changeset || echo "El despliegue tiene advertencias, verificando..."
-                """
+                // catchError permite que el pipeline siga aunque este paso falle
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    bat """
+                        aws cloudformation deploy ^
+                        --template-file infrastructure/template.yaml ^
+                        --stack-name anthill-stack ^
+                        --region %AWS_DEFAULT_REGION% ^
+                        --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM ^
+                        --no-fail-on-empty-changeset
+                    """
+                }
             }
         }
 
         stage('Reporte de Auditoría (Boto3)') {
             steps {
                 echo "Corriendo script de automatización..."
-                // Ajustado para rutas de Windows (Scripts en lugar de bin)
                 bat """
                     if not exist venv (python -m venv venv)
                     call venv\\Scripts\\activate && pip install boto3 && python scripts/boto3/automatizacion.py
