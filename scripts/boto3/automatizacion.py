@@ -19,7 +19,23 @@ def health_check(ip, port, service_name):
 
 
 def generar_y_subir_reporte():
-    nombre_bucket = "reportes-anthill-devops-smltp"
+    # Todo esto tiene 4 espacios de sangría porque está DENTRO de la función
+    try:
+        s3_resource = boto3.resource("s3", region_name="us-east-1")
+        bucket_list = [b.name for b in s3_resource.buckets.all() if "reportes-anthill" in b.name]
+        
+        if not bucket_list:
+            print("❌ No se encontró ningún bucket con el nombre 'reportes-anthill'")
+            return
+        
+        nombre_bucket = bucket_list[0] 
+        print(f"✅ Usando el bucket: {nombre_bucket}")
+        
+    except Exception as e:
+        print(f"❌ Error al buscar el bucket: {e}")
+        return
+
+    # Estos también llevan 4 espacios
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     nombre_archivo = f"reporte_anthill_{timestamp}.txt"
 
