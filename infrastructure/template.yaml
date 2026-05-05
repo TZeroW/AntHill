@@ -55,7 +55,7 @@ Resources:
   AntHillReportsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: reportes-anthill-devops-smltp
+      BucketName: !Sub "reportes-anthill-${AWS::AccountId}"
 
   AntHillServer:
     Type: AWS::EC2::Instance
