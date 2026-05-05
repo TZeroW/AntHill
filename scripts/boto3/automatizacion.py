@@ -19,7 +19,16 @@ def health_check(ip, port, service_name):
 
 
 def generar_y_subir_reporte():
-    nombre_bucket = "reportes-anthill-devops-smltp"
+    def generar_y_subir_reporte():
+    s3_resource = boto3.resource("s3")
+        bucket_list = [b.name for b in s3_resource.buckets.all() if "reportes-anthill" in b.name]
+        
+        if not bucket_list:
+            print("❌ No se encontró ningún bucket con el nombre 'reportes-anthill'")
+            return
+        
+        nombre_bucket = bucket_list[0] 
+        print(f" usando el bucket: {nombre_bucket}")
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     nombre_archivo = f"reporte_anthill_{timestamp}.txt"
 
