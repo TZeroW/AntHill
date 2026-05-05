@@ -6,7 +6,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
         AWS_SESSION_TOKEN     = credentials('aws-session-token')
         AWS_DEFAULT_REGION    = 'us-east-1'
-        AWS_PATH = '/home/salmule/.local/bin/aws'
+        AWS_BIN = 'aws'
     }
 
     stages {
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 sh 'echo "Lanzando la red y los servicios en AWS..."'
                 sh """
-                    ${AWS_PATH} cloudformation deploy \
+                    ${AWS_BIN} cloudformation deploy \
                     --template-file infrastructure/template.yaml \
                     --stack-name anthill-stack \
                     --region ${AWS_DEFAULT_REGION} || true
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 sh 'echo "Corriendo script de automatización..."'
                 sh """
-                    python3 -m venv venv || true
+                    python3 -m venv venv
                     ./venv/bin/pip install boto3
                     ./venv/bin/python3 scripts/boto3/automatizacion.py
                 """
