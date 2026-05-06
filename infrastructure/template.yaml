@@ -73,7 +73,6 @@ Resources:
           exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
           
           # Instalar solo lo necesario para ganar velocidad
-          yum update -y || true
           yum install -y docker git
           systemctl start docker
           systemctl enable docker

@@ -8,7 +8,7 @@ def health_check(ip, port, service_name):
     url = f"http://{ip}:{port}"
     try:
         # Reducimos el timeout para que el pipeline no espere demasiado si no hay respuesta
-        response = urllib.request.urlopen(url, timeout=3)
+        response = urllib.request.urlopen(url, timeout=5)
         if response.getcode() == 200:
             # Usamos texto plano para el print (evita errores de consola en Windows)
             print(f"[OK] {service_name} en puerto {port}: FUNCIONANDO")
@@ -68,7 +68,7 @@ def generar_y_subir_reporte():
             
             # Lógica de reintentos para dar tiempo al arranque de Docker (UserData)
             import time
-            intentos = 20
+            intentos = 40
             servicios_ok = False
             res_auth = ""
             res_posts = ""
@@ -88,7 +88,7 @@ def generar_y_subir_reporte():
                         time.sleep(30)
             
             if not servicios_ok:
-                contenido += "\nERROR: Los servicios no arrancaron a tiempo tras 5 intentos.\n"
+                contenido += f"\nERROR: Los servicios no arrancaron a tiempo tras {intentos} intentos.\n"
                 contenido += res_auth + res_posts
         else:
             contenido += "\nAVISO: No se encontro IP publica para realizar pruebas.\n"
