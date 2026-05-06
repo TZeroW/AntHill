@@ -20,7 +20,10 @@ def health_check(ip, port, service_name):
     return f"FALLO - {service_name}: Error desconocido\n"
 
 def generar_y_subir_reporte():
-    nombre_bucket = "reportes-anthill-devops-smltp-v6"
+    nombre_bucket = os.environ.get("BUCKET_NAME", "reportes-anthill-devops-smltp-v6")
+    if not nombre_bucket or nombre_bucket == 'None':
+        print("[ERROR] No se pudo obtener el nombre del bucket de S3.")
+        return
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     nombre_archivo = f"reporte_anthill_{timestamp}.txt"
 

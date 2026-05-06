@@ -54,8 +54,6 @@ Resources:
 
   AntHillReportsBucket:
     Type: AWS::S3::Bucket
-    Properties:
-      BucketName: reportes-anthill-devops-smltp-v6
 
   AntHillServer:
     Type: AWS::EC2::Instance
@@ -95,7 +93,6 @@ Resources:
   AntHillPostsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: "AntHill-Posts"
       AttributeDefinitions:
         - AttributeName: "PostId"
           AttributeType: "S"
@@ -107,3 +104,5 @@ Resources:
 Outputs:
   InstancePublicIP:
     Value: !GetAtt AntHillServer.PublicIp
+  ReportsBucketName:
+    Value: !Ref AntHillReportsBucket

@@ -7,6 +7,7 @@ pipeline {
         AWS_SESSION_TOKEN     = credentials('aws-session-token')
         AWS_DEFAULT_REGION    = 'us-east-1'
         AWS_BIN = 'aws'
+        STACK_NAME = 'anthill-stack'
     }
 
     stages {
@@ -23,7 +24,7 @@ pipeline {
                 sh """
                     ${AWS_BIN} cloudformation deploy \
                     --template-file infrastructure/template.yaml \
-                    --stack-name anthill-stack \
+                    --stack-name ${STACK_NAME} \
                     --region ${AWS_DEFAULT_REGION} || true
                 """
             }
@@ -33,6 +34,12 @@ pipeline {
             steps {
                 sh 'echo "Corriendo script de automatización..."'
                 sh """
+                    export BUCKET_NAME=\$(${AWS_BIN} cloudformation describe-stacks \
+                        --stack-name ${STACK_NAME} \
+                        --query "Stacks[0].Outputs[?OutputKey=='ReportsBucketName'].OutputValue" \
+                        --output text \
+                        --region ${AWS_DEFAULT_REGION})
+                    
                     python3 -m venv venv
                     ./venv/bin/pip install boto3
                     ./venv/bin/python3 scripts/boto3/automatizacion.py
