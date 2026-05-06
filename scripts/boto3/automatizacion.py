@@ -36,24 +36,28 @@ def generar_y_subir_reporte():
 
         contenido += "--- ESTADO DE INFRAESTRUCTURA ---\n"
         
-        # Obtenemos solo las instancias de AntHill que estén corriendo
-        instances = ec2.describe_instances(
-            Filters=[
-                {"Name": "instance-state-name", "Values": ["running"]},
-                {"Name": "tag:Name", "Values": ["AntHill-Production-Server"]}
-            ]
-        )
-
-        target_ip = None
+        target_ip = os.environ.get("TARGET_IP")
         found_instances = False
-        
-        for reservation in instances.get("Reservations", []):
-            for inst in reservation.get("Instances", []):
-                found_instances = True
-                ip = inst.get("PublicIpAddress")
-                if ip:
-                    target_ip = ip
-                contenido += f"[*] Instancia: {inst['InstanceId']} | IP: {ip if ip else 'N/A'} | Estado: OK\n"
+
+        if target_ip and target_ip != 'None':
+            contenido += f"[*] Usando IP de CloudFormation: {target_ip}\n"
+            found_instances = True
+        else:
+            # Obtenemos solo las instancias de AntHill que estén corriendo
+            instances = ec2.describe_instances(
+                Filters=[
+                    {"Name": "instance-state-name", "Values": ["running"]},
+                    {"Name": "tag:Name", "Values": ["AntHill-Production-Server"]}
+                ]
+            )
+
+            for reservation in instances.get("Reservations", []):
+                for inst in reservation.get("Instances", []):
+                    found_instances = True
+                    ip = inst.get("PublicIpAddress")
+                    if ip:
+                        target_ip = ip
+                    contenido += f"[*] Instancia: {inst['InstanceId']} | IP: {ip if ip else 'N/A'} | Estado: OK\n"
 
         if not found_instances:
             contenido += "No se encontraron instancias en ejecucion.\n"

@@ -39,6 +39,12 @@ pipeline {
                         --query "Stacks[0].Outputs[?OutputKey=='ReportsBucketName'].OutputValue" \
                         --output text \
                         --region ${AWS_DEFAULT_REGION})
+                        
+                    export TARGET_IP=\$(${AWS_BIN} cloudformation describe-stacks \
+                        --stack-name ${STACK_NAME} \
+                        --query "Stacks[0].Outputs[?OutputKey=='InstancePublicIP'].OutputValue" \
+                        --output text \
+                        --region ${AWS_DEFAULT_REGION})
                     
                     python3 -m venv venv
                     ./venv/bin/pip install boto3
