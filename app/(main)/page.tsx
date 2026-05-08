@@ -55,7 +55,7 @@ function HomeContent() {
     return () => searchInput.removeEventListener('input', handler);
   }, []);
 
-  const handlePublicar = async (contenido: string) => {
+  const handlePublicar = async (contenido: string, imagen?: string) => {
     if (!user) {
       alert('Debes iniciar sesión para publicar.');
       window.location.href = '/login';
@@ -71,6 +71,7 @@ function HomeContent() {
         autor: user.name,
         fotoperfil: user.pfp || 'assets/general/pfp.webp',
         contenido,
+        imagen: imagen || undefined,
         colonia: coloniaActual || 'General',
       });
     }

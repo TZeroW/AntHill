@@ -43,58 +43,60 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="log_in_container">
-      <header>
-        <h1>AntHill</h1>
-        <p className="subtitulo_lol">INGRESA_LAS_CREDENCIALES</p>
-      </header>
+    <div className="login-page-wrapper">
+      <div className="log_in_container">
+        <header>
+          <h1>AntHill</h1>
+          <p className="subtitulo_lol">INGRESA_LAS_CREDENCIALES</p>
+        </header>
 
-      <form className="log_in_form" onSubmit={handleSubmit}>
-        <div className="user">
-          <label htmlFor="user_name">NOMBRE_USUARIO</label>
-          <input
-            type="text"
-            id="user_name"
-            placeholder="matricula@tecmilenio.mx"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="user">
-          <label htmlFor="key">CONTRASEÑA</label>
-          <div className="password">
+        <form className="log_in_form" onSubmit={handleSubmit}>
+          <div className="user">
+            <label htmlFor="user_name">NOMBRE_USUARIO</label>
             <input
-              type={showPassword ? 'text' : 'password'}
-              id="key"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="text"
+              id="user_name"
+              placeholder="matricula@tecmilenio.mx"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
-            <button
-              style={{ border: 'none', backgroundColor: 'transparent' }}
-              type="button"
-              className="show_password"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              <img src="/assets/general/eye.svg" alt="eye" />
-            </button>
           </div>
-        </div>
+          <div className="user">
+            <label htmlFor="key">CONTRASEÑA</label>
+            <div className="password">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id="key"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                style={{ border: 'none', backgroundColor: 'transparent' }}
+                type="button"
+                className="show_password"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <img src="/assets/general/eye.svg" alt="eye" />
+              </button>
+            </div>
+          </div>
 
-        {error && (
-          <p style={{ color: '#ff4444', fontSize: '0.85rem', textAlign: 'center' }}>{error}</p>
-        )}
+          {error && (
+            <p style={{ color: '#ff4444', fontSize: '0.85rem', textAlign: 'center' }}>{error}</p>
+          )}
 
-        <button className="log_in_button" type="submit" disabled={loading}>
-          {loading ? 'INGRESANDO...' : 'INGRESAR'}
-        </button>
-      </form>
+          <button className="log_in_button" type="submit" disabled={loading}>
+            {loading ? 'INGRESANDO...' : 'INGRESAR'}
+          </button>
+        </form>
 
-      <footer>
-        <Link href="/register" className="footer_p">
-          ¿No tienes una cuenta? Registrate
-        </Link>
-        <p>Copyright © 2026 AntHill. Todos los derechos reservados.</p>
-      </footer>
+        <footer>
+          <Link href="/register" className="footer_p">
+            ¿No tienes una cuenta? Registrate
+          </Link>
+          <p>Copyright © 2026 AntHill. Todos los derechos reservados.</p>
+        </footer>
+      </div>
     </div>
   );
 }

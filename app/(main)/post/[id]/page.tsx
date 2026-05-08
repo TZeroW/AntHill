@@ -25,6 +25,7 @@ export default function PostViewPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [fullscreenImage, setFullscreenImage] = useState(false);
 
   // Estado local de contadores para actualizar sin recargar
   const [likesCount, setLikesCount] = useState(0);
@@ -32,6 +33,9 @@ export default function PostViewPage() {
   const [commentsCount, setCommentsCount] = useState(0);
   const [liked, setLiked] = useState(false);
   const [reposted, setReposted] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!postId) {
@@ -153,7 +157,7 @@ export default function PostViewPage() {
             </span>
           </div>
 
-          {isOwner && (
+          {mounted && isOwner && (
             <div className="post-options">
               <button className="options-btn" onClick={() => setMenuOpen(!menuOpen)}>
                 <i className="bi bi-three-dots"></i>
@@ -180,10 +184,68 @@ export default function PostViewPage() {
 
         <div className="post-body">
           <p className="post-text">{post.contenido}</p>
-          {post.imagen && (
-            <div className="post-media">
-              <img src={getPath(post.imagen)} alt="Post Content" />
-            </div>
+          {post.imagen && post.imagen !== 'placeholder' && (
+            <>
+              <div 
+                className="media-container" 
+                style={{ marginTop: 15, cursor: 'pointer' }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setFullscreenImage(true);
+                }}
+              >
+                <img
+                  src={getPath(post.imagen)}
+                  alt="Imagen del Post"
+                  style={{ 
+                    width: '100%', 
+                    maxHeight: '512px', 
+                    objectFit: 'cover', 
+                    borderRadius: '16px', 
+                    border: '1px solid #2f3336' 
+                  }}
+                />
+              </div>
+
+              {fullscreenImage && (
+                <div 
+                  style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.95)', zIndex: 99999, display: 'flex'
+                  }}
+                >
+                  {/* Panel izquierdo: Comentarios */}
+                  <div 
+                    style={{ width: '350px', background: '#000', borderRight: '1px solid #2f3336', display: 'flex', flexDirection: 'column', height: '100%' }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div style={{ padding: '16px', borderBottom: '1px solid #2f3336', color: '#fff', fontWeight: 'bold', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span>Publicación de {post.autor}</span>
+                      <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); setFullscreenImage(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '20px' }}>&times;</button>
+                    </div>
+                    <div style={{ flex: 1, overflowY: 'auto', padding: '16px' }}>
+                      <CommentSection postId={post.id} currentUser={user} />
+                    </div>
+                  </div>
+
+                  {/* Panel derecho: Imagen */}
+                  <div 
+                    style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'zoom-out', position: 'relative' }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setFullscreenImage(false);
+                    }}
+                  >
+                    <img
+                      src={getPath(post.imagen)}
+                      alt="Imagen completa"
+                      style={{ maxWidth: '95%', maxHeight: '95vh', objectFit: 'contain', borderRadius: '4px' }}
+                    />
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
 

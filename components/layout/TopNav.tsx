@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../lib/hooks/useAuth';
 
@@ -8,6 +9,11 @@ import { useAuth } from '../../lib/hooks/useAuth';
  */
 export default function TopNav() {
   const { user } = useAuth();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const getPath = (path?: string) => {
     if (!path) return '/assets/general/none.jpg';
@@ -28,8 +34,8 @@ export default function TopNav() {
       </div>
       <div className="user-actions">
         <div className="user-profile">
-          <span id="header-user-name">{user?.name || 'Invitado'}</span>
-          <img id="header-user-pfp" src={getPath(user?.pfp)} alt="Perfil" />
+          <span id="header-user-name">{mounted ? (user?.name || 'Invitado') : ''}</span>
+          <img id="header-user-pfp" src={getPath(mounted ? user?.pfp : undefined)} alt="Perfil" />
         </div>
       </div>
     </header>

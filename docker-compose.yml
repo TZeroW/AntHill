@@ -7,7 +7,7 @@ services:
       - APP_ENV=development
       - AUTH_DB_PATH=/app/data/auth.db
     volumes:
-      - auth-data:/app/data
+      - ./data/auth:/app/data
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:5001/" ]
       interval: 30s
@@ -25,13 +25,9 @@ services:
     depends_on:
       - auth-service
     volumes:
-      - posts-data:/app/data
+      - ./data/posts:/app/data
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:5002/" ]
       interval: 30s
       timeout: 10s
       retries: 3
-
-volumes:
-  auth-data:
-  posts-data:

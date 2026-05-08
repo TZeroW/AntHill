@@ -13,13 +13,14 @@
     --accent-red-hover: #ff00409c;
 }
 
-body {
+.login-page-wrapper {
     background-color: var(--dark-bg);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    width: 100%;
 }
 
 .log_in_container {
@@ -32,7 +33,7 @@ body {
     box-shadow: 0 0 8px var(--accent-red-hover);
 }
 
-h1 {
+.login-page-wrapper h1 {
     font-family: 'Funnel Sans', monospace;
     margin-block: 5px;
     text-shadow: 0 0 8px var(--accent-red-hover);
@@ -40,7 +41,7 @@ h1 {
     font-size: 3em;
 }
 
-.subtitulo_lol {
+.login-page-wrapper .subtitulo_lol {
     font-family: 'Funnel Sans', monospace;
     margin-block: 10px 20px;
     text-shadow: 0 0 8px var(--text-dim);
@@ -48,11 +49,11 @@ h1 {
     font-size: 1.5rem;
 }
 
-.user {
+.login-page-wrapper .user {
     margin-bottom: 20px;
 }
 
-label {
+.login-page-wrapper label {
     display: block;
     font-family: 'Funnel Sans', monospace;
     color: rgba(255, 255, 255, 0.937);
@@ -61,7 +62,7 @@ label {
     font-weight: bold;
 }
 
-input {
+.login-page-wrapper input {
     width: 100%;
     padding: 12px;
     background: var(--card-bg);
@@ -73,7 +74,7 @@ input {
     box-shadow: var(--accent-red);
 }
 
-input::placeholder {
+.login-page-wrapper input::placeholder {
     color: var(--text-dim);
 }
 
