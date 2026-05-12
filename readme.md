@@ -1,116 +1,143 @@
-# AntHill — Infraestructura y Despliegue
+# AntHill
 
-> Documentación sobre la arquitectura de contenedores, infraestructura en AWS y automatización del proyecto AntHill.
+> Plataforma social tipo comunidad para publicar contenido por colonias, interactuar con otros usuarios y administrar perfiles desde una interfaz web construida en Next.js y conectada a microservicios en Python.
 
----
+## Qué hace la aplicación
 
-## Arquitectura General
+AntHill funciona como una red social interna donde los usuarios pueden registrarse, iniciar sesión, crear publicaciones, comentar, dar like, repostear, explorar colonias y revisar su propio perfil. La interfaz principal vive en Next.js y actúa como capa de presentación; la lógica de negocio y persistencia se reparte entre microservicios especializados.
 
-El proyecto sigue una **arquitectura de microservicios** donde cada servicio corre en su propio contenedor Docker. La comunicación entre servicios se realiza a través de la red interna que crea Docker Compose, y la infraestructura en la nube se gestiona con **AWS CloudFormation**.
+La página web no es solo una vista estática: consume datos reales de los microservicios, mantiene la sesión del usuario en localStorage y sincroniza el feed, el perfil y las colonias con el backend.
 
-```
+## Arquitectura general
+
+El proyecto está organizado en tres capas principales:
+
+1. Frontend en Next.js, encargado de renderizar las páginas, manejar la navegación y consumir la API.
+2. Microservicio de autenticación, responsable de registro, login y actualización de perfil.
+3. Microservicio de publicaciones, responsable de posts, comentarios, likes, reposts y colonias.
+
+```text
 AntHill/
+├── app/                   # Páginas de Next.js
+├── components/            # Componentes reutilizables de UI
+├── lib/                   # Cliente API y hooks de estado
 ├── microservices/
-│   ├── auth/            ← Servicio de autenticación (Docker)
-│   ├── posts/           ← Servicio de publicaciones (Docker)
-│   └── welcome/         ← Notificación de bienvenida (AWS Lambda)
-├── infrastructure/
-│   └── template.yaml    ← CloudFormation (VPC, EC2, S3, DynamoDB)
-├── scripts/
-│   └── boto3/
-│       └── automatizacion.py  ← Script de reportes automatizados
-└── docker-compose.yml   ← Orquestación de contenedores
+│   ├── auth/              # Servicio de autenticación en Flask
+│   └── posts/             # Servicio de publicaciones en Flask
+├── infrastructure/        # Infraestructura como código con CloudFormation
+├── scripts/               # Automatizaciones y utilidades
+└── docker-compose.yml     # Orquestación local de servicios
 ```
 
----
+## Función de la página
 
-## Docker
+La interfaz web centraliza la experiencia del usuario:
 
-### Servicios Containerizados
+- La ruta principal muestra el feed general o el feed filtrado por colonia.
+- Login y registro conectan con el servicio de autenticación.
+- Perfil muestra publicaciones propias, likes y reposts.
+- Settings permite editar información del usuario.
+- Explore permite descubrir colonias.
+- Post detail muestra el contenido y sus interacciones.
 
-Cada microservicio que corre en Docker tiene su propio `Dockerfile` dentro de su directorio.
+En resumen, la página es el cliente visual de todo el sistema: renderiza la experiencia, pero delega los datos y la lógica de negocio a los microservicios.
 
-| Servicio | Puerto | Imagen Base | Ruta |
-|----------|--------|-------------|------|
-| **auth-service** | `5001` | `python:3.9-slim` | `microservices/auth/` |
-| **posts-service** | `5002` | `python:3.9-slim` | `microservices/posts/` |
+## Cómo se mezcla con los microservicios
 
-### Dockerfiles
+Next.js no llama directamente a las bases de datos. En su lugar, usa una capa de API centralizada en [lib/api.ts](lib/api.ts), y esa capa apunta a rutas internas como /api/auth y /api/posts. Luego, [next.config.ts](next.config.ts) reescribe esas rutas hacia los microservicios reales:
 
-Ambos servicios usan una imagen liviana de Python 3.9. Ejemplo (`microservices/auth/Dockerfile`):
+- /api/auth/* → auth-service en el puerto 5001
+- /api/posts/* → posts-service en el puerto 5002
+- /api/colonias/* → posts-service en el puerto 5002
 
-```dockerfile
-# imagen liviana
-FROM python:3.9-slim
-WORKDIR /app
+Esto evita problemas de CORS y mantiene al frontend desacoplado de las URLs físicas del backend.
 
-# contenedor vivo
-CMD ["python3", "-m", "http.server", "5001"]
+### Flujo de datos
 
-EXPOSE 5001
+1. El usuario interactúa con una página de Next.js.
+2. Los hooks de [lib/hooks/useAuth.ts](lib/hooks/useAuth.ts) y [lib/hooks/usePosts.ts](lib/hooks/usePosts.ts) llaman a [lib/api.ts](lib/api.ts).
+3. Next.js reescribe la petición hacia el microservicio correspondiente.
+4. El microservicio responde con JSON.
+5. El frontend actualiza el estado de React y la UI se refresca.
+
+## Páginas principales
+
+### Autenticación
+
+- [app/(auth)/login/page.tsx](app/%28auth%29/login/page.tsx): inicia sesión y guarda la sesión en localStorage.
+- [app/(auth)/register/page.tsx](app/%28auth%29/register/page.tsx): registra nuevos usuarios.
+
+### Área principal
+
+- [app/(main)/page.tsx](app/%28main%29/page.tsx): feed general y por colonia, creación, edición, búsqueda y eliminación de posts.
+- [app/(main)/profile/page.tsx](app/%28main%29/profile/page.tsx): publicaciones del usuario, likes y reposts.
+- [app/(main)/settings/page.tsx](app/%28main%29/settings/page.tsx): edición de perfil.
+- [app/(main)/explore/page.tsx](app/%28main%29/explore/page.tsx): exploración de colonias.
+- [app/(main)/post/[id]/page.tsx](app/%28main%29/post/%5Bid%5D/page.tsx): vista detallada de un post.
+
+## Microservicios
+
+### auth-service
+
+Ubicado en [microservices/auth/app.py](microservices/auth/app.py), expone endpoints para registro, login, consulta de usuario y actualización de perfil. Usa SQLite para persistencia local y devuelve información de usuario sin exponer contraseñas.
+
+### posts-service
+
+Ubicado en [microservices/posts/app.py](microservices/posts/app.py), maneja posts, comentarios, likes, reposts y colonias. También usa SQLite y conserva el historial local de contenido e interacciones.
+
+## Integración técnica del frontend
+
+El frontend usa hooks para separar la UI del acceso a datos:
+
+- [useAuth](lib/hooks/useAuth.ts) carga, guarda y actualiza la sesión.
+- [usePosts](lib/hooks/usePosts.ts) carga feeds, crea posts y gestiona ediciones/eliminaciones.
+
+Además, el cliente de API centraliza las rutas y evita repetir lógica de fetch en cada componente.
+
+## Desarrollo local
+
+### Requisitos
+
+- Node.js
+- Python 3.9 o superior para los microservicios
+- Docker y Docker Compose
+
+### Frontend
+
+```bash
+npm install
+npm run dev
 ```
 
-> **Nota:** Actualmente los servicios exponen un servidor HTTP básico. Conforme se desarrolle la lógica en `app.py`, se deberá actualizar el `CMD` para correr la aplicación real (por ejemplo con Flask/FastAPI).
+### Microservicios con Docker
 
----
+```bash
+docker compose up --build
+```
+
+### Variables de entorno útiles
+
+- NEXT_PUBLIC_AUTH_API: URL base del microservicio de auth
+- NEXT_PUBLIC_POSTS_API: URL base del microservicio de posts
+- AUTH_DB_PATH: ruta de la base SQLite de auth
+- POSTS_DB_PATH: ruta de la base SQLite de posts
 
 ## Docker Compose
 
-El archivo `docker-compose.yml` orquesta ambos contenedores y define la red interna entre ellos.
+El archivo [docker-compose.yml](docker-compose.yml) levanta los servicios de auth y posts, define sus puertos y monta volúmenes locales para persistir los datos de SQLite.
 
-```yaml
-version: '3.8'
-services:
-  auth-service:
-    build: ./microservices/auth
-    ports:
-      - "5001:5001"
-    environment:
-      - APP_ENV=development
+### Servicios expuestos
 
-  posts-service:
-    build: ./microservices/posts
-    ports:
-      - "5002:5002"
-    environment:
-      - AUTH_SERVICE_URL=http://auth-service:5001
-    depends_on:
-      - auth-service
-```
-
-### Conceptos clave
-
-- **`depends_on`**: Garantiza que `auth-service` arranca antes que `posts-service`.
-- **Red interna de Docker**: Los servicios se comunican entre sí usando el **nombre del servicio** como hostname (ej. `http://auth-service:5001`), sin necesidad de exponer puertos al exterior para la comunicación interna.
-- **Variables de entorno**: `AUTH_SERVICE_URL` le indica al servicio de posts dónde encontrar al servicio de auth dentro de la red de Docker.
-
-### Comandos útiles
-
-```bash
-# Construir y levantar todos los servicios
-docker-compose up --build
-
-# Levantar en segundo plano (detached)
-docker-compose up --build -d
-
-# Ver logs en tiempo real
-docker-compose logs -f
-
-# Detener todos los servicios
-docker-compose down
-
-# Reconstruir un servicio específico
-docker-compose build auth-service
-
-# Ver el estado de los contenedores
-docker-compose ps
-```
-
----
+| Servicio | Puerto | Responsabilidad |
+|----------|--------|-----------------|
+| auth-service | 5001 | Registro, login y perfil |
+| posts-service | 5002 | Posts, comentarios, likes, reposts y colonias |
 
 ## Infraestructura AWS
 
-El archivo `infrastructure/template.yaml` define toda la infraestructura en AWS como **Infrastructure as Code (IaC)** usando CloudFormation.
+El archivo [infrastructure/template.yaml](infrastructure/template.yaml) define la infraestructura como código con CloudFormation.
+
+
 
 ### Recursos desplegados
 
@@ -255,6 +282,27 @@ Este script está diseñado para ejecutarse dentro de un pipeline de CI/CD. Las 
 6. Boto3 genera un reporte de la infraestructura
    y lo sube a S3
 ```
+
+## Automatización
+
+El script [scripts/boto3/automatizacion.py](scripts/boto3/automatizacion.py) genera reportes de infraestructura y los sube a S3. Está pensado para ejecutarse como parte de un pipeline de CI/CD.
+
+## Despliegue
+
+El flujo general del proyecto es este:
+
+1. Se realiza un push al repositorio.
+2. Jenkins detecta el cambio.
+3. CloudFormation actualiza la infraestructura.
+4. Docker Compose levanta los microservicios.
+5. Next.js consume la API reescrita hacia esos servicios.
+6. Las automatizaciones generan reportes y los publican en S3.
+
+## Notas
+
+- La sesión del usuario se mantiene en localStorage con la key anthill_user.
+- El frontend trabaja con URLs relativas para que el proxy de Next resuelva el backend correcto.
+- Las imágenes y estilos están organizados en public/ y app/styles/ para mantener la interfaz separada de la lógica.
 
 ---
 
